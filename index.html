@@ -336,6 +336,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 const SUPABASE_URL = 'https://ynahunwezjbnbvyjxvfz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluYWh1bndlempibmJ2eWp4dmZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxODc1NjAsImV4cCI6MjA5Mzc2MzU2MH0.F9YiTRck6b4SpsPGWlevkrfd8t1wX4sbk8OC30VYM3g';
 
+// Redirect URL absoluto do site no GitHub Pages — usado no OAuth do Google
+const REDIRECT_URL = 'https://pehesaal-design.github.io/imoveltext-site/';
+
 const STRIPE_LINK = 'STRIPE_PENDENTE';
 const FREE_CREDITS = 3;
 
@@ -425,7 +428,7 @@ async function loginGoogle() {
   sessionStorage.setItem('form_area', document.getElementById('area').value);
   sessionStorage.setItem('form_obs', document.getElementById('obs').value);
   sessionStorage.setItem('form_plataforma', plataforma);
-  await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
+  await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: REDIRECT_URL } });
 }
 
 function restoreFormFromSession() {
@@ -517,10 +520,6 @@ async function gerar() {
   captionsCard.style.display = 'none';
   resultBody.innerHTML = `<div class="loading-row"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>Analisando fotos e gerando anúncio...</span></div>`;
   resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  const imageMessages = fotos.slice(0, 5).map(f => ({
-    type: 'image_url', image_url: { url: f.src, detail: 'low' }
-  }));
 
   const fotoInfo = fotos.length > 0
     ? `O corretor enviou ${fotos.length} foto(s). Analise as imagens e descreva os ambientes visíveis.`
@@ -622,7 +621,6 @@ function showPaywall() { document.getElementById('paywall-modal').style.display 
 function closePaywall() { document.getElementById('paywall-modal').style.display = 'none'; }
 function closePaywallOutside(e) { if (e.target === document.getElementById('paywall-modal')) closePaywall(); }
 function assinar() { window.open(STRIPE_LINK, '_blank'); }
-function showSignupModal() { document.getElementById('signup-modal').style.display = 'flex'; }
 
 restoreFormFromSession();
 init();
