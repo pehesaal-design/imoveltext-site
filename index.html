@@ -298,6 +298,13 @@ section{position:relative;z-index:1}
 .corretor-title svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:2.5}
 .corretor-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 
+.capa-thumb-item{position:relative;width:70px;height:70px;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid var(--border);transition:all .2s;flex-shrink:0}
+.capa-thumb-item img{width:100%;height:100%;object-fit:cover;display:block}
+.capa-thumb-item.selected{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,168,67,0.3)}
+.capa-thumb-item .capa-check{position:absolute;inset:0;background:rgba(212,168,67,0.35);display:none;align-items:center;justify-content:center}
+.capa-thumb-item.selected .capa-check{display:flex}
+.capa-thumb-item .capa-check svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:3}
+
 /* LOADING */
 .loading-row{display:flex;align-items:center;gap:10px;padding:1.25rem;color:var(--text2);font-size:13px}
 .dots{display:flex;gap:4px}
@@ -820,6 +827,15 @@ section{position:relative;z-index:1}
           <div class="cap-list" id="cap-list"></div>
         </div>
 
+        <!-- Seletor de capa do PDF -->
+        <div id="capa-selector" style="display:none">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Escolha a foto de capa do PDF
+          </div>
+          <div id="capa-thumbs" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        </div>
+
         <!-- PDF Button -->
         <div id="pdf-wrap" style="display:none">
           <button class="pdf-gen-btn" id="pdf-btn" onclick="gerarPDF()">
@@ -896,7 +912,7 @@ const FREE_CREDITS=3;
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 let currentUser=null,userCredits=0,isProUser=false;
 let plataforma='ZAP/OLX',tomAnuncio='Família';
-let fotos=[],pendingGeneration=false,hashtagsGeradas=[];
+let fotos=[],pendingGeneration=false,hashtagsGeradas=[],fotoCapaIdx=0;
 let lastTitulo='',lastCorpo='',lastTipo='',lastBairro='',lastPreco='',lastArea='',lastQuartos='',lastSuites='';
 
 // ─── INIT ──────────────────────────────────────────────
@@ -1067,7 +1083,8 @@ async function gerar(){
   document.getElementById('score-card').style.display='block';
   document.getElementById('hash-card').style.display='block';
   document.getElementById('captions-card').style.display='none';
-  document.getElementById('pdf-wrap').style.display='block';
+  document.getElementById('pdf-wrap').style.display='none'; // só aparece no final
+  document.getElementById('capa-selector').style.display='none';
   document.getElementById('titulo-body').innerHTML=loadH;
   document.getElementById('result-body').innerHTML=loadH;
   document.getElementById('score-tips').innerHTML=loadH;
@@ -1118,7 +1135,9 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações:
   let corpoTexto='';
   try{
     const raw=await chamarGemini(partsAnuncio);
-    const parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    const jsonMatchMain=raw.match(/\{[\s\S]*\}/);
+    if(!jsonMatchMain) throw new Error('JSON não encontrado na resposta');
+    const parsed=JSON.parse(jsonMatchMain[0]);
     lastTitulo=parsed.titulo||'';lastCorpo=parsed.corpo||'';
     document.getElementById('titulo-body').innerText=lastTitulo;
     corpoTexto=lastCorpo;
@@ -1149,7 +1168,9 @@ Dicas devem ser específicas. Hashtags reais do mercado imobiliário brasileiro.
 
   try{
     const rawSH=await chamarGemini([{text:promptSH}]);
-    const ps=JSON.parse(rawSH.replace(/```json|```/g,'').trim());
+    const jsonMatchSH=rawSH.match(/\{[\s\S]*\}/);
+    if(!jsonMatchSH) throw new Error('JSON não encontrado');
+    const ps=JSON.parse(jsonMatchSH[0]);
     const score=Math.min(100,Math.max(0,parseInt(ps.score)||70));
     const cls=score>=75?'alto':score>=50?'medio':'baixo';
     const emoji=score>=75?'🟢':score>=50?'🟡':'🔴';
@@ -1172,16 +1193,34 @@ Dicas devem ser específicas. Hashtags reais do mercado imobiliário brasileiro.
   if(fotos.length>0){
     document.getElementById('captions-card').style.display='block';
     document.getElementById('cap-list').innerHTML=loadH;
-    const promptCap=`Para cada uma das ${Math.min(fotos.length,10)} fotos deste ${tipo} em ${bairro}, escreva uma legenda profissional para anúncio imobiliário. Tom: ${tomAnuncio==='Luxo'?'sofisticado':tomAnuncio==='Investimento'?'objetivo':'caloroso'}. NUNCA use asteriscos. Responda SOMENTE em JSON puro: {"legendas":["legenda 1","legenda 2",...]}`;
+    const promptCap=`Para cada uma das ${Math.min(fotos.length,10)} fotos deste ${tipo} em ${bairro}, escreva uma legenda profissional para anúncio imobiliário. Tom: ${tomAnuncio==='Luxo'?'sofisticado':tomAnuncio==='Investimento'?'objetivo':'caloroso'}. NUNCA use asteriscos. Responda SOMENTE em JSON puro sem markdown e sem texto extra: {"legendas":["legenda 1","legenda 2",...]}`;
     try{
       const cp=[];fotos.slice(0,10).forEach(f=>cp.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));cp.push({text:promptCap});
       const rawCap=await chamarGemini(cp);
-      const pc=JSON.parse(rawCap.replace(/```json|```/g,'').trim());
-      document.getElementById('cap-list').innerHTML=pc.legendas.map((leg,i)=>`<div class="cap-item"><img class="cap-thumb" src="${fotos[i]?.src}" alt="Foto ${i+1}"/><div class="cap-text">${leg}</div></div>`).join('');
+      // JSON robusto — extrai apenas o objeto JSON mesmo que venha texto extra
+      const jsonMatch=rawCap.match(/\{[\s\S]*\}/);
+      if(!jsonMatch) throw new Error('JSON não encontrado');
+      const pc=JSON.parse(jsonMatch[0]);
+      document.getElementById('cap-list').innerHTML=(pc.legendas||[]).map((leg,i)=>`<div class="cap-item"><img class="cap-thumb" src="${fotos[i]?.src}" alt="Foto ${i+1}"/><div class="cap-text">${leg}</div></div>`).join('');
     }catch(e){
       document.getElementById('cap-list').innerHTML='<div style="padding:0;font-size:12px;color:var(--text3)">Não foi possível gerar as legendas.</div>';
     }
   }
+
+  // Mostrar seletor de capa + botão PDF só agora que tudo está pronto
+  if(fotos.length>0){
+    fotoCapaIdx=0;
+    const capaSel=document.getElementById('capa-selector');
+    const capaThumbs=document.getElementById('capa-thumbs');
+    capaSel.style.display='block';
+    capaThumbs.innerHTML=fotos.slice(0,10).map((f,i)=>`
+      <div class="capa-thumb-item${i===0?' selected':''}" onclick="selecionarCapa(${i})" id="capa-thumb-${i}">
+        <img src="${f.src}" alt="Foto ${i+1}"/>
+        <div class="capa-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>`).join('');
+  }
+  document.getElementById('pdf-wrap').style.display='block';
+  updatePDFAccess();
 
   btn.disabled=false;
 }
@@ -1229,6 +1268,9 @@ async function gerarPDF(){
   const legendas=[];
   document.querySelectorAll('#cap-list .cap-text').forEach(el=>legendas.push(el.innerText));
 
+  // Reordena fotos: capa selecionada primeiro, resto na ordem original
+  const fotosOrdenadas=[fotos[fotoCapaIdx],...fotos.filter((_,i)=>i!==fotoCapaIdx)];
+
   // ════════════════════════════════════════════
   // PÁGINA 1 — CAPA + FICHA + DESCRIÇÃO
   // ════════════════════════════════════════════
@@ -1236,8 +1278,8 @@ async function gerarPDF(){
 
   // Imagem de capa (primeiro terço da página)
   const capaH=110;
-  if(fotos.length>0){
-    addImgFit(fotos[0].src,0,0,W,capaH);
+  if(fotosOrdenadas.length>0){
+    addImgFit(fotosOrdenadas[0].src,0,0,W,capaH);
     // overlay gradiente escuro na base da imagem
     doc.setGState(doc.GState({opacity:0.5}));
     fill(8,15,12,0,capaH-35,W,35);
@@ -1329,7 +1371,7 @@ async function gerarPDF(){
   // ════════════════════════════════════════════
   // PÁGINAS DE FOTOS — 1 foto por página
   // ════════════════════════════════════════════
-  for(let i=0;i<Math.min(fotos.length,10);i++){
+  for(let i=0;i<Math.min(fotosOrdenadas.length,10);i++){
     doc.addPage();
     fill(...C.bg,0,0,W,H);
 
@@ -1339,7 +1381,7 @@ async function gerarPDF(){
     doc.setTextColor(...C.text3);
     doc.setGState(doc.GState({opacity:0.6}));
     doc.text(lastTitulo||`${lastTipo} — ${lastBairro}`,14,11);
-    doc.text(`${i+1} / ${Math.min(fotos.length,10)}`,W-14,11,{align:'right'});
+    doc.text(`${i+1} / ${Math.min(fotosOrdenadas.length,10)}`,W-14,11,{align:'right'});
     doc.setGState(doc.GState({opacity:1}));
     doc.setDrawColor(...C.green);doc.setLineWidth(0.2);
     doc.setGState(doc.GState({opacity:0.3}));
@@ -1348,11 +1390,12 @@ async function gerarPDF(){
 
     // Área da imagem — centralizada com margem
     const imgAreaY=24;
-    const imgAreaH=H-24-40; // deixa espaço para legenda em baixo
-    addImgFit(fotos[i].src,14,imgAreaY,W-28,imgAreaH);
+    const imgAreaH=H-24-40;
+    addImgFit(fotosOrdenadas[i].src,14,imgAreaY,W-28,imgAreaH);
 
-    // Legenda da foto
-    const leg=legendas[i]||'';
+    // Legenda — usa a legenda correspondente à foto original
+    const fotoOrigIdx=i===0?fotoCapaIdx:fotos.indexOf(fotosOrdenadas[i]);
+    const leg=legendas[fotoOrigIdx]||legendas[i]||'';
     if(leg){
       const legY=imgAreaY+imgAreaH+8;
       doc.setFont('helvetica','italic');doc.setFontSize(8.5);
@@ -1361,7 +1404,7 @@ async function gerarPDF(){
       doc.text(legLines.slice(0,3),W/2,legY,{align:'center'});
     }
 
-    // Rodapé mínimo — só dados do corretor, sem branding repetido
+    // Rodapé mínimo
     const fpRodY=H-10;
     if(corrNome||corrTel){
       doc.setFont('helvetica','normal');doc.setFontSize(6.5);
@@ -1379,6 +1422,13 @@ async function gerarPDF(){
 }
 
 // ─── UTILS ─────────────────────────────────────────────
+function selecionarCapa(idx){
+  fotoCapaIdx=idx;
+  document.querySelectorAll('.capa-thumb-item').forEach((el,i)=>{
+    el.classList.toggle('selected',i===idx);
+  });
+}
+
 function copiarAnuncioCompleto(btn){
   const titulo=document.getElementById('titulo-body').innerText;
   const corpo=document.getElementById('result-body').innerText;
