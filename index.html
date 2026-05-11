@@ -1054,13 +1054,12 @@ async function chamarGemini(parts){
     body:JSON.stringify({parts})
   });
   const d=await r.json();
+  console.log('=== GEMINI RAW RESPONSE ===', JSON.stringify(d).substring(0,500));
   if(d.error) throw new Error(d.error.message||d.error);
-  // Gemini 2.5 Flash usa thinking tokens — resposta pode vir em múltiplos parts
-  // Pega todos os parts de texto e concatena, priorizando o último (resposta real)
   const allParts=d.candidates?.[0]?.content?.parts||[];
+  console.log('=== PARTS COUNT ===', allParts.length, allParts.map(p=>({thought:p.thought,hasText:!!p.text,textLen:p.text?.length})));
   const textParts=allParts.filter(p=>p.text&&!p.thought).map(p=>p.text);
   if(textParts.length>0) return textParts.join('');
-  // Fallback: pega qualquer part com texto
   const anyText=allParts.map(p=>p.text||'').join('');
   return anyText;
 }
