@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ImóvelText IA — Anúncios Imobiliários com Inteligência Artificial</title>
-<meta name="description" content="Gere anúncios profissionais para ZAP, OLX, Instagram e WhatsApp em segundos. IA analisa suas fotos e cria textos que vendem."/>
+<title>ImóvelText — Assistente de Marketing Imobiliário com IA</title>
+<meta name="description" content="Transforme qualquer imóvel em um pacote completo de marketing em segundos. Anúncios, hashtags, PDF profissional e muito mais para corretores modernos."/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -350,6 +350,7 @@ section{position:relative;z-index:1}
   .gen-top,.results-section,.corretor-section,.gen-btn-wrap{padding-left:1.25rem;padding-right:1.25rem}
   .hero{padding:5rem 1.5rem 3.5rem}
   .nav-links .nav-link{display:none}
+  [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}
 }
 @media(max-width:480px){
   .hero h1{font-size:2.2rem}
@@ -368,9 +369,9 @@ section{position:relative;z-index:1}
     </a>
     <div class="nav-links">
       <a href="#como-funciona" class="nav-link">Como funciona</a>
+      <a href="#diferencial" class="nav-link">Diferencial</a>
       <a href="#recursos" class="nav-link">Recursos</a>
       <a href="#planos" class="nav-link">Planos</a>
-      <a href="#gerador" class="nav-link">Gerar anúncio</a>
     </div>
     <!-- Guest -->
     <div id="nav-guest">
@@ -391,20 +392,20 @@ section{position:relative;z-index:1}
 <!-- HERO -->
 <div id="top"></div>
 <section class="hero">
-  <div class="hero-badge reveal"><span class="badge-pulse"></span>IA treinada para o mercado imobiliário brasileiro</div>
-  <h1 class="reveal d1">Anúncios que <em>vendem</em>,<br>escritos em segundos</h1>
-  <p class="hero-sub reveal d2">A IA analisa suas fotos, entende o imóvel e gera textos profissionais para ZAP, OLX, Instagram e WhatsApp — com score, hashtags e PDF para impressionar o cliente.</p>
+  <div class="hero-badge reveal"><span class="badge-pulse"></span>A plataforma de marketing para corretores modernos</div>
+  <h1 class="reveal d1">Nunca mais escreva<br>anúncios <em>manualmente</em></h1>
+  <p class="hero-sub reveal d2">Transforme fotos e informações do imóvel em um pacote completo de marketing — anúncios, posts, hashtags e PDF profissional — em segundos.</p>
   <div class="hero-btns reveal d3">
     <a href="#gerador" class="btn-primary">
       <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      Gerar meu anúncio grátis
+      Criar marketing imobiliário grátis
     </a>
-    <a href="#planos" class="btn-ghost">Ver planos</a>
+    <a href="#diferencial" class="btn-ghost">Ver a diferença</a>
   </div>
   <div class="hero-stats reveal d4">
-    <div class="stat"><span class="stat-num">30s</span><span class="stat-label">para gerar um anúncio completo</span></div>
-    <div class="stat"><span class="stat-num">4</span><span class="stat-label">plataformas suportadas</span></div>
-    <div class="stat"><span class="stat-num">3×</span><span class="stat-label">mais engajamento com hashtags</span></div>
+    <div class="stat"><span class="stat-num">30s</span><span class="stat-label">para um pacote completo de marketing</span></div>
+    <div class="stat"><span class="stat-num">4</span><span class="stat-label">plataformas num único clique</span></div>
+    <div class="stat"><span class="stat-num">3×</span><span class="stat-label">mais alcance com hashtags otimizadas</span></div>
   </div>
 </section>
 
@@ -412,22 +413,22 @@ section{position:relative;z-index:1}
 <section class="how" id="como-funciona">
   <div class="container">
     <span class="section-tag reveal">Como funciona</span>
-    <h2 class="section-title reveal d1">Simples como deve ser</h2>
+    <h2 class="section-title reveal d1">Marketing imobiliário completo em 3 passos</h2>
     <div class="how-grid">
       <div class="how-card reveal d1">
         <div class="how-num">1</div>
-        <h3 class="how-title">Preencha os dados</h3>
-        <p class="how-desc">Tipo, localização, preço, quartos — as informações básicas que você já tem. Fotos são opcionais mas potencializam muito o resultado.</p>
+        <h3 class="how-title">Envie as fotos e dados</h3>
+        <p class="how-desc">Até 10 fotos analisadas pela IA, tipo, localização, preço e os detalhes que você já tem. Pronto — não precisa escrever nada.</p>
       </div>
       <div class="how-card reveal d2">
         <div class="how-num">2</div>
-        <h3 class="how-title">Escolha o tom e a plataforma</h3>
-        <p class="how-desc">Família, Luxo ou Investimento. ZAP/OLX, Instagram, WhatsApp ou Site. A linguagem é adaptada automaticamente para cada contexto.</p>
+        <h3 class="how-title">Escolha o perfil e plataforma</h3>
+        <p class="how-desc">Família, Luxo ou Investimento. ZAP/OLX, Instagram, WhatsApp ou Site. Linguagem e formato adaptados automaticamente para cada contexto.</p>
       </div>
       <div class="how-card reveal d3">
         <div class="how-num">3</div>
-        <h3 class="how-title">Copie, use e feche negócio</h3>
-        <p class="how-desc">Título e corpo separados para copiar. Score com sugestões. Hashtags por bloco. E PDF profissional para impressionar o cliente (plano Pro).</p>
+        <h3 class="how-title">Receba seu pacote de marketing</h3>
+        <p class="how-desc">Anúncio pronto, score de qualidade, hashtags por bloco, legendas por foto e PDF profissional para enviar ao cliente. Tudo em segundos.</p>
       </div>
     </div>
   </div>
@@ -437,14 +438,14 @@ section{position:relative;z-index:1}
 <section class="features" id="recursos">
   <div class="container">
     <span class="section-tag reveal">Recursos</span>
-    <h2 class="section-title reveal d1">Tudo que um corretor precisa</h2>
-    <p class="section-sub reveal d2">Cada recurso foi pensado para economizar tempo e aumentar a conversão dos seus anúncios.</p>
+    <h2 class="section-title reveal d1">Tudo para divulgar um imóvel</h2>
+    <p class="section-sub reveal d2">Não é só um gerador de texto — é um pacote completo de marketing imobiliário.</p>
     <div class="features-grid">
       <div class="feat-card reveal d1">
         <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
         <div>
           <h3 class="feat-title">Análise de fotos com IA</h3>
-          <p class="feat-desc">Envie até 5 fotos e a IA identifica automaticamente os ambientes — sala, cozinha, varanda — enriquecendo o anúncio com detalhes reais.</p>
+          <p class="feat-desc">Envie até 10 fotos analisadas pela IA, que identifica automaticamente os ambientes — sala, cozinha, varanda — enriquecendo o anúncio com detalhes reais.</p>
         </div>
       </div>
       <div class="feat-card reveal d2">
@@ -486,60 +487,80 @@ section{position:relative;z-index:1}
   </div>
 </section>
 
-<!-- PREVIEW DE RESULTADOS -->
-<section class="preview" id="preview">
+<!-- BEFORE / AFTER -->
+<section class="how" id="diferencial" style="padding:6rem 0">
   <div class="container">
-    <span class="section-tag reveal">Resultados</span>
-    <h2 class="section-title reveal d1">Veja o que a IA gera</h2>
-    <p class="section-sub reveal d2">Exemplos do nível de qualidade que você recebe em cada geração.</p>
-    <div class="preview-grid">
-      <div class="preview-card reveal d1">
-        <div class="preview-header">
-          <span class="preview-platform">ZAP / OLX</span>
-          <span class="preview-tom">Tom: Família</span>
+    <span class="section-tag reveal">Veja a diferença</span>
+    <h2 class="section-title reveal d1">Do rascunho ao anúncio<br>que convence</h2>
+    <p class="section-sub reveal d2" style="margin-bottom:3rem">O mesmo imóvel. A diferença está em como você apresenta.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="reveal d1">
+      <!-- ANTES -->
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:var(--r2);overflow:hidden">
+        <div style="padding:10px 16px;background:rgba(239,68,68,0.08);border-bottom:1px solid rgba(239,68,68,0.15);display:flex;align-items:center;gap:8px">
+          <span style="width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block"></span>
+          <span style="font-size:11px;font-weight:600;color:#ef4444;text-transform:uppercase;letter-spacing:.08em">Antes — sem ImóvelText</span>
         </div>
-        <div class="preview-body">
-          <div class="preview-title">Apartamento espaçoso com varanda gourmet em Pituba</div>
-          <p class="preview-text">3 quartos sendo 1 suíte, 92m² bem distribuídos num dos bairros mais valorizados de Salvador. A varanda gourmet amplia o espaço de convivência e a cozinha integrada facilita o dia a dia da família. Andar alto garante ventilação natural e privacidade. 2 vagas cobertas. Próximo a escolas, supermercados e à orla. Agende sua visita.</p>
-        </div>
-        <div class="preview-score">
-          <div class="preview-score-bar"><div class="preview-score-fill" style="width:87%"></div></div>
-          <span class="preview-score-label">🟢 87/100</span>
-        </div>
-      </div>
-      <div class="preview-card reveal d2">
-        <div class="preview-header">
-          <span class="preview-platform">Instagram</span>
-          <span class="preview-tom">Tom: Luxo</span>
-        </div>
-        <div class="preview-body">
-          <div class="preview-title">Uma cobertura que redefine o que é morar bem</div>
-          <p class="preview-text">Vista 360° da cidade. Piscina privativa. Acabamento impecável em cada detalhe. Esta cobertura duplex no Itaigara foi projetada para quem não abre mão do melhor. 280m², 4 suítes, terraço com churrasqueira e uma perspectiva que poucos têm o privilégio de chamar de lar. Link na bio para agendar uma visita exclusiva.</p>
-        </div>
-        <div class="preview-score">
-          <div class="preview-score-bar"><div class="preview-score-fill" style="width:92%"></div></div>
-          <span class="preview-score-label">🟢 92/100</span>
+        <div style="padding:1.5rem">
+          <p style="font-size:13px;color:var(--text3);line-height:1.7;font-style:italic">"Apartamento 3 quartos, 1 suíte, 92m², varanda, 2 vagas. Moema, SP. R$ 980.000. Ac. proposta."</p>
+          <div style="margin-top:1.25rem;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text3)"><svg width="13" height="13" fill="none" stroke="#ef4444" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Sem destaque dos diferenciais</div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text3)"><svg width="13" height="13" fill="none" stroke="#ef4444" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Linguagem genérica e fria</div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text3)"><svg width="13" height="13" fill="none" stroke="#ef4444" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Sem chamada para ação</div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text3)"><svg width="13" height="13" fill="none" stroke="#ef4444" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Igual a milhares de outros anúncios</div>
+          </div>
         </div>
       </div>
-      <div class="preview-card reveal d3">
-        <div class="preview-header">
-          <span class="preview-platform">WhatsApp</span>
-          <span class="preview-tom">Tom: Investimento</span>
+      <!-- DEPOIS -->
+      <div style="background:rgba(29,158,117,0.06);border:1px solid var(--border2);border-radius:var(--r2);overflow:hidden;position:relative">
+        <div style="position:absolute;top:-1px;right:16px;padding:4px 12px;background:var(--g);border-radius:0 0 8px 8px;font-size:10px;font-weight:700;color:#fff;letter-spacing:.06em">COM IMOVELTEXT</div>
+        <div style="padding:10px 16px;background:rgba(29,158,117,0.1);border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:8px">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--g);display:inline-block"></span>
+          <span style="font-size:11px;font-weight:600;color:var(--g);text-transform:uppercase;letter-spacing:.08em">Depois — gerado em 30 segundos</span>
         </div>
-        <div class="preview-body">
-          <div class="preview-title">Sala comercial — retorno estimado de 0,8% a.m.</div>
-          <p class="preview-text">40m² no Centro Empresarial de Salvador, região com valorização de 12% nos últimos 24 meses. Já alugada por R$1.800/mês. Ótima para quem busca renda passiva com segurança. R$210.000. Documentação regularizada. Posso enviar o laudo de avaliação.</p>
-        </div>
-        <div class="preview-score">
-          <div class="preview-score-bar"><div class="preview-score-fill" style="width:79%"></div></div>
-          <span class="preview-score-label">🟢 79/100</span>
+        <div style="padding:1.5rem">
+          <p style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:.6rem">Apartamento de alto padrão com varanda gourmet em Moema</p>
+          <p style="font-size:12px;color:var(--text2);line-height:1.75">92m² bem aproveitados num dos bairros mais nobres de São Paulo. A varanda gourmet transforma o fim de semana — espaço generoso, ventilação natural e acabamento impecável em cada detalhe. 3 quartos, 1 suíte, 2 vagas cobertas. A poucos passos do metrô e do Parque Ibirapuera. Para quem quer conforto, localização privilegiada e qualidade de vida. Agende sua visita hoje.</p>
+          <div style="margin-top:1.25rem;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2)"><svg width="13" height="13" fill="none" stroke="var(--g)" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Diferenciais destacados naturalmente</div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2)"><svg width="13" height="13" fill="none" stroke="var(--g)" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tom adaptado ao comprador ideal</div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2)"><svg width="13" height="13" fill="none" stroke="var(--g)" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>CTA direto e persuasivo</div>
+            <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2)"><svg width="13" height="13" fill="none" stroke="var(--g)" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pronto para ZAP, Instagram e WhatsApp</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- POR QUE ASSINAR -->
+<!-- DIFERENCIAL DO CHATGPT -->
+<section style="padding:6rem 0;background:linear-gradient(180deg,transparent,var(--bg2),transparent)">
+  <div class="container">
+    <span class="section-tag reveal">Mais que um gerador de texto</span>
+    <h2 class="section-title reveal d1">Por que não é só<br>um prompt de ChatGPT</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:3rem">
+      <div class="how-card reveal d1">
+        <div style="font-size:1.5rem;margin-bottom:1rem">🏠</div>
+        <h3 class="how-title">Especializado em imóveis</h3>
+        <p class="how-desc">Entende terminologia imobiliária, formatos de cada portal, linguagem por perfil de comprador e as regras não escritas de cada plataforma.</p>
+      </div>
+      <div class="how-card reveal d2">
+        <div style="font-size:1.5rem;margin-bottom:1rem">📸</div>
+        <h3 class="how-title">Analisa suas fotos de verdade</h3>
+        <p class="how-desc">Identifica materiais, acabamento, ambientes e iluminação nas imagens. O anúncio descreve o imóvel real — não um genérico.</p>
+      </div>
+      <div class="how-card reveal d1">
+        <div style="font-size:1.5rem;margin-bottom:1rem">📦</div>
+        <h3 class="how-title">Pacote completo de saída</h3>
+        <p class="how-desc">Não só texto — você recebe anúncio, score de qualidade, hashtags segmentadas, legendas por foto e PDF profissional. Workflow completo.</p>
+      </div>
+      <div class="how-card reveal d2">
+        <div style="font-size:1.5rem;margin-bottom:1rem">⚡</div>
+        <h3 class="how-title">Zero prompt, zero edição</h3>
+        <p class="how-desc">No ChatGPT você precisa saber pedir, editar, reformatar. Aqui você preenche um formulário e recebe material pronto para publicar.</p>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="why" id="planos">
   <div class="container">
     <span class="section-tag reveal">Planos</span>
@@ -561,8 +582,8 @@ section{position:relative;z-index:1}
         <button class="plan-cta free-cta" onclick="scrollToGen()">Usar grátis agora</button>
       </div>
       <div class="why-pro reveal-r">
-        <div class="plan-label pro">✦ Pro</div>
-        <div class="plan-price">R$67<span>/mês</span></div>
+        <div class="plan-label pro">✦ Essencial</div>
+        <div class="plan-price">R$40<span>/mês</span></div>
         <p class="plan-desc">Para corretores que querem se destacar e fechar mais negócios com apresentação profissional.</p>
         <ul class="plan-list">
           <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tudo do plano gratuito</li>
@@ -572,7 +593,7 @@ section{position:relative;z-index:1}
           <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Novos recursos em primeira mão</li>
           <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Cancele quando quiser</li>
         </ul>
-        <button class="plan-cta pro-cta" onclick="assinar()">Assinar o plano Pro</button>
+        <button class="plan-cta pro-cta" onclick="assinar()">Assinar por R$40/mês</button>
       </div>
     </div>
   </div>
@@ -599,8 +620,8 @@ section{position:relative;z-index:1}
         <div class="pdf-visual">
           <div class="pdf-page">
             <div class="pdf-page-header">
-              <h3>Apartamento — Pituba, Salvador</h3>
-              <p>R$ 580.000 • 3 quartos • 92m²</p>
+              <h3>Apartamento — Moema, São Paulo</h3>
+              <p>R$ 980.000 • 3 quartos • 92m²</p>
             </div>
             <div class="pdf-page-body">
               <div class="pdf-line accent full"></div>
@@ -676,7 +697,7 @@ section{position:relative;z-index:1}
               </div>
             </div>
             <div class="frow c2">
-              <div class="field"><label>Bairro / Cidade</label><input type="text" id="bairro" placeholder="Ex: Pituba, Salvador"/></div>
+              <div class="field"><label>Bairro / Cidade</label><input type="text" id="bairro" placeholder="Ex: Moema, São Paulo"/></div>
               <div class="field"><label>Preço</label><input type="text" id="preco" placeholder="Ex: R$ 580.000"/></div>
             </div>
             <div class="frow c3">
@@ -754,27 +775,21 @@ section{position:relative;z-index:1}
       <!-- RESULTADOS -->
       <div class="results-section" id="results-section" style="display:none">
 
-        <!-- Título -->
+        <!-- Título + Corpo unificados -->
         <div class="res-card titulo-card" id="titulo-card" style="display:none">
           <div class="res-header titulo-header">
-            <span class="res-label" style="color:var(--g)">Título do anúncio</span>
-            <button class="copy-btn" onclick="copiar('titulo-body',this)">
-              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copiar
+            <span class="res-label" style="color:var(--g)">Anúncio gerado</span>
+            <button class="copy-btn" onclick="copiarAnuncioCompleto(this)">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copiar tudo
             </button>
           </div>
           <div id="titulo-body" class="titulo-body"></div>
-        </div>
-
-        <!-- Corpo -->
-        <div class="res-card" id="result-card" style="display:none">
-          <div class="res-header">
-            <span class="res-label">Corpo do anúncio</span>
-            <button class="copy-btn" onclick="copiar('result-body',this)">
-              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copiar
-            </button>
-          </div>
+          <div style="height:1px;background:var(--border);margin:0 1.25rem"></div>
           <div id="result-body" class="res-body"></div>
         </div>
+
+        <!-- Card oculto mantido por compatibilidade -->
+        <div id="result-card" style="display:none"></div>
 
         <!-- Score -->
         <div class="score-card" id="score-card" style="display:none">
@@ -855,9 +870,9 @@ section{position:relative;z-index:1}
     <div class="modal-icon" style="background:rgba(212,168,67,0.1);border-color:rgba(212,168,67,0.3)">
       <svg viewBox="0 0 24 24" style="stroke:var(--gold)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
     </div>
-    <h2>Assine o plano Pro</h2>
+    <h2>Assine o plano Essencial</h2>
     <p>Anúncios ilimitados + PDF profissional para fechar mais negócios.</p>
-    <div class="paywall-price">R$67<span>/mês</span></div>
+    <div class="paywall-price">R$40<span>/mês</span></div>
     <div class="paywall-list">
       <div class="paywall-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tudo do plano gratuito</div>
       <div class="paywall-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Anúncios ilimitados</div>
@@ -1048,7 +1063,7 @@ async function gerar(){
   const rs=document.getElementById('results-section');
   rs.style.display='flex';
   document.getElementById('titulo-card').style.display='block';
-  document.getElementById('result-card').style.display='block';
+  document.getElementById('result-card').style.display='none';
   document.getElementById('score-card').style.display='block';
   document.getElementById('hash-card').style.display='block';
   document.getElementById('captions-card').style.display='none';
@@ -1060,29 +1075,41 @@ async function gerar(){
   document.getElementById('titulo-card').scrollIntoView({behavior:'smooth',block:'start'});
 
   const dadosBase=`Tipo: ${tipo} | Finalidade: ${finalidade} | Local: ${bairro} | Preço: ${preco} | Quartos: ${quartos} | Suítes: ${suites} | Área: ${area}m² | Obs: ${obs||'nenhuma'}`;
-  const fotoInfo=fotos.length>0?`Foram enviadas ${fotos.length} foto(s). Analise os ambientes e use as informações visuais para enriquecer o anúncio.`:'Nenhuma foto. Use apenas os dados textuais.';
 
-  const promptPrincipal=`Você é especialista em copywriting imobiliário brasileiro com 20 anos de experiência.
+  const fotoInfo=fotos.length>0
+    ?`Foram enviadas ${fotos.length} foto(s) do imóvel. ANALISE CADA IMAGEM COM ATENÇÃO MÁXIMA antes de escrever o anúncio. Para cada foto, observe e anote mentalmente:
+- Qual ambiente é esse? (sala, cozinha, quarto, banheiro, varanda, área gourmet, piscina, garagem, etc.)
+- Qual é o estado de conservação e acabamento? (novo, reformado, alto padrão, simples, etc.)
+- Quais materiais e revestimentos estão visíveis? (porcelanato, madeira, granito, mármore, pastilha, etc.)
+- Como está a iluminação natural? (janelas grandes, claraboia, muito iluminado, etc.)
+- Há algum mobiliário, equipamento ou detalhe marcante? (armários planejados, bancada, banheira, churrasqueira, vista, etc.)
+- Qual é a dimensão aparente dos ambientes? (amplo, compacto, pé-direito alto, etc.)
+USE ESSAS OBSERVAÇÕES DIRETAMENTE NO TEXTO DO ANÚNCIO. Mencione ambientes específicos que você viu. Descreva detalhes reais das fotos. O comprador deve sentir que você está descrevendo o imóvel que ele vai visitar, não um imóvel genérico.`
+    :'Nenhuma foto enviada. Use apenas os dados textuais para criar um anúncio convincente.';
+
+  const promptPrincipal=`Você é especialista em copywriting imobiliário brasileiro com 20 anos de experiência vendendo imóveis de alto giro.
 
 ${fotoInfo}
 
-DADOS DO IMÓVEL:
+DADOS DO IMÓVEL (prioridade máxima — nunca contradiga esses dados):
 ${dadosBase}
 
 PLATAFORMA: ${plataforma}
 TOM: ${tomDesc(tomAnuncio)}
 
-REGRAS:
+REGRAS ABSOLUTAS:
 - NUNCA use asteriscos, hashtags, markdown ou qualquer formatação especial
-- NUNCA use frases genéricas como "não perca essa oportunidade" ou "imóvel dos sonhos"
-- Escreva como um corretor experiente falando diretamente com o comprador certo
-- ZAP/OLX: texto corrido, destaque os pontos fortes na primeira linha, chamada para ação objetiva no final. Máx 280 palavras.
-- Instagram: leve, emojis naturais (não excessivos), primeira linha impactante. NÃO inclua hashtags. Máx 130 palavras.
-- WhatsApp: direto, amigável, parece mensagem real de corretor. Máx 90 palavras.
-- Site: narrativo, rico em detalhes de ambientes e estilo de vida, SEO-friendly. Máx 380 palavras.
+- NUNCA use frases genéricas como "não perca essa oportunidade", "imóvel dos sonhos", "venha conferir", "oportunidade única"
+- NUNCA invente informações que não estão nos dados nem nas fotos
+- Escreva como um corretor experiente conversando diretamente com o comprador ideal
+- Integre as observações visuais das fotos naturalmente no texto — não liste, narre
+- ZAP/OLX: texto corrido, primeira frase impacta com o diferencial principal, termine com chamada para ação direta. Máx 280 palavras.
+- Instagram: primeira linha captura atenção antes do "ver mais", emojis naturais (máx 4), narrativa aspiracional. NÃO inclua hashtags. Máx 130 palavras.
+- WhatsApp: tom de mensagem real de corretor para cliente, direto e pessoal. Máx 90 palavras.
+- Site: narrativa rica, percorre os ambientes como se fosse uma visita guiada, SEO-friendly. Máx 380 palavras.
 
-Responda SOMENTE em JSON puro sem markdown:
-{"titulo":"título em até 80 caracteres, impactante e específico","corpo":"corpo do anúncio conforme as regras"}`;
+Responda SOMENTE em JSON puro sem markdown, sem explicações:
+{"titulo":"título em até 80 caracteres, específico para este imóvel, impactante","corpo":"corpo do anúncio conforme as regras acima"}`;
 
   const partsAnuncio=[];
   fotos.slice(0,10).forEach(f=>partsAnuncio.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));
@@ -1159,127 +1186,262 @@ Dicas devem ser específicas. Hashtags reais do mercado imobiliário brasileiro.
   btn.disabled=false;
 }
 
-// ─── PDF ───────────────────────────────────────────────
+// ─── PDF PREMIUM ───────────────────────────────────────
 async function gerarPDF(){
   if(!isProUser){showPaywall();return;}
   const btn=document.getElementById('pdf-btn');
   btn.disabled=true;
-  btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/></svg> Gerando PDF...';
+  btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Gerando PDF...';
 
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const W=210,H=297;
-  const corrNome=document.getElementById('corr-nome')?.value||'Corretor';
+
+  const corrNome=document.getElementById('corr-nome')?.value||'';
   const corrTel=document.getElementById('corr-tel')?.value||'';
   const corrCreci=document.getElementById('corr-creci')?.value||'';
 
-  // ── CAPA ──
-  // Fundo verde escuro
-  doc.setFillColor(8,24,18);doc.rect(0,0,W,H,'F');
-  // Gradiente simulado com retângulos
-  doc.setFillColor(15,110,86);doc.rect(0,0,W,80,'F');
-  doc.setFillColor(12,80,60);doc.rect(0,60,W,40,'F');
+  // ── CORES ──
+  const C={
+    bg:[8,15,12],bg2:[13,22,17],bg3:[18,32,24],
+    green:[29,158,117],greenDark:[15,110,86],greenMid:[93,202,165],
+    text:[240,244,242],text2:[154,181,170],text3:[90,122,110],
+    border:[29,158,117],white:[255,255,255],
+    overlay:[0,0,0]
+  };
 
-  // Foto principal (se houver)
-  if(fotos.length>0){
+  // Helper: preencher retângulo com cor
+  const fill=(r,g,b,x,y,w,h)=>{doc.setFillColor(r,g,b);doc.rect(x,y,w,h,'F');};
+
+  // Helper: adicionar imagem com crop (sem distorção)
+  const addImgCover=(src,x,y,w,h)=>{
     try{
-      doc.addImage(fotos[0].src,'JPEG',0,0,W,100,'','MEDIUM');
-      // overlay escuro sobre a foto
-      doc.setFillColor(0,0,0);doc.setGState(doc.GState({opacity:0.45}));
-      doc.rect(0,0,W,100,'F');
-      doc.setGState(doc.GState({opacity:1}));
-    }catch(e){}
+      // Cria canvas para fazer o crop
+      const canvas=document.createElement('canvas');
+      const ctx=canvas.getContext('2d');
+      const img=new Image();
+      img.src=src;
+      // Calcular aspect ratio e crop
+      const srcW=img.naturalWidth||800;
+      const srcH=img.naturalHeight||600;
+      const targetRatio=w/h;
+      const srcRatio=srcW/srcH;
+      let sx=0,sy=0,sw=srcW,sh=srcH;
+      if(srcRatio>targetRatio){sw=srcH*targetRatio;sx=(srcW-sw)/2;}
+      else{sh=srcW/targetRatio;sy=(srcH-sh)/2;}
+      const scale=4;
+      canvas.width=w*scale;canvas.height=h*scale;
+      ctx.drawImage(img,sx,sy,sw,sh,0,0,canvas.width,canvas.height);
+      const cropped=canvas.toDataURL('image/jpeg',0.92);
+      doc.addImage(cropped,'JPEG',x,y,w,h);
+    }catch(e){
+      // fallback: usa imagem direta
+      try{doc.addImage(src,'JPEG',x,y,w,h,'','FAST');}catch(e2){}
+    }
+  };
+
+  // ════════════════════════════════════════════
+  // PÁGINA 1 — CAPA
+  // ════════════════════════════════════════════
+  fill(...C.bg,0,0,W,H);
+
+  // Imagem de capa (toda a parte superior)
+  const capaH=145;
+  if(fotos.length>0){
+    addImgCover(fotos[0].src,0,0,W,capaH);
+    // Overlay gradiente escuro sobre a imagem
+    doc.setGState(doc.GState({opacity:0.55}));
+    fill(0,0,0,0,0,W,capaH);
+    // Gradiente mais forte na parte inferior da imagem
+    doc.setGState(doc.GState({opacity:0.7}));
+    fill(8,15,12,0,capaH-40,W,40);
+    doc.setGState(doc.GState({opacity:1}));
+  } else {
+    // Sem foto — fundo verde escuro bonito
+    fill(...C.greenDark,0,0,W,capaH);
+    fill(8,15,12,0,capaH-40,W,40);
   }
 
-  // Logo / título no topo
-  doc.setTextColor(255,255,255);
-  doc.setFont('helvetica','bold');doc.setFontSize(10);
-  doc.text('ImóvelText IA',14,14);
+  // Logo no topo esquerdo
+  doc.setFont('helvetica','bold');doc.setFontSize(9);
+  doc.setTextColor(...C.white);doc.setGState(doc.GState({opacity:0.85}));
+  doc.text('ImóvelText',14,14);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(...C.greenMid);
+  doc.text('Assistente de Marketing Imobiliário',14,20);
+  doc.setGState(doc.GState({opacity:1}));
 
-  // Tipo badge
-  doc.setFillColor(29,158,117);doc.roundedRect(14,70,40,8,2,2,'F');
-  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(255,255,255);
-  doc.text(lastTipo.toUpperCase(),34,75.5,{align:'center'});
+  // Badge tipo imóvel
+  fill(...C.green,14,capaH-28,35,8);
+  doc.setFont('helvetica','bold');doc.setFontSize(7);
+  doc.setTextColor(...C.white);
+  doc.text((lastTipo||'Imóvel').toUpperCase(),31.5,capaH-22.5,{align:'center'});
 
-  // Título do imóvel
-  doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(255,255,255);
+  // Título do imóvel sobre a imagem
+  doc.setFont('helvetica','bold');doc.setFontSize(18);
+  doc.setTextColor(...C.white);
   const tituloLines=doc.splitTextToSize(lastTitulo||`${lastTipo} em ${lastBairro}`,W-28);
-  doc.text(tituloLines,14,88);
+  doc.text(tituloLines.slice(0,2),14,capaH-14);
 
   // ── FICHA TÉCNICA ──
-  const fichaY=110;
-  doc.setFillColor(13,26,20);doc.rect(0,100,W,H-100,'F');
-  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(29,158,117);
+  const fichaY=capaH+10;
+  fill(...C.bg2,0,capaH,W,60);
+
+  // Label seção
+  doc.setFont('helvetica','bold');doc.setFontSize(7);
+  doc.setTextColor(...C.green);
   doc.text('FICHA TÉCNICA',14,fichaY);
 
-  const fichaData=[
-    ['Tipo',lastTipo],['Local',lastBairro],['Preço',lastPreco],
-    ['Área',lastArea?lastArea+'m²':'—'],['Quartos',lastQuartos],['Suítes',lastSuites],
+  // Linha verde fina sob o label
+  doc.setDrawColor(...C.green);doc.setLineWidth(0.4);
+  doc.line(14,fichaY+2,196,fichaY+2);
+
+  // Cards da ficha em linha
+  const fichaItems=[
+    {icon:'📍',label:'Local',val:lastBairro||'—'},
+    {icon:'💰',label:'Preço',val:lastPreco||'—'},
+    {icon:'📐',label:'Área',val:lastArea?(lastArea+'m²'):'—'},
+    {icon:'🛏',label:'Quartos',val:lastQuartos||'—'},
+    {icon:'🚿',label:'Suítes',val:lastSuites||'—'},
+    {icon:'🏠',label:'Tipo',val:lastTipo||'—'},
   ];
-  doc.setFont('helvetica','normal');doc.setFontSize(9);
-  fichaData.forEach((row,i)=>{
-    const col=i%2===0?14:W/2+4;
-    const rowY=fichaY+10+Math.floor(i/2)*10;
-    doc.setTextColor(100,150,130);doc.text(row[0]+':',col,rowY);
-    doc.setTextColor(240,244,242);doc.text(row[1]||'—',col+22,rowY);
+  const cardW=(W-28)/fichaItems.length;
+  fichaItems.forEach((item,i)=>{
+    const cx=14+i*cardW;
+    doc.setFont('helvetica','normal');doc.setFontSize(7);
+    doc.setTextColor(...C.text3);
+    doc.text(item.label,cx+cardW/2,fichaY+10,{align:'center'});
+    doc.setFont('helvetica','bold');doc.setFontSize(8.5);
+    doc.setTextColor(...C.text);
+    const val=doc.splitTextToSize(item.val,cardW-2);
+    doc.text(val[0],cx+cardW/2,fichaY+17,{align:'center'});
+    // Divisor vertical (exceto no último)
+    if(i<fichaItems.length-1){
+      doc.setDrawColor(...C.text3);doc.setLineWidth(0.1);
+      doc.setGState(doc.GState({opacity:0.2}));
+      doc.line(cx+cardW,fichaY+6,cx+cardW,fichaY+20);
+      doc.setGState(doc.GState({opacity:1}));
+    }
   });
 
-  // Linha divisória
-  doc.setDrawColor(29,158,117,0.3);doc.setLineWidth(0.3);
-  doc.line(14,fichaY+46,W-14,fichaY+46);
+  // ── DESCRIÇÃO ──
+  const descY=capaH+76;
+  fill(...C.bg,0,capaH+60,W,H-(capaH+60));
 
-  // ── ANÚNCIO ──
-  const anuncioY=fichaY+54;
-  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(29,158,117);
-  doc.text('DESCRIÇÃO',14,anuncioY);
-  doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(200,220,212);
-  const corpoLines=doc.splitTextToSize(lastCorpo||'',W-28);
-  doc.text(corpoLines.slice(0,22),14,anuncioY+8);
+  doc.setFont('helvetica','bold');doc.setFontSize(7);
+  doc.setTextColor(...C.green);
+  doc.text('DESCRIÇÃO',14,descY);
+  doc.setDrawColor(...C.green);doc.setLineWidth(0.4);
+  doc.line(14,descY+2,196,descY+2);
 
-  // Linha divisória
-  const rodapeY=H-30;
-  doc.setDrawColor(29,158,117,0.3);doc.setLineWidth(0.3);
-  doc.line(14,rodapeY,W-14,rodapeY);
+  doc.setFont('helvetica','normal');doc.setFontSize(8.5);
+  doc.setTextColor(...C.text2);
+  doc.setLineHeightFactor(1.5);
+  const corpoTxt=lastCorpo||'';
+  const corpoLines=doc.splitTextToSize(corpoTxt,W-28);
+  doc.text(corpoLines.slice(0,18),14,descY+10);
 
-  // ── RODAPÉ CORRETOR ──
-  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(240,244,242);
-  doc.text(corrNome,14,rodapeY+8);
-  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100,150,130);
-  if(corrTel) doc.text('📞 '+corrTel,14,rodapeY+15);
-  if(corrCreci) doc.text('CRECI: '+corrCreci,corrTel?80:14,rodapeY+15);
-  doc.setFont('helvetica','italic');doc.setFontSize(7);doc.setTextColor(60,100,80);
-  doc.text('Gerado por ImóvelText IA',W-14,rodapeY+15,{align:'right'});
+  // ── RODAPÉ ──
+  const rodY=H-22;
+  doc.setDrawColor(...C.green);doc.setLineWidth(0.3);
+  doc.setGState(doc.GState({opacity:0.3}));
+  doc.line(14,rodY-4,W-14,rodY-4);
+  doc.setGState(doc.GState({opacity:1}));
 
-  // ── PÁGINA 2: GALERIA ──
+  if(corrNome){
+    doc.setFont('helvetica','bold');doc.setFontSize(8.5);
+    doc.setTextColor(...C.text);
+    doc.text(corrNome,14,rodY+2);
+  }
+  doc.setFont('helvetica','normal');doc.setFontSize(7.5);
+  doc.setTextColor(...C.text3);
+  const rodapeInfo=[];
+  if(corrTel) rodapeInfo.push(corrTel);
+  if(corrCreci) rodapeInfo.push('CRECI '+corrCreci);
+  if(rodapeInfo.length) doc.text(rodapeInfo.join('  •  '),14,rodY+8);
+  doc.setFont('helvetica','italic');doc.setFontSize(6.5);
+  doc.setTextColor(...C.text3);
+  doc.setGState(doc.GState({opacity:0.5}));
+  doc.text('Gerado por ImóvelText — Assistente de Marketing Imobiliário',W-14,rodY+8,{align:'right'});
+  doc.setGState(doc.GState({opacity:1}));
+
+  // ════════════════════════════════════════════
+  // PÁGINA 2 — GALERIA (se tiver mais de 1 foto)
+  // ════════════════════════════════════════════
   if(fotos.length>1){
     doc.addPage();
-    doc.setFillColor(8,24,18);doc.rect(0,0,W,H,'F');
-    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(29,158,117);
-    doc.text('GALERIA DE FOTOS',W/2,20,{align:'center'});
-    doc.setDrawColor(29,158,117);doc.setLineWidth(0.5);
-    doc.line(W/2-30,23,W/2+30,23);
+    fill(...C.bg,0,0,W,H);
 
-    const cols=2;const imgW=(W-42)/cols;const imgH=imgW*0.7;
-    let fx=14,fy=30;
+    // Header da página
+    fill(...C.bg2,0,0,W,24);
+    doc.setFont('helvetica','bold');doc.setFontSize(9);
+    doc.setTextColor(...C.green);
+    doc.text('GALERIA DE FOTOS',14,15);
+    doc.setFont('helvetica','normal');doc.setFontSize(7);
+    doc.setTextColor(...C.text3);
+    doc.text(`${Math.min(fotos.length,10)-1} foto${fotos.length>2?'s':''}`,W-14,15,{align:'right'});
+    doc.setDrawColor(...C.green);doc.setLineWidth(0.3);
+    doc.line(0,24,W,24);
+
+    // Grid de fotos 2 colunas
+    const margin=14,gap=5;
+    const cols=2;
+    const imgW=(W-margin*2-gap*(cols-1))/cols;
+    const imgH=imgW*0.65;
+    let gx=margin,gy=32;
+
     for(let i=1;i<Math.min(fotos.length,10);i++){
-      try{
-        doc.addImage(fotos[i].src,'JPEG',fx,fy,imgW,imgH,'','MEDIUM');
-        doc.setDrawColor(29,158,117,0.3);doc.setLineWidth(0.2);
-        doc.rect(fx,fy,imgW,imgH);
-        doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(80,120,100);
-        doc.text(`Foto ${i+1}`,fx+imgW/2,fy+imgH+5,{align:'center'});
-      }catch(e){}
-      fx+=imgW+14;
-      if(fx+imgW>W){fx=14;fy+=imgH+12;}
+      // Verificar quebra de página
+      if(gy+imgH>H-20){
+        doc.addPage();
+        fill(...C.bg,0,0,W,H);
+        fill(...C.bg2,0,0,W,24);
+        doc.setFont('helvetica','bold');doc.setFontSize(9);
+        doc.setTextColor(...C.green);
+        doc.text('GALERIA DE FOTOS',14,15);
+        doc.setDrawColor(...C.green);doc.setLineWidth(0.3);
+        doc.line(0,24,W,24);
+        gx=margin;gy=32;
+      }
+
+      // Fundo do card
+      fill(...C.bg2,gx-1,gy-1,imgW+2,imgH+2);
+      addImgCover(fotos[i].src,gx,gy,imgW,imgH);
+
+      // Bordas arredondadas simuladas (linha fina)
+      doc.setDrawColor(...C.border);doc.setLineWidth(0.2);
+      doc.setGState(doc.GState({opacity:0.3}));
+      doc.rect(gx,gy,imgW,imgH);
+      doc.setGState(doc.GState({opacity:1}));
+
+      gx+=imgW+gap;
+      if(i%cols===0){gx=margin;gy+=imgH+gap+6;}
     }
+
+    // Rodapé da galeria
+    fill(...C.bg2,0,H-18,W,18);
+    doc.setFont('helvetica','normal');doc.setFontSize(7);
+    doc.setTextColor(...C.text3);
+    doc.setGState(doc.GState({opacity:0.6}));
+    if(corrNome) doc.text(corrNome+(corrTel?' • '+corrTel:''),14,H-8);
+    doc.text('ImóvelText — Assistente de Marketing Imobiliário',W-14,H-8,{align:'right'});
+    doc.setGState(doc.GState({opacity:1}));
   }
 
-  doc.save(`imoveltext-${lastBairro.replace(/\s/g,'-').toLowerCase()}-${Date.now()}.pdf`);
+  doc.save(`imoveltext-${(lastBairro||'imovel').replace(/\s/g,'-').toLowerCase()}-${Date.now()}.pdf`);
   btn.disabled=false;
   btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg> Baixar PDF profissional do imóvel<div class="pdf-lock-overlay" id="pdf-lock" style="display:none"></div>';
 }
 
 // ─── UTILS ─────────────────────────────────────────────
+function copiarAnuncioCompleto(btn){
+  const titulo=document.getElementById('titulo-body').innerText;
+  const corpo=document.getElementById('result-body').innerText;
+  navigator.clipboard.writeText(titulo+'\n\n'+corpo).then(()=>{
+    const o=btn.innerHTML;btn.textContent='✓ Copiado!';
+    setTimeout(()=>{btn.innerHTML=o;},2000);
+  });
+}
 function copiar(id,btn){
   navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>{
     const o=btn.innerHTML;btn.textContent='✓ Copiado!';
