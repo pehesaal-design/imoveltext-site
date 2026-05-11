@@ -1051,17 +1051,15 @@ async function chamarGemini(parts){
   const r=await fetch(`${SUPABASE_URL}/functions/v1/gerar`,{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_KEY}`},
-    body:JSON.stringify({parts})
+    body:JSON.stringify({parts, maxOutputTokens: 65536})
   });
   const d=await r.json();
-  console.log('=== GEMINI RAW RESPONSE ===', JSON.stringify(d).substring(0,500));
   if(d.error) throw new Error(d.error.message||d.error);
   const allParts=d.candidates?.[0]?.content?.parts||[];
-  console.log('=== PARTS COUNT ===', allParts.length, allParts.map(p=>({thought:p.thought,hasText:!!p.text,textLen:p.text?.length})));
   const textParts=allParts.filter(p=>p.text&&!p.thought).map(p=>p.text);
-  if(textParts.length>0) return textParts.join('');
-  const anyText=allParts.map(p=>p.text||'').join('');
-  return anyText;
+  const raw=textParts.length>0?textParts.join(''):allParts.map(p=>p.text||'').join('');
+  // Remove markdown code blocks que o modelo às vezes adiciona
+  return raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
 }
 
 // ─── GERAR ─────────────────────────────────────────────
@@ -1263,7 +1261,7 @@ Use hashtags reais do mercado imobiliário brasileiro. Retorne apenas o JSON, na
   btn.disabled=false;
 }
 
-// ─── PDF PREMIUM ───────────────────────────────────────
+// ─── PDF TEMPLATE CLARO PREMIUM ────────────────────────
 async function gerarPDF(){
   if(!isProUser){showPaywall();return;}
   const btn=document.getElementById('pdf-btn');
@@ -1278,21 +1276,31 @@ async function gerarPDF(){
   const corrTel=document.getElementById('corr-tel')?.value||'';
   const corrCreci=document.getElementById('corr-creci')?.value||'';
 
+  // ── PALETA CLARO PREMIUM ──
   const C={
-    bg:[8,15,12],bg2:[13,22,17],
-    green:[29,158,117],greenDark:[15,110,86],greenMid:[93,202,165],
-    text:[240,244,242],text2:[154,181,170],text3:[90,122,110],
     white:[255,255,255],
+    offwhite:[250,249,247],
+    light:[245,243,240],
+    border:[220,215,208],
+    green:[29,158,117],
+    greenDark:[15,110,86],
+    text:[28,28,28],
+    text2:[80,80,80],
+    text3:[150,145,138],
+    accent:[29,158,117],
   };
 
   const fill=(r,g,b,x,y,w,h)=>{doc.setFillColor(r,g,b);doc.rect(x,y,w,h,'F');};
+  const hline=(y,x1=0,x2=W,color=C.border,lw=0.3)=>{
+    doc.setDrawColor(...color);doc.setLineWidth(lw);doc.line(x1,y,x2,y);
+  };
 
-  // Helper: imagem centralizada mantendo proporção (sem distorção, sem crop)
+  // Helper: imagem centralizada mantendo proporção original (sem distorção)
   const addImgFit=(src,areaX,areaY,areaW,areaH)=>{
     try{
       const img=new Image();img.src=src;
-      const srcW=img.naturalWidth||800;
-      const srcH=img.naturalHeight||600;
+      const srcW=img.naturalWidth||1200;
+      const srcH=img.naturalHeight||800;
       const ratio=srcW/srcH;
       let iw=areaW,ih=areaW/ratio;
       if(ih>areaH){ih=areaH;iw=areaH*ratio;}
@@ -1302,156 +1310,182 @@ async function gerarPDF(){
     }catch(e){}
   };
 
-  // Pega legendas geradas (do cap-list)
+  // Pega legendas do cap-list
   const legendas=[];
   document.querySelectorAll('#cap-list .cap-text').forEach(el=>legendas.push(el.innerText));
 
-  // Reordena fotos: capa selecionada primeiro, resto na ordem original
+  // Reordena fotos com a capa escolhida na frente
   const fotosOrdenadas=[fotos[fotoCapaIdx],...fotos.filter((_,i)=>i!==fotoCapaIdx)];
+  const totalFotos=Math.min(fotosOrdenadas.length,10);
 
   // ════════════════════════════════════════════
-  // PÁGINA 1 — CAPA + FICHA + DESCRIÇÃO
+  // PÁGINA 1 — CAPA + FICHA TÉCNICA + DESCRIÇÃO
   // ════════════════════════════════════════════
-  fill(...C.bg,0,0,W,H);
+  fill(...C.white,0,0,W,H);
 
-  // Imagem de capa (primeiro terço da página)
-  const capaH=110;
-  if(fotosOrdenadas.length>0){
-    addImgFit(fotosOrdenadas[0].src,0,0,W,capaH);
-    // overlay gradiente escuro na base da imagem
-    doc.setGState(doc.GState({opacity:0.5}));
-    fill(8,15,12,0,capaH-35,W,35);
-    doc.setGState(doc.GState({opacity:1}));
-  } else {
-    fill(...C.greenDark,0,0,W,capaH);
-  }
+  // Barra verde fina no topo — elemento de identidade
+  fill(...C.green,0,0,W,2);
 
-  // Badge tipo
-  fill(...C.green,14,capaH-22,30,7);
-  doc.setFont('helvetica','bold');doc.setFontSize(6.5);
-  doc.setTextColor(...C.white);
-  doc.text((lastTipo||'Imóvel').toUpperCase(),29,capaH-17.2,{align:'center'});
-
-  // Título sobre a imagem
-  doc.setFont('helvetica','bold');doc.setFontSize(16);
-  doc.setTextColor(...C.white);
-  const tituloLines=doc.splitTextToSize(lastTitulo||`${lastTipo} — ${lastBairro}`,W-28);
-  doc.text(tituloLines.slice(0,2),14,capaH-10);
-
-  // ── FICHA TÉCNICA ──
-  const fichaY=capaH+8;
-  fill(...C.bg2,0,capaH,W,52);
-  doc.setFont('helvetica','bold');doc.setFontSize(7);
+  // Logo ImóvelText no topo
+  doc.setFont('helvetica','bold');doc.setFontSize(8);
   doc.setTextColor(...C.green);
-  doc.text('FICHA TÉCNICA',14,fichaY);
-  doc.setDrawColor(...C.green);doc.setLineWidth(0.3);
-  doc.line(14,fichaY+2,196,fichaY+2);
+  doc.text('ImóvelText',14,12);
+  doc.setFont('helvetica','normal');doc.setFontSize(7);
+  doc.setTextColor(...C.text3);
+  doc.text('Assistente de Marketing Imobiliário',14,17);
 
-  const fichaItems=[
-    {label:'Local',val:lastBairro||'—'},
-    {label:'Preço',val:lastPreco?'R$ '+lastPreco:'—'},
-    {label:'Área',val:lastArea?(lastArea+'m²'):'—'},
-    {label:'Quartos',val:lastQuartos||'—'},
-    {label:'Suítes',val:lastSuites||'—'},
-    {label:'Tipo',val:lastTipo||'—'},
-  ];
-  const cardW=(W-28)/fichaItems.length;
-  fichaItems.forEach((item,i)=>{
-    const cx=14+i*cardW;
-    doc.setFont('helvetica','normal');doc.setFontSize(6.5);
-    doc.setTextColor(...C.text3);
-    doc.text(item.label,cx+cardW/2,fichaY+10,{align:'center'});
-    doc.setFont('helvetica','bold');doc.setFontSize(8);
-    doc.setTextColor(...C.text);
-    doc.text(doc.splitTextToSize(item.val,cardW-2)[0],cx+cardW/2,fichaY+17,{align:'center'});
-    if(i<fichaItems.length-1){
-      doc.setDrawColor(...C.text3);doc.setLineWidth(0.1);
-      doc.setGState(doc.GState({opacity:0.15}));
-      doc.line(cx+cardW,fichaY+6,cx+cardW,fichaY+22);
-      doc.setGState(doc.GState({opacity:1}));
-    }
-  });
-
-  // ── DESCRIÇÃO ──
-  const descY=capaH+66;
-  fill(...C.bg,0,capaH+52,W,H-capaH-52);
-  doc.setFont('helvetica','bold');doc.setFontSize(7);
-  doc.setTextColor(...C.green);
-  doc.text('DESCRIÇÃO',14,descY);
-  doc.setDrawColor(...C.green);doc.setLineWidth(0.3);
-  doc.line(14,descY+2,196,descY+2);
-  doc.setFont('helvetica','normal');doc.setFontSize(8.5);
-  doc.setTextColor(...C.text2);
-  doc.setLineHeightFactor(1.55);
-  const corpoLines=doc.splitTextToSize(lastCorpo||'',W-28);
-  doc.text(corpoLines.slice(0,20),14,descY+10);
-
-  // ── RODAPÉ CAPA ──
-  const rodY=H-18;
-  doc.setDrawColor(...C.green);doc.setLineWidth(0.2);
-  doc.setGState(doc.GState({opacity:0.25}));
-  doc.line(14,rodY-3,W-14,rodY-3);
-  doc.setGState(doc.GState({opacity:1}));
+  // Dados do corretor no topo direito
   if(corrNome){
     doc.setFont('helvetica','bold');doc.setFontSize(8);
     doc.setTextColor(...C.text);
-    doc.text(corrNome,14,rodY+3);
+    doc.text(corrNome,W-14,12,{align:'right'});
   }
-  const rodInfo=[];
-  if(corrTel) rodInfo.push(corrTel);
-  if(corrCreci) rodInfo.push('CRECI '+corrCreci);
-  if(rodInfo.length){
+  const corrInfo=[];
+  if(corrTel) corrInfo.push(corrTel);
+  if(corrCreci) corrInfo.push('CRECI '+corrCreci);
+  if(corrInfo.length){
     doc.setFont('helvetica','normal');doc.setFontSize(7);
     doc.setTextColor(...C.text3);
-    doc.text(rodInfo.join('  •  '),14,rodY+9);
+    doc.text(corrInfo.join('  •  '),W-14,17,{align:'right'});
   }
+
+  // Linha separadora
+  hline(21,0,W,C.border,0.3);
+
+  // ── FOTO DE CAPA ──
+  const capaY=25;
+  const capaH=120;
+  fill(...C.light,0,capaY,W,capaH);
+  if(fotosOrdenadas.length>0){
+    addImgFit(fotosOrdenadas[0].src,0,capaY,W,capaH);
+  }
+
+  // Badge tipo sobre a foto (canto inferior esquerdo)
+  fill(...C.green,14,capaY+capaH-12,32,8);
+  doc.setFont('helvetica','bold');doc.setFontSize(6);
+  doc.setTextColor(...C.white);
+  doc.text((lastTipo||'Imóvel').toUpperCase(),30,capaY+capaH-6.5,{align:'center'});
+
+  // ── TÍTULO ──
+  const titleY=capaY+capaH+10;
+  doc.setFont('helvetica','bold');doc.setFontSize(17);
+  doc.setTextColor(...C.text);
+  const tituloTxt=lastTitulo||`${lastTipo} — ${lastBairro}`;
+  const tituloLines=doc.splitTextToSize(tituloTxt,W-28);
+  doc.text(tituloLines.slice(0,2),14,titleY);
+
+  // Linha verde fina sob o título
+  const linhaY=titleY+(tituloLines.length>1?12:6);
+  hline(linhaY,14,W-14,C.green,0.5);
+
+  // ── FICHA TÉCNICA ──
+  const fichaY=linhaY+8;
+  const fichaItems=[
+    {label:'LOCAL',val:lastBairro||'—'},
+    {label:'PREÇO',val:lastPreco?'R$ '+lastPreco:'—'},
+    {label:'ÁREA',val:lastArea?(lastArea+'m²'):'—'},
+    {label:'QUARTOS',val:lastQuartos||'—'},
+    {label:'SUÍTES',val:lastSuites||'—'},
+    {label:'TIPO',val:lastTipo||'—'},
+  ];
+  const fichaColW=(W-28)/fichaItems.length;
+  fichaItems.forEach((item,i)=>{
+    const cx=14+i*fichaColW;
+    doc.setFont('helvetica','normal');doc.setFontSize(6);
+    doc.setTextColor(...C.text3);
+    doc.text(item.label,cx+fichaColW/2,fichaY,{align:'center'});
+    doc.setFont('helvetica','bold');doc.setFontSize(8.5);
+    doc.setTextColor(...C.text);
+    doc.text(doc.splitTextToSize(item.val,fichaColW-2)[0],cx+fichaColW/2,fichaY+6,{align:'center'});
+    if(i<fichaItems.length-1){
+      doc.setDrawColor(...C.border);doc.setLineWidth(0.2);
+      doc.line(cx+fichaColW,fichaY-3,cx+fichaColW,fichaY+9);
+    }
+  });
+
+  // Linha após ficha
+  hline(fichaY+14,14,W-14,C.border,0.2);
+
+  // ── DESCRIÇÃO ──
+  const descY=fichaY+20;
+  doc.setFont('helvetica','bold');doc.setFontSize(7);
+  doc.setTextColor(...C.text3);
+  doc.text('DESCRIÇÃO',14,descY);
+  hline(descY+2,14,W-14,C.border,0.2);
+  doc.setFont('helvetica','normal');doc.setFontSize(8.5);
+  doc.setTextColor(...C.text2);
+  doc.setLineHeightFactor(1.6);
+  const corpoLines=doc.splitTextToSize(lastCorpo||'',W-28);
+  doc.text(corpoLines.slice(0,16),14,descY+8);
+
+  // ── RODAPÉ PÁGINA 1 ──
+  hline(H-14,0,W,C.border,0.3);
+  fill(...C.green,0,H-2,W,2);
+  doc.setFont('helvetica','normal');doc.setFontSize(6.5);
+  doc.setTextColor(...C.text3);
+  doc.text('1 / '+(totalFotos+1),W-14,H-7,{align:'right'});
 
   // ════════════════════════════════════════════
   // PÁGINAS DE FOTOS — 1 foto por página
   // ════════════════════════════════════════════
-  for(let i=0;i<Math.min(fotosOrdenadas.length,10);i++){
+  for(let i=0;i<totalFotos;i++){
     doc.addPage();
-    fill(...C.bg,0,0,W,H);
+    fill(...C.offwhite,0,0,W,H);
 
-    // Header discreto
-    fill(...C.bg2,0,0,W,16);
+    // Barra verde topo
+    fill(...C.green,0,0,W,2);
+
+    // Header — nome do imóvel à esquerda, contador à direita
     doc.setFont('helvetica','normal');doc.setFontSize(7);
     doc.setTextColor(...C.text3);
-    doc.setGState(doc.GState({opacity:0.6}));
-    doc.text(lastTitulo||`${lastTipo} — ${lastBairro}`,14,11);
-    doc.text(`${i+1} / ${Math.min(fotosOrdenadas.length,10)}`,W-14,11,{align:'right'});
-    doc.setGState(doc.GState({opacity:1}));
-    doc.setDrawColor(...C.green);doc.setLineWidth(0.2);
-    doc.setGState(doc.GState({opacity:0.3}));
-    doc.line(0,16,W,16);
-    doc.setGState(doc.GState({opacity:1}));
+    const headerTxt=lastTitulo||`${lastTipo} — ${lastBairro}`;
+    doc.text(doc.splitTextToSize(headerTxt,W-50)[0],14,11);
+    doc.setFont('helvetica','bold');doc.setFontSize(7);
+    doc.setTextColor(...C.green);
+    doc.text(`${i+2} / ${totalFotos+1}`,W-14,11,{align:'right'});
+    hline(15,0,W,C.border,0.2);
 
-    // Área da imagem — centralizada com margem
-    const imgAreaY=24;
-    const imgAreaH=H-24-40;
-    addImgFit(fotosOrdenadas[i].src,14,imgAreaY,W-28,imgAreaH);
+    // ── FOTO CENTRALIZADA ──
+    const imgY=20;
+    const imgH=200; // área generosa para a foto
+    fill(...C.light,14,imgY,W-28,imgH);
+    addImgFit(fotosOrdenadas[i].src,14,imgY,W-28,imgH);
 
-    // Legenda — usa a legenda correspondente à foto original
+    // ── LEGENDA ──
     const fotoOrigIdx=i===0?fotoCapaIdx:fotos.indexOf(fotosOrdenadas[i]);
     const leg=legendas[fotoOrigIdx]||legendas[i]||'';
+    const legY=imgY+imgH+10;
+
+    // Linha verde antes da legenda
+    hline(legY-4,14,W-14,C.green,0.4);
+
     if(leg){
-      const legY=imgAreaY+imgAreaH+8;
-      doc.setFont('helvetica','italic');doc.setFontSize(8.5);
+      doc.setFont('helvetica','italic');doc.setFontSize(9);
       doc.setTextColor(...C.text2);
+      doc.setLineHeightFactor(1.55);
       const legLines=doc.splitTextToSize(leg,W-28);
-      doc.text(legLines.slice(0,3),W/2,legY,{align:'center'});
+      doc.text(legLines.slice(0,4),14,legY);
     }
 
-    // Rodapé mínimo
-    const fpRodY=H-10;
-    if(corrNome||corrTel){
-      doc.setFont('helvetica','normal');doc.setFontSize(6.5);
-      doc.setTextColor(...C.text3);
-      doc.setGState(doc.GState({opacity:0.5}));
-      const fpInfo=[corrNome,corrTel].filter(Boolean).join('  •  ');
-      doc.text(fpInfo,W/2,fpRodY,{align:'center'});
-      doc.setGState(doc.GState({opacity:1}));
+    // ── RODAPÉ COM DADOS DO CORRETOR ──
+    hline(H-22,14,W-14,C.border,0.2);
+
+    if(corrNome){
+      doc.setFont('helvetica','bold');doc.setFontSize(8);
+      doc.setTextColor(...C.text);
+      doc.text(corrNome,14,H-15);
     }
+    const fpInfo=[];
+    if(corrTel) fpInfo.push(corrTel);
+    if(corrCreci) fpInfo.push('CRECI '+corrCreci);
+    if(fpInfo.length){
+      doc.setFont('helvetica','normal');doc.setFontSize(7);
+      doc.setTextColor(...C.text3);
+      doc.text(fpInfo.join('  •  '),14,H-9);
+    }
+
+    // Barra verde rodapé
+    fill(...C.green,0,H-2,W,2);
   }
 
   doc.save(`imoveltext-${(lastBairro||'imovel').replace(/[\s/]/g,'-').toLowerCase()}-${Date.now()}.pdf`);
