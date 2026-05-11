@@ -1135,10 +1135,23 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações:
   let corpoTexto='';
   try{
     const raw=await chamarGemini(partsAnuncio);
-    const jsonMatchesMain=raw.match(/\{[\s\S]*\}/g)||[];
-    const jsonStrMain=jsonMatchesMain.reduce((a,b)=>b.length>a.length?b:a,'');
-    if(!jsonStrMain) throw new Error('JSON não encontrado na resposta');
-    const parsed=JSON.parse(jsonStrMain);
+    // Procura especificamente pelo objeto com "titulo" e "corpo"
+    let parsed={titulo:'',corpo:''};
+    try{
+      // Tenta encontrar JSON que começa com {"titulo" ou {"corpo"
+      const match=raw.match(/\{"titulo"[\s\S]*?\}(?=\s*$|\s*```)/)||
+                  raw.match(/\{"titulo"[\s\S]*\}/)||
+                  raw.match(/\{[\s\S]*"titulo"[\s\S]*"corpo"[\s\S]*\}/);
+      if(match) parsed=JSON.parse(match[0]);
+      else {
+        // Fallback: tenta o último bloco JSON da resposta
+        const blocos=raw.match(/\{[\s\S]*?\}/g)||[];
+        for(let i=blocos.length-1;i>=0;i--){
+          try{const t=JSON.parse(blocos[i]);if(t.titulo||t.corpo){parsed=t;break;}}catch(e2){}
+        }
+      }
+    }catch(e){ throw new Error('Erro ao processar resposta da IA'); }
+    if(!parsed.titulo&&!parsed.corpo) throw new Error('Resposta incompleta da IA — tente novamente');
     lastTitulo=parsed.titulo||'';lastCorpo=parsed.corpo||'';
     document.getElementById('titulo-body').innerText=lastTitulo;
     corpoTexto=lastCorpo;
@@ -1176,11 +1189,19 @@ Use hashtags reais do mercado imobiliário brasileiro. Retorne apenas o JSON, na
 
   try{
     const rawSH=await chamarGemini([{text:promptSH}]);
-    // Extrai o maior bloco JSON da resposta (ignora texto antes/depois)
-    const jsonMatchesSH=rawSH.match(/\{[\s\S]*\}/g)||[];
-    const jsonStrSH=jsonMatchesSH.reduce((a,b)=>b.length>a.length?b:a,'');
-    if(!jsonStrSH) throw new Error('JSON não encontrado');
-    const ps=JSON.parse(jsonStrSH);
+    console.log('=== RESPOSTA SCORE/HASHTAGS ===', rawSH);
+    let ps={score:70,dicas:[],hashtags:{}};
+    try{
+      const matchSH=rawSH.match(/\{[\s\S]*"score"[\s\S]*\}/)||
+                    rawSH.match(/\{[\s\S]*"hashtags"[\s\S]*\}/);
+      if(matchSH) ps=JSON.parse(matchSH[0]);
+      else{
+        const blocosSH=rawSH.match(/\{[\s\S]*?\}/g)||[];
+        for(let i=blocosSH.length-1;i>=0;i--){
+          try{const t=JSON.parse(blocosSH[i]);if(t.score!==undefined||t.hashtags){ps=t;break;}}catch(e2){}
+        }
+      }
+    }catch(e){ throw new Error('Erro ao processar score'); }
     const score=Math.min(100,Math.max(0,parseInt(ps.score)||70));
     const cls=score>=75?'alto':score>=50?'medio':'baixo';
     const emoji=score>=75?'🟢':score>=50?'🟡':'🔴';
@@ -1207,10 +1228,11 @@ Use hashtags reais do mercado imobiliário brasileiro. Retorne apenas o JSON, na
     try{
       const cp=[];fotos.slice(0,10).forEach(f=>cp.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));cp.push({text:promptCap});
       const rawCap=await chamarGemini(cp);
-      // JSON robusto — extrai apenas o objeto JSON mesmo que venha texto extra
-      const jsonMatch=rawCap.match(/\{[\s\S]*\}/);
-      if(!jsonMatch) throw new Error('JSON não encontrado');
-      const pc=JSON.parse(jsonMatch[0]);
+      let pc={legendas:[]};
+      try{
+        const matchCap=rawCap.match(/\{[\s\S]*"legendas"[\s\S]*\}/)||rawCap.match(/\{[\s\S]*\}/);
+        if(matchCap) pc=JSON.parse(matchCap[0]);
+      }catch(e2){};
       document.getElementById('cap-list').innerHTML=(pc.legendas||[]).map((leg,i)=>`<div class="cap-item"><img class="cap-thumb" src="${fotos[i]?.src}" alt="Foto ${i+1}"/><div class="cap-text">${leg}</div></div>`).join('');
     }catch(e){
       document.getElementById('cap-list').innerHTML='<div style="padding:0;font-size:12px;color:var(--text3)">Não foi possível gerar as legendas.</div>';
