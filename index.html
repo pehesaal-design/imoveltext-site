@@ -3,624 +3,1310 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ImóvelText IA — Gerador de Anúncios Imobiliários</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<title>ImóvelText IA — Anúncios Imobiliários com Inteligência Artificial</title>
+<meta name="description" content="Gere anúncios profissionais para ZAP, OLX, Instagram e WhatsApp em segundos. IA analisa suas fotos e cria textos que vendem."/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --green:#1D9E75;--green-dark:#0F6E56;--green-light:#E1F5EE;--green-mid:#5DCAA5;
-  --text:#1a1a1a;--text-muted:#666;--text-hint:#aaa;
-  --border:#e5e5e5;--border-light:#f2f2f2;
-  --bg:#f7f7f5;--surface:#ffffff;
-  --radius:14px;--radius-sm:8px;--radius-xs:6px;
-  --shadow:0 2px 8px rgba(0,0,0,0.06);
+  --g:#1D9E75;--g2:#0F6E56;--g3:#15785A;--glow:rgba(29,158,117,0.18);
+  --g-light:#E1F5EE;--g-mid:#5DCAA5;
+  --bg:#080f0c;--bg2:#0d1a14;--bg3:#111f18;
+  --surface:rgba(29,158,117,0.06);--surface2:rgba(29,158,117,0.10);
+  --border:rgba(29,158,117,0.14);--border2:rgba(29,158,117,0.22);
+  --text:#f0f4f2;--text2:#9ab5aa;--text3:#5a7a6e;
+  --gold:#d4a843;--gold-light:#fdf3e3;
+  --r:14px;--r2:20px;--r3:28px;
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
 }
-html{font-size:16px}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-/* SIGNUP MODAL (shown on first generate click) */
-.google-btn{
-  width:100%;padding:13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);
-  background:#fff;color:var(--text);font-size:15px;font-weight:500;
-  font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;
-  justify-content:center;gap:10px;transition:all 0.2s;
+/* BG TEXTURE */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 70% -10%,rgba(29,158,117,0.12) 0%,transparent 60%),
+             radial-gradient(ellipse 60% 50% at -10% 80%,rgba(29,158,117,0.08) 0%,transparent 60%);
+  pointer-events:none;
 }
-.google-btn:hover{border-color:var(--green);box-shadow:0 0 0 3px var(--green-light)}
-.google-btn img{width:20px;height:20px}
-.auth-note{font-size:12px;color:var(--text-hint);margin-top:1rem;line-height:1.5;text-align:center}
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;opacity:0.025;
+  background-image:linear-gradient(rgba(29,158,117,0.5) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(29,158,117,0.5) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;
+}
 
-/* APP LAYOUT */
-#app-screen{display:flex;min-height:100vh;flex-direction:column}
-.topbar{
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:100;
-}
-.topbar-logo{display:flex;align-items:center;gap:10px}
-.topbar-logo-icon{width:32px;height:32px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center}
-.topbar-logo-icon svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2}
-.topbar-name{font-family:'DM Serif Display',serif;font-size:18px}
-.topbar-right{display:flex;align-items:center;gap:12px}
-.credits-badge{
-  display:flex;align-items:center;gap:6px;padding:5px 12px;
-  border-radius:20px;border:1px solid var(--border);font-size:13px;
-  background:var(--bg);
-}
-.credits-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
-.credits-dot.low{background:#f59e0b}
-.credits-dot.empty{background:#ef4444}
-.user-avatar{
-  width:32px;height:32px;border-radius:50%;object-fit:cover;
-  border:2px solid var(--border);cursor:pointer;
-}
-.logout-btn{font-size:13px;color:var(--text-muted);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:var(--radius-xs);transition:background 0.15s}
-.logout-btn:hover{background:var(--bg)}
+/* NAV */
+.nav{position:sticky;top:0;z-index:200;background:rgba(8,15,12,0.82);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1120px;margin:0 auto;padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{width:32px;height:32px;border-radius:8px;background:var(--g);display:flex;align-items:center;justify-content:center}
+.nav-logo-icon svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2}
+.nav-logo-name{font-family:'Fraunces',serif;font-size:19px;color:var(--text)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+.nav-link{font-size:13px;color:var(--text2);text-decoration:none;transition:color .2s}
+.nav-link:hover{color:var(--text)}
+.nav-cta{padding:7px 18px;border-radius:var(--r);background:var(--g);color:#fff;font-size:13px;font-weight:600;text-decoration:none;transition:background .2s}
+.nav-cta:hover{background:var(--g2)}
+.nav-user{display:none;align-items:center;gap:10px}
+.credits-pill{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);font-size:12px;background:var(--surface)}
+.cpill-dot{width:7px;height:7px;border-radius:50%;background:var(--g)}
+.cpill-dot.low{background:#f59e0b}
+.cpill-dot.empty{background:#ef4444}
+.nav-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.5px solid var(--border2)}
+.nav-logout{font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color .2s}
+.nav-logout:hover{color:var(--text2)}
 
-.main{max-width:720px;margin:0 auto;padding:2rem 1rem 4rem;width:100%}
+/* HERO */
+.hero{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:7rem 1.5rem 5rem;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:40px;border:1px solid var(--border2);background:var(--surface);font-size:12px;color:var(--text2);margin-bottom:2rem}
+.badge-pulse{width:7px;height:7px;border-radius:50%;background:var(--g);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 var(--glow)}50%{opacity:.7;box-shadow:0 0 0 6px transparent}}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2.6rem,6vw,4.2rem);font-weight:700;line-height:1.08;letter-spacing:-.02em;margin-bottom:1.5rem;background:linear-gradient(135deg,#f0f4f2 30%,var(--g-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 em{font-style:italic;-webkit-text-fill-color:var(--g)}
+.hero-sub{font-size:1.15rem;color:var(--text2);line-height:1.65;max-width:540px;margin:0 auto 2.5rem}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:13px 28px;border-radius:var(--r);background:var(--g);color:#fff;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;border:none;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:var(--g2);transform:translateY(-2px);box-shadow:0 8px 24px var(--glow)}
+.btn-ghost{padding:13px 28px;border-radius:var(--r);background:transparent;color:var(--text2);font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;border:1px solid var(--border2);cursor:pointer;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-ghost:hover{border-color:var(--g-mid);color:var(--text)}
+.hero-stats{display:flex;gap:2.5rem;justify-content:center;margin-top:3.5rem;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-family:'Fraunces',serif;font-size:2rem;font-weight:700;color:var(--g);display:block}
+.stat-label{font-size:12px;color:var(--text3);margin-top:2px}
 
-/* CREDITS BANNER */
-.credits-banner{
-  border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.5rem;
-  display:flex;align-items:center;gap:14px;
-}
-.credits-banner.free{background:var(--green-light);border:1px solid var(--green-mid)}
-.credits-banner.low{background:#fef3c7;border:1px solid #fbbf24}
-.credits-banner.empty{background:#fee2e2;border:1px solid #fca5a5}
-.credits-banner svg{width:22px;height:22px;flex-shrink:0}
-.credits-banner.free svg{stroke:var(--green)}
-.credits-banner.low svg{stroke:#d97706}
-.credits-banner.empty svg{stroke:#dc2626}
-.credits-banner-text{flex:1}
-.credits-banner-text strong{display:block;font-size:14px;font-weight:600;margin-bottom:2px}
-.credits-banner-text span{font-size:13px;color:var(--text-muted)}
-.upgrade-btn{
-  padding:7px 16px;border-radius:20px;border:none;background:var(--green);
-  color:#fff;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;
-  cursor:pointer;white-space:nowrap;transition:background 0.15s;
-}
-.upgrade-btn:hover{background:var(--green-dark)}
+/* SECTION BASE */
+section{position:relative;z-index:1}
+.container{max-width:1120px;margin:0 auto;padding:0 1.5rem}
+.section-tag{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--g);margin-bottom:.75rem;display:block}
+.section-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;color:var(--text);margin-bottom:.75rem}
+.section-sub{font-size:1rem;color:var(--text2);line-height:1.65;max-width:560px}
 
-/* CARD */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.25rem;box-shadow:var(--shadow)}
-.card-header{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem}
-.step-badge{width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.card-title{font-size:15px;font-weight:600}
-.card-subtitle{font-size:13px;color:var(--text-muted);margin-top:1px}
+/* HOW IT WORKS */
+.how{padding:6rem 0}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.how-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:2rem 1.75rem;transition:all .3s;position:relative;overflow:hidden}
+.how-card::before{content:'';position:absolute;inset:0;border-radius:var(--r2);background:radial-gradient(ellipse 80% 60% at 50% -20%,var(--glow),transparent);opacity:0;transition:opacity .3s}
+.how-card:hover::before{opacity:1}
+.how-card:hover{border-color:var(--border2);transform:translateY(-4px)}
+.how-num{width:36px;height:36px;border-radius:50%;background:rgba(29,158,117,0.15);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:15px;font-weight:700;color:var(--g);margin-bottom:1.25rem}
+.how-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:.5rem}
+.how-desc{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* FEATURES */
+.features{padding:6rem 0;background:linear-gradient(180deg,transparent,var(--bg2),transparent)}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:3rem}
+.feat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:1.75rem;display:flex;gap:1.25rem;transition:all .3s}
+.feat-card:hover{border-color:var(--border2);background:var(--surface2)}
+.feat-icon{width:44px;height:44px;border-radius:10px;background:rgba(29,158,117,0.12);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feat-icon svg{width:20px;height:20px;stroke:var(--g);fill:none;stroke-width:1.75}
+.feat-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:.4rem}
+.feat-desc{font-size:13px;color:var(--text2);line-height:1.6}
+.feat-card.premium{border-color:rgba(212,168,67,0.25);background:rgba(212,168,67,0.04)}
+.feat-card.premium .feat-icon{background:rgba(212,168,67,0.1);border-color:rgba(212,168,67,0.25)}
+.feat-card.premium .feat-icon svg{stroke:var(--gold)}
+.feat-card.premium .feat-title{color:var(--gold)}
+.premium-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;background:rgba(212,168,67,0.12);border:1px solid rgba(212,168,67,0.3);font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-left:8px;vertical-align:middle}
+
+/* PREVIEW SECTION */
+.preview{padding:6rem 0}
+.preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:3rem}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .3s}
+.preview-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+.preview-header{padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.preview-platform{font-size:11px;font-weight:600;color:var(--g);text-transform:uppercase;letter-spacing:.08em}
+.preview-tom{font-size:10px;color:var(--text3);padding:2px 8px;border-radius:20px;border:1px solid var(--border)}
+.preview-body{padding:1.25rem;position:relative}
+.preview-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:.6rem;line-height:1.3}
+.preview-text{font-size:12px;color:var(--text2);line-height:1.65}
+.preview-score{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid var(--border);background:rgba(29,158,117,0.04)}
+.preview-score-bar{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.preview-score-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--g),var(--g-mid))}
+.preview-score-label{font-size:11px;color:var(--g);font-weight:600;white-space:nowrap}
+
+/* WHY SUBSCRIBE */
+.why{padding:6rem 0;background:linear-gradient(180deg,transparent,var(--bg3),transparent)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-top:3rem}
+.why-free{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:2rem}
+.why-pro{background:linear-gradient(135deg,rgba(29,158,117,0.12),rgba(29,158,117,0.04));border:1px solid var(--border2);border-radius:var(--r2);padding:2rem;position:relative;overflow:hidden}
+.why-pro::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent);pointer-events:none}
+.plan-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+.plan-label.free{color:var(--text3)}
+.plan-label.pro{color:var(--g)}
+.plan-price{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
+.plan-price span{font-size:1rem;font-weight:400;color:var(--text2)}
+.plan-desc{font-size:13px;color:var(--text2);margin-bottom:1.5rem;line-height:1.6}
+.plan-list{list-style:none;display:flex;flex-direction:column;gap:.75rem}
+.plan-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text2);line-height:1.5}
+.plan-item svg{width:15px;height:15px;flex-shrink:0;margin-top:1px}
+.plan-item.has svg{stroke:var(--g)}
+.plan-item.has{color:var(--text)}
+.plan-item.missing svg{stroke:var(--text3)}
+.plan-item.missing{color:var(--text3)}
+.plan-cta{width:100%;margin-top:1.75rem;padding:13px;border-radius:var(--r);font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all .2s}
+.plan-cta.free-cta{background:var(--surface2);color:var(--text2);border:1px solid var(--border2)}
+.plan-cta.pro-cta{background:var(--g);color:#fff}
+.plan-cta.pro-cta:hover{background:var(--g2);transform:translateY(-2px);box-shadow:0 8px 24px var(--glow)}
+
+/* PDF PREVIEW */
+.pdf-preview{padding:6rem 0}
+.pdf-mockup{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r2);padding:2.5rem;margin-top:3rem;position:relative;overflow:hidden}
+.pdf-mockup::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 100% 0%,rgba(212,168,67,0.08),transparent);pointer-events:none}
+.pdf-lock{position:absolute;top:1.5rem;right:1.5rem;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:rgba(212,168,67,0.12);border:1px solid rgba(212,168,67,0.3);font-size:12px;font-weight:600;color:var(--gold)}
+.pdf-lock svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:2.5}
+.pdf-inner{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+.pdf-info .section-tag{color:var(--gold)}
+.pdf-info .section-title{font-size:1.8rem}
+.pdf-features{display:flex;flex-direction:column;gap:.85rem;margin-top:1.5rem}
+.pdf-feat{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2)}
+.pdf-feat svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:2.5;flex-shrink:0}
+.pdf-visual{background:linear-gradient(135deg,var(--bg2),var(--bg));border:1px solid var(--border);border-radius:var(--r);overflow:hidden;position:relative}
+.pdf-page{padding:1.5rem}
+.pdf-page-header{background:linear-gradient(135deg,var(--g2),var(--g));padding:1.5rem;margin:-1.5rem -1.5rem 1.5rem;border-radius:var(--r) var(--r) 0 0}
+.pdf-page-header h3{font-family:'Fraunces',serif;font-size:1.1rem;color:#fff;margin-bottom:.25rem}
+.pdf-page-header p{font-size:11px;color:rgba(255,255,255,0.7)}
+.pdf-page-body{display:flex;flex-direction:column;gap:.75rem}
+.pdf-line{height:8px;background:var(--border);border-radius:4px}
+.pdf-line.short{width:60%}
+.pdf-line.med{width:80%}
+.pdf-line.full{width:100%}
+.pdf-line.accent{background:rgba(29,158,117,0.3)}
+.pdf-blur-overlay{position:absolute;inset:0;backdrop-filter:blur(6px);background:rgba(8,15,12,0.7);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;border-radius:var(--r)}
+.pdf-blur-overlay svg{width:32px;height:32px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.pdf-blur-overlay p{font-size:13px;color:var(--gold);font-weight:600}
+.pdf-blur-overlay small{font-size:11px;color:var(--text3)}
+
+/* GENERATOR SECTION */
+.generator{padding:6rem 0}
+.gen-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden}
+.gen-top{padding:2.5rem 2.5rem 0}
+.gen-banner{border-radius:var(--r2);padding:1.25rem 1.5rem;margin-bottom:2rem;display:flex;align-items:center;gap:14px}
+.gen-banner.free-b{background:rgba(29,158,117,0.08);border:1px solid var(--border2)}
+.gen-banner.low-b{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3)}
+.gen-banner.empty-b{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3)}
+.gen-banner svg{width:20px;height:20px;flex-shrink:0}
+.gen-banner.free-b svg{stroke:var(--g)}
+.gen-banner.low-b svg{stroke:#f59e0b}
+.gen-banner.empty-b svg{stroke:#ef4444}
+.gen-banner-text strong{display:block;font-size:14px;font-weight:600;margin-bottom:2px}
+.gen-banner-text span{font-size:12px;color:var(--text2)}
+.gen-body{padding:0 2.5rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
+.gen-col{display:flex;flex-direction:column;gap:1.25rem}
+
+/* CARDS */
+.gcard{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--r2);padding:1.5rem}
+.gcard-header{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.gcard-step{width:26px;height:26px;border-radius:50%;background:var(--g);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gcard-title{font-size:14px;font-weight:600;color:var(--text)}
+.gcard-sub{font-size:12px;color:var(--text3);margin-top:1px}
 
 /* UPLOAD */
-.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;background:var(--bg)}
-.upload-zone:hover{border-color:var(--green);background:var(--green-light)}
-.upload-zone.has-files{border-style:solid;border-color:var(--green-mid)}
+.upload-zone{border:2px dashed var(--border2);border-radius:var(--r);padding:2rem 1.5rem;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:rgba(29,158,117,0.03)}
+.upload-zone:hover{border-color:var(--g);background:rgba(29,158,117,0.07)}
+.upload-zone.has-files{border-style:solid;border-color:var(--g-mid)}
 .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.upload-zone svg{width:32px;height:32px;stroke:var(--green);fill:none;stroke-width:1.5;margin-bottom:8px}
-.upload-zone p{font-size:14px;color:var(--text-muted)}
-.upload-zone small{font-size:12px;color:var(--text-hint)}
-.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-top:12px}
-.thumb{position:relative;border-radius:var(--radius-sm);overflow:hidden;aspect-ratio:1;background:var(--border-light)}
+.upload-zone svg{width:28px;height:28px;stroke:var(--g);fill:none;stroke-width:1.5;margin-bottom:8px}
+.upload-zone p{font-size:13px;color:var(--text2)}
+.upload-zone small{font-size:11px;color:var(--text3)}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px;margin-top:10px}
+.thumb{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:1;background:var(--surface)}
 .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.thumb button{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,0.6);border:none;color:#fff;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.thumb button:hover{background:rgba(200,0,0,0.85)}
+.thumb button{position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.7);border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
-/* FORM */
-.form-row{display:grid;gap:12px;margin-bottom:12px}
-.form-row.cols-2{grid-template-columns:1fr 1fr}
-.form-row.cols-3{grid-template-columns:1fr 1fr 1fr}
-.field label{display:block;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-hint);margin-bottom:5px}
-.field input,.field select,.field textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);transition:border-color 0.15s;outline:none}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green);background:#fff}
-.field textarea{resize:vertical;min-height:72px;line-height:1.5}
-.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+/* FIELDS */
+.frow{display:grid;gap:10px;margin-bottom:10px}
+.frow.c2{grid-template-columns:1fr 1fr}
+.frow.c3{grid-template-columns:1fr 1fr 1fr}
+.field label{display:block;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;background:rgba(255,255,255,0.04);color:var(--text);transition:border-color .15s;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--g);background:rgba(29,158,117,0.06)}
+.field textarea{resize:vertical;min-height:68px;line-height:1.5}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a7a6e' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.field input::placeholder,.field textarea::placeholder{color:var(--text3)}
 
-/* PLATFORMS */
-.platforms{display:flex;gap:8px;flex-wrap:wrap}
-.pbtn{padding:7px 16px;font-size:13px;font-family:'DM Sans',sans-serif;border:1.5px solid var(--border);border-radius:24px;cursor:pointer;background:var(--surface);color:var(--text-muted);transition:all 0.15s;font-weight:400}
-.pbtn:hover{border-color:var(--green-mid);color:var(--green-dark)}
-.pbtn.active{background:var(--green-light);color:var(--green-dark);border-color:var(--green-mid);font-weight:600}
+/* BUTTONS GROUP */
+.btn-group{display:flex;gap:6px;flex-wrap:wrap}
+.tog-btn{padding:7px 14px;font-size:12px;font-family:'DM Sans',sans-serif;border:1.5px solid var(--border);border-radius:20px;cursor:pointer;background:transparent;color:var(--text2);transition:all .15s;font-weight:400}
+.tog-btn:hover{border-color:var(--g-mid);color:var(--text)}
+.tog-btn.active{background:rgba(29,158,117,0.15);color:var(--g-mid);border-color:var(--g-mid);font-weight:600}
+.tog-btn.active.luxo{background:rgba(212,168,67,0.12);color:var(--gold);border-color:rgba(212,168,67,0.4)}
+.tog-btn.active.invest{background:rgba(37,99,235,0.12);color:#60a5fa;border-color:rgba(96,165,250,0.4)}
 
-/* GENERATE BTN */
-.gen-btn{width:100%;padding:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;border-radius:var(--radius-sm);border:none;background:var(--green);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.15s;margin-top:4px}
-.gen-btn:hover{background:var(--green-dark)}
+/* GEN BUTTON */
+.gen-btn-wrap{padding:0 2.5rem 2.5rem;grid-column:1/-1}
+.gen-btn{width:100%;padding:15px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;border-radius:var(--r);border:none;background:linear-gradient(135deg,var(--g),var(--g3));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;letter-spacing:.01em}
+.gen-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--glow)}
 .gen-btn:active{transform:scale(0.99)}
-.gen-btn:disabled{background:#ccc;cursor:not-allowed;transform:none}
-.gen-btn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5}
+.gen-btn:disabled{background:rgba(255,255,255,0.08);color:var(--text3);cursor:not-allowed;transform:none;box-shadow:none}
+.gen-btn svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.5}
 
-/* RESULT */
-.result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-top:1.25rem;overflow:hidden;box-shadow:var(--shadow)}
-.result-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border-light);background:var(--bg)}
-.result-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)}
-.copy-btn{font-size:13px;padding:5px 12px;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:5px}
-.copy-btn:hover{border-color:var(--green);color:var(--green-dark)}
-.result-body{padding:1.25rem;font-size:14px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:80px}
-.captions-title{padding:12px 16px;border-bottom:1px solid var(--border-light);background:var(--bg);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)}
-.cap-list{padding:1rem 1.25rem;display:flex;flex-direction:column;gap:12px}
-.cap-item{display:flex;gap:12px;align-items:flex-start}
-.cap-thumb{width:52px;height:52px;border-radius:var(--radius-sm);object-fit:cover;flex-shrink:0;border:1px solid var(--border-light)}
-.cap-text{font-size:13px;line-height:1.65;color:var(--text);flex:1;padding-top:2px}
+/* RESULTS */
+.results-section{padding:0 2.5rem 2.5rem;display:flex;flex-direction:column;gap:1.25rem}
+.res-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.res-header{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);background:rgba(29,158,117,0.04)}
+.res-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3)}
+.copy-btn{font-size:12px;padding:4px 11px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;display:flex;align-items:center;gap:4px}
+.copy-btn:hover{border-color:var(--g);color:var(--g)}
+.res-body{padding:1.25rem;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;min-height:60px}
+.titulo-card{border-color:var(--border2);background:rgba(29,158,117,0.04)}
+.titulo-header{background:rgba(29,158,117,0.08)}
+.titulo-body{padding:1rem 1.25rem;font-size:16px;font-weight:700;color:var(--text);line-height:1.35}
+
+/* SCORE */
+.score-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.score-head{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);background:rgba(29,158,117,0.04)}
+.score-badge{font-size:18px;font-weight:700}
+.score-body-inner{padding:1.25rem}
+.score-bar-bg{width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-bottom:1rem}
+.score-bar-fill{height:100%;border-radius:3px;transition:width .8s ease}
+.score-bar-fill.alto{background:linear-gradient(90deg,var(--g),var(--g-mid))}
+.score-bar-fill.medio{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.score-bar-fill.baixo{background:linear-gradient(90deg,#dc2626,#f87171)}
+.score-tips{display:flex;flex-direction:column;gap:8px}
+.score-tip{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2);line-height:1.5}
+
+/* HASHTAGS */
+.hash-body-inner{padding:1.25rem;display:flex;flex-direction:column;gap:12px}
+.hash-group-label{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
+.hash-tags{display:flex;flex-wrap:wrap;gap:5px}
+.hash-tag{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid}
+.hash-tag.local{background:rgba(37,99,235,0.1);color:#60a5fa;border-color:rgba(96,165,250,0.3)}
+.hash-tag.tipo{background:rgba(29,158,117,0.1);color:var(--g-mid);border-color:var(--border2)}
+.hash-tag.perfil{background:rgba(212,168,67,0.1);color:var(--gold);border-color:rgba(212,168,67,0.3)}
+
+/* CAP LIST */
+.cap-list{padding:1rem 1.25rem;display:flex;flex-direction:column;gap:10px}
+.cap-item{display:flex;gap:10px;align-items:flex-start}
+.cap-thumb{width:48px;height:48px;border-radius:7px;object-fit:cover;flex-shrink:0;border:1px solid var(--border)}
+.cap-text{font-size:12px;line-height:1.6;color:var(--text2);flex:1;padding-top:2px}
+
+/* PDF BUTTON */
+.pdf-gen-btn{width:100%;padding:13px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;border-radius:var(--r);border:1px solid rgba(212,168,67,0.4);background:rgba(212,168,67,0.1);color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;position:relative}
+.pdf-gen-btn:hover{background:rgba(212,168,67,0.18);border-color:rgba(212,168,67,0.6)}
+.pdf-gen-btn:disabled{opacity:.4;cursor:not-allowed}
+.pdf-gen-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+.pdf-lock-overlay{position:absolute;inset:0;border-radius:var(--r);background:rgba(8,15,12,0.7);display:flex;align-items:center;justify-content:center;gap:8px;backdrop-filter:blur(2px)}
+.pdf-lock-overlay svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:2.5}
+.pdf-lock-overlay span{font-size:12px;color:var(--gold);font-weight:600}
+
+/* CORRETOR FIELDS */
+.corretor-section{padding:0 2.5rem 1rem;display:none}
+.corretor-section.visible{display:block}
+.corretor-title{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.corretor-title svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:2.5}
+.corretor-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 
 /* LOADING */
-.loading-row{display:flex;align-items:center;gap:10px;padding:1.25rem;color:var(--text-muted);font-size:14px}
+.loading-row{display:flex;align-items:center;gap:10px;padding:1.25rem;color:var(--text2);font-size:13px}
 .dots{display:flex;gap:4px}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.2s ease-in-out infinite}
-.dot:nth-child(2){animation-delay:0.2s}.dot:nth-child(3){animation-delay:0.4s}
-@keyframes blink{0%,100%{opacity:0.25}50%{opacity:1}}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--g);animation:blink 1.2s ease-in-out infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
 
-/* PAYWALL MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999;padding:1rem}
-.modal{background:var(--surface);border-radius:20px;padding:2.5rem 2rem;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
-.modal-icon{width:56px;height:56px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
-.modal-icon svg{width:28px;height:28px;stroke:var(--green);fill:none;stroke-width:1.5}
-.modal h2{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:8px}
-.modal p{font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:1.5rem}
-.modal-price{font-size:36px;font-weight:700;color:var(--green);margin-bottom:4px}
-.modal-price span{font-size:16px;font-weight:400;color:var(--text-muted)}
-.modal-features{text-align:left;margin-bottom:1.5rem;display:flex;flex-direction:column;gap:8px}
-.modal-feature{display:flex;align-items:center;gap:8px;font-size:14px}
-.modal-feature svg{width:16px;height:16px;stroke:var(--green);fill:none;stroke-width:2.5;flex-shrink:0}
-.modal-cta{width:100%;padding:13px;border-radius:var(--radius-sm);border:none;background:var(--green);color:#fff;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background 0.15s;margin-bottom:10px}
-.modal-cta:hover{background:var(--green-dark)}
-.modal-close{font-size:13px;color:var(--text-hint);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:999;padding:1rem;backdrop-filter:blur(4px)}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r3);padding:2.5rem 2rem;max-width:420px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.5)}
+.modal-icon{width:52px;height:52px;border-radius:50%;background:rgba(29,158,117,0.12);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
+.modal-icon svg{width:24px;height:24px;stroke:var(--g);fill:none;stroke-width:1.75}
+.modal h2{font-family:'Fraunces',serif;font-size:1.6rem;margin-bottom:.5rem;color:var(--text)}
+.modal p{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:1.5rem}
+.modal-list{background:rgba(29,158,117,0.07);border-radius:10px;padding:12px 14px;margin-bottom:1.5rem;text-align:left;display:flex;flex-direction:column;gap:6px}
+.modal-list-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2)}
+.modal-list-item svg{width:13px;height:13px;stroke:var(--g);fill:none;stroke-width:2.5;flex-shrink:0}
+.google-btn{width:100%;padding:13px;border-radius:var(--r);border:1.5px solid var(--border2);background:rgba(255,255,255,0.04);color:var(--text);font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;margin-bottom:10px}
+.google-btn:hover{border-color:var(--g);background:rgba(29,158,117,0.08)}
+.google-btn img{width:18px;height:18px}
+.auth-note{font-size:11px;color:var(--text3);text-align:center;line-height:1.5}
+.paywall-price{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:700;color:var(--g);margin-bottom:.25rem}
+.paywall-price span{font-size:1rem;font-weight:400;color:var(--text2)}
+.paywall-list{text-align:left;margin-bottom:1.5rem;display:flex;flex-direction:column;gap:8px}
+.paywall-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2)}
+.paywall-item svg{width:14px;height:14px;stroke:var(--g);fill:none;stroke-width:2.5;flex-shrink:0}
+.modal-cta{width:100%;padding:13px;border-radius:var(--r);border:none;background:var(--g);color:#fff;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.modal-cta:hover{background:var(--g2)}
+.modal-close-btn{font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
 
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:3rem 0;position:relative;z-index:1}
+.footer-inner{max-width:1120px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:'Fraunces',serif;font-size:17px;color:var(--text)}
+.footer-copy{font-size:12px;color:var(--text3)}
+
+/* SCROLL ANIMATIONS */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-l{opacity:0;transform:translateX(-28px);transition:opacity .6s ease,transform .6s ease}
+.reveal-l.in{opacity:1;transform:translateX(0)}
+.reveal-r{opacity:0;transform:translateX(28px);transition:opacity .6s ease,transform .6s ease}
+.reveal-r.in{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .how-grid,.features-grid,.preview-grid,.why-grid,.pdf-inner,.gen-body,.corretor-grid{grid-template-columns:1fr}
+  .frow.c2,.frow.c3{grid-template-columns:1fr}
+  .gen-top,.results-section,.corretor-section,.gen-btn-wrap{padding-left:1.25rem;padding-right:1.25rem}
+  .hero{padding:5rem 1.5rem 3.5rem}
+  .nav-links .nav-link{display:none}
+}
 @media(max-width:480px){
-  .form-row.cols-2,.form-row.cols-3{grid-template-columns:1fr}
-  .topbar{padding:0 1rem}
-  .main{padding:1rem 0.75rem 3rem}
+  .hero h1{font-size:2.2rem}
+  .hero-stats{gap:1.5rem}
 }
 </style>
 </head>
 <body>
 
-<!-- APP SCREEN (visible to everyone — no login required to see the form) -->
-<div id="app-screen">
-  <nav class="topbar">
-    <div class="topbar-logo">
-      <div class="topbar-logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      </div>
-      <span class="topbar-name">ImóvelText</span>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo">
+      <div class="nav-logo-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <span class="nav-logo-name">ImóvelText</span>
+    </a>
+    <div class="nav-links">
+      <a href="#como-funciona" class="nav-link">Como funciona</a>
+      <a href="#recursos" class="nav-link">Recursos</a>
+      <a href="#planos" class="nav-link">Planos</a>
+      <a href="#gerador" class="nav-link">Gerar anúncio</a>
     </div>
-    <div class="topbar-right" id="topbar-right">
-      <!-- Logged out: show login button -->
-      <div id="topbar-guest" style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:13px;color:var(--text-muted)">3 anúncios grátis</span>
-        <button class="upgrade-btn" onclick="showSignupModal()">Entrar com Google</button>
+    <!-- Guest -->
+    <div id="nav-guest">
+      <a href="#gerador" class="nav-cta">Começar grátis</a>
+    </div>
+    <!-- Logged in -->
+    <div class="nav-user" id="nav-user">
+      <div class="credits-pill">
+        <div class="cpill-dot" id="cpill-dot"></div>
+        <span id="cpill-label">-- créditos</span>
       </div>
-      <!-- Logged in: show credits + avatar -->
-      <div id="topbar-user" style="display:none;align-items:center;gap:12px">
-        <div class="credits-badge">
-          <div class="credits-dot" id="credits-dot"></div>
-          <span id="credits-label">-- créditos</span>
+      <img class="nav-avatar" id="nav-avatar" src="" alt=""/>
+      <button class="nav-logout" onclick="logout()">Sair</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="top"></div>
+<section class="hero">
+  <div class="hero-badge reveal"><span class="badge-pulse"></span>IA treinada para o mercado imobiliário brasileiro</div>
+  <h1 class="reveal d1">Anúncios que <em>vendem</em>,<br>escritos em segundos</h1>
+  <p class="hero-sub reveal d2">A IA analisa suas fotos, entende o imóvel e gera textos profissionais para ZAP, OLX, Instagram e WhatsApp — com score, hashtags e PDF para impressionar o cliente.</p>
+  <div class="hero-btns reveal d3">
+    <a href="#gerador" class="btn-primary">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      Gerar meu anúncio grátis
+    </a>
+    <a href="#planos" class="btn-ghost">Ver planos</a>
+  </div>
+  <div class="hero-stats reveal d4">
+    <div class="stat"><span class="stat-num">30s</span><span class="stat-label">para gerar um anúncio completo</span></div>
+    <div class="stat"><span class="stat-num">4</span><span class="stat-label">plataformas suportadas</span></div>
+    <div class="stat"><span class="stat-num">3×</span><span class="stat-label">mais engajamento com hashtags</span></div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="how" id="como-funciona">
+  <div class="container">
+    <span class="section-tag reveal">Como funciona</span>
+    <h2 class="section-title reveal d1">Simples como deve ser</h2>
+    <div class="how-grid">
+      <div class="how-card reveal d1">
+        <div class="how-num">1</div>
+        <h3 class="how-title">Preencha os dados</h3>
+        <p class="how-desc">Tipo, localização, preço, quartos — as informações básicas que você já tem. Fotos são opcionais mas potencializam muito o resultado.</p>
+      </div>
+      <div class="how-card reveal d2">
+        <div class="how-num">2</div>
+        <h3 class="how-title">Escolha o tom e a plataforma</h3>
+        <p class="how-desc">Família, Luxo ou Investimento. ZAP/OLX, Instagram, WhatsApp ou Site. A linguagem é adaptada automaticamente para cada contexto.</p>
+      </div>
+      <div class="how-card reveal d3">
+        <div class="how-num">3</div>
+        <h3 class="how-title">Copie, use e feche negócio</h3>
+        <p class="how-desc">Título e corpo separados para copiar. Score com sugestões. Hashtags por bloco. E PDF profissional para impressionar o cliente (plano Pro).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECURSOS -->
+<section class="features" id="recursos">
+  <div class="container">
+    <span class="section-tag reveal">Recursos</span>
+    <h2 class="section-title reveal d1">Tudo que um corretor precisa</h2>
+    <p class="section-sub reveal d2">Cada recurso foi pensado para economizar tempo e aumentar a conversão dos seus anúncios.</p>
+    <div class="features-grid">
+      <div class="feat-card reveal d1">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div>
+          <h3 class="feat-title">Análise de fotos com IA</h3>
+          <p class="feat-desc">Envie até 5 fotos e a IA identifica automaticamente os ambientes — sala, cozinha, varanda — enriquecendo o anúncio com detalhes reais.</p>
         </div>
-        <img class="user-avatar" id="user-avatar" src="" alt="Avatar"/>
-        <button class="logout-btn" onclick="logout()">Sair</button>
       </div>
-    </div>
-  </nav>
-
-  <main class="main">
-    <div id="credits-banner" class="credits-banner free">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <div class="credits-banner-text">
-        <strong id="banner-title">Preencha os dados e gere seu primeiro anúncio grátis</strong>
-        <span id="banner-sub">Sem cadastro para começar — só na hora de gerar.</span>
-      </div>
-      <button class="upgrade-btn" id="banner-btn" onclick="showPaywall()" style="display:none">Assinar</button>
-    </div>
-
-    <!-- Step 1 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="step-badge">1</div>
-        <div><div class="card-title">Fotos do imóvel</div><div class="card-subtitle">Até 5 fotos — a IA analisa cada ambiente automaticamente</div></div>
-      </div>
-      <div class="upload-zone" id="drop-zone">
-        <input type="file" id="foto-input" accept="image/*" multiple onchange="handleFiles(this.files)"/>
-        <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
-        <p><strong>Clique para enviar</strong> ou arraste as fotos aqui</p>
-        <small>JPG, PNG — máx. 5 fotos</small>
-      </div>
-      <div class="thumbs" id="thumbs"></div>
-    </div>
-
-    <!-- Step 2 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="step-badge">2</div>
-        <div><div class="card-title">Dados do imóvel</div><div class="card-subtitle">Informações factuais têm prioridade sobre as fotos</div></div>
-      </div>
-      <div class="form-row cols-2">
-        <div class="field"><label>Tipo</label>
-          <select id="tipo"><option>Apartamento</option><option>Casa</option><option>Cobertura</option><option>Sala Comercial</option><option>Terreno</option><option>Galpão</option></select>
-        </div>
-        <div class="field"><label>Finalidade</label>
-          <select id="finalidade"><option>Venda</option><option>Aluguel</option><option>Temporada</option></select>
+      <div class="feat-card reveal d2">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div>
+          <h3 class="feat-title">Anúncio em 30 segundos</h3>
+          <p class="feat-desc">Título e corpo do anúncio separados e prontos para colar no portal. Sem edição, sem retrabalho — só copiar e publicar.</p>
         </div>
       </div>
-      <div class="form-row cols-2">
-        <div class="field"><label>Bairro / Cidade</label><input type="text" id="bairro" placeholder="Ex: Pituba, Salvador"/></div>
-        <div class="field"><label>Preço</label><input type="text" id="preco" placeholder="Ex: R$ 580.000"/></div>
+      <div class="feat-card reveal d1">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div>
+          <h3 class="feat-title">Score do anúncio</h3>
+          <p class="feat-desc">Nota de 0 a 100 com dicas específicas para melhorar — "adicione o número de vagas", "mencione a vista" — não conselhos genéricos.</p>
+        </div>
       </div>
-      <div class="form-row cols-3">
-        <div class="field"><label>Quartos</label><input type="text" id="quartos" placeholder="Ex: 3"/></div>
-        <div class="field"><label>Suítes</label><input type="text" id="suites" placeholder="Ex: 1"/></div>
-        <div class="field"><label>Área (m²)</label><input type="text" id="area" placeholder="Ex: 92"/></div>
+      <div class="feat-card reveal d2">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+        <div>
+          <h3 class="feat-title">Hashtags otimizadas</h3>
+          <p class="feat-desc">3 blocos de hashtags — localização, tipo de imóvel e perfil do comprador. Aumenta até 3x o alcance orgânico no Instagram.</p>
+        </div>
       </div>
-      <div class="form-row">
-        <div class="field"><label>Observações do corretor</label>
-          <textarea id="obs" placeholder="Ex: 2 vagas, varanda gourmet, andar alto, vista mar, próximo ao metrô..."></textarea>
+      <div class="feat-card reveal d1">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <div>
+          <h3 class="feat-title">Tom personalizável</h3>
+          <p class="feat-desc">Família, Luxo ou Investimento. Cada perfil usa linguagem distinta — o texto fala diretamente com o comprador certo.</p>
+        </div>
+      </div>
+      <div class="feat-card premium reveal d2">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div>
+          <h3 class="feat-title">PDF profissional <span class="premium-badge">✦ Pro</span></h3>
+          <p class="feat-desc">Gere um PDF com capa, fotos, ficha técnica, anúncio e seus dados de contato. Encaminhe para clientes e pareça uma grande imobiliária.</p>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Step 3 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="step-badge">3</div>
-        <div><div class="card-title">Plataforma de destino</div><div class="card-subtitle">Tom, tamanho e formato adaptados automaticamente</div></div>
+<!-- PREVIEW DE RESULTADOS -->
+<section class="preview" id="preview">
+  <div class="container">
+    <span class="section-tag reveal">Resultados</span>
+    <h2 class="section-title reveal d1">Veja o que a IA gera</h2>
+    <p class="section-sub reveal d2">Exemplos do nível de qualidade que você recebe em cada geração.</p>
+    <div class="preview-grid">
+      <div class="preview-card reveal d1">
+        <div class="preview-header">
+          <span class="preview-platform">ZAP / OLX</span>
+          <span class="preview-tom">Tom: Família</span>
+        </div>
+        <div class="preview-body">
+          <div class="preview-title">Apartamento espaçoso com varanda gourmet em Pituba</div>
+          <p class="preview-text">3 quartos sendo 1 suíte, 92m² bem distribuídos num dos bairros mais valorizados de Salvador. A varanda gourmet amplia o espaço de convivência e a cozinha integrada facilita o dia a dia da família. Andar alto garante ventilação natural e privacidade. 2 vagas cobertas. Próximo a escolas, supermercados e à orla. Agende sua visita.</p>
+        </div>
+        <div class="preview-score">
+          <div class="preview-score-bar"><div class="preview-score-fill" style="width:87%"></div></div>
+          <span class="preview-score-label">🟢 87/100</span>
+        </div>
       </div>
-      <div class="platforms">
-        <button class="pbtn active" data-p="ZAP/OLX" onclick="selectP(this)">ZAP / OLX</button>
-        <button class="pbtn" data-p="Instagram" onclick="selectP(this)">Instagram</button>
-        <button class="pbtn" data-p="WhatsApp" onclick="selectP(this)">WhatsApp</button>
-        <button class="pbtn" data-p="Site" onclick="selectP(this)">Site</button>
+      <div class="preview-card reveal d2">
+        <div class="preview-header">
+          <span class="preview-platform">Instagram</span>
+          <span class="preview-tom">Tom: Luxo</span>
+        </div>
+        <div class="preview-body">
+          <div class="preview-title">Uma cobertura que redefine o que é morar bem</div>
+          <p class="preview-text">Vista 360° da cidade. Piscina privativa. Acabamento impecável em cada detalhe. Esta cobertura duplex no Itaigara foi projetada para quem não abre mão do melhor. 280m², 4 suítes, terraço com churrasqueira e uma perspectiva que poucos têm o privilégio de chamar de lar. Link na bio para agendar uma visita exclusiva.</p>
+        </div>
+        <div class="preview-score">
+          <div class="preview-score-bar"><div class="preview-score-fill" style="width:92%"></div></div>
+          <span class="preview-score-label">🟢 92/100</span>
+        </div>
+      </div>
+      <div class="preview-card reveal d3">
+        <div class="preview-header">
+          <span class="preview-platform">WhatsApp</span>
+          <span class="preview-tom">Tom: Investimento</span>
+        </div>
+        <div class="preview-body">
+          <div class="preview-title">Sala comercial — retorno estimado de 0,8% a.m.</div>
+          <p class="preview-text">40m² no Centro Empresarial de Salvador, região com valorização de 12% nos últimos 24 meses. Já alugada por R$1.800/mês. Ótima para quem busca renda passiva com segurança. R$210.000. Documentação regularizada. Posso enviar o laudo de avaliação.</p>
+        </div>
+        <div class="preview-score">
+          <div class="preview-score-bar"><div class="preview-score-fill" style="width:79%"></div></div>
+          <span class="preview-score-label">🟢 79/100</span>
+        </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <button class="gen-btn" id="gen-btn" onclick="gerar()">
-      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      Analisar fotos e gerar anúncio
-    </button>
+<!-- POR QUE ASSINAR -->
+<section class="why" id="planos">
+  <div class="container">
+    <span class="section-tag reveal">Planos</span>
+    <h2 class="section-title reveal d1">Grátis para começar,<br>Pro para crescer</h2>
+    <div class="why-grid">
+      <div class="why-free reveal-l">
+        <div class="plan-label free">Gratuito</div>
+        <div class="plan-price">R$0<span>/mês</span></div>
+        <p class="plan-desc">Perfeito para experimentar e ver a qualidade antes de assinar.</p>
+        <ul class="plan-list">
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>3 anúncios completos</li>
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Título + corpo separados</li>
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Score e dicas de melhoria</li>
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Hashtags por bloco</li>
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Legendas por foto</li>
+          <li class="plan-item missing"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>PDF profissional do imóvel</li>
+          <li class="plan-item missing"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Anúncios ilimitados</li>
+        </ul>
+        <button class="plan-cta free-cta" onclick="scrollToGen()">Usar grátis agora</button>
+      </div>
+      <div class="why-pro reveal-r">
+        <div class="plan-label pro">✦ Pro</div>
+        <div class="plan-price">R$67<span>/mês</span></div>
+        <p class="plan-desc">Para corretores que querem se destacar e fechar mais negócios com apresentação profissional.</p>
+        <ul class="plan-list">
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tudo do plano gratuito</li>
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Anúncios ilimitados</li>
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><strong>PDF profissional</strong> — capa, fotos, ficha técnica e contato</li>
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Prioridade no suporte</li>
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Novos recursos em primeira mão</li>
+          <li class="plan-item has"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Cancele quando quiser</li>
+        </ul>
+        <button class="plan-cta pro-cta" onclick="assinar()">Assinar o plano Pro</button>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <div id="result-card" class="result-card" style="display:none">
-      <div class="result-header">
-        <span class="result-label">Anúncio gerado</span>
-        <button class="copy-btn" onclick="copiar('result-body',this)">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-          Copiar
+<!-- PDF PREVIEW -->
+<section class="pdf-preview">
+  <div class="container">
+    <div class="pdf-mockup reveal">
+      <div class="pdf-lock"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Exclusivo Pro</div>
+      <div class="pdf-inner">
+        <div class="pdf-info">
+          <span class="section-tag">PDF Profissional</span>
+          <h2 class="section-title" style="font-size:1.7rem">Impressione com<br>um documento real</h2>
+          <p class="section-sub" style="font-size:.9rem;margin-top:.75rem">O corretor que entrega um PDF bem feito parece uma imobiliária. É o material que o cliente guarda, reencaminha e lembra na hora de decidir.</p>
+          <div class="pdf-features">
+            <div class="pdf-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Capa com foto principal e nome do imóvel</div>
+            <div class="pdf-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Galeria das fotos enviadas</div>
+            <div class="pdf-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Ficha técnica completa</div>
+            <div class="pdf-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Anúncio gerado pela IA</div>
+            <div class="pdf-feat"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Nome, telefone e CRECI do corretor</div>
+          </div>
+        </div>
+        <div class="pdf-visual">
+          <div class="pdf-page">
+            <div class="pdf-page-header">
+              <h3>Apartamento — Pituba, Salvador</h3>
+              <p>R$ 580.000 • 3 quartos • 92m²</p>
+            </div>
+            <div class="pdf-page-body">
+              <div class="pdf-line accent full"></div>
+              <div class="pdf-line med"></div>
+              <div class="pdf-line full"></div>
+              <div class="pdf-line short"></div>
+              <div class="pdf-line full"></div>
+              <div class="pdf-line med"></div>
+              <div class="pdf-line full"></div>
+            </div>
+          </div>
+          <div class="pdf-blur-overlay">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            <p>Disponível no plano Pro</p>
+            <small>Assine e comece a usar agora</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GERADOR -->
+<section class="generator" id="gerador">
+  <div class="container">
+    <span class="section-tag reveal">Gerador</span>
+    <h2 class="section-title reveal d1">Gere seu anúncio agora</h2>
+    <p class="section-sub reveal d2" style="margin-bottom:2rem">3 anúncios grátis, sem precisar de cartão. Só entrar com Google na hora de gerar.</p>
+    <div class="gen-wrap reveal d3">
+      <!-- BANNER -->
+      <div class="gen-top">
+        <div id="gen-banner" class="gen-banner free-b">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div class="gen-banner-text">
+            <strong id="banner-title">Preencha e gere seu primeiro anúncio grátis</strong>
+            <span id="banner-sub">Sem cadastro para começar — só na hora de gerar.</span>
+          </div>
+          <button class="nav-cta" id="banner-upgrade-btn" style="display:none;white-space:nowrap" onclick="showPaywall()">Assinar Pro</button>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div class="gen-body">
+        <!-- COL 1 -->
+        <div class="gen-col">
+          <!-- Fotos -->
+          <div class="gcard">
+            <div class="gcard-header">
+              <div class="gcard-step">1</div>
+              <div><div class="gcard-title">Fotos do imóvel</div><div class="gcard-sub">Até 10 fotos — a IA analisa cada ambiente</div></div>
+            </div>
+            <div class="upload-zone" id="drop-zone">
+              <input type="file" id="foto-input" accept="image/*" multiple onchange="handleFiles(this.files)"/>
+              <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+              <p><strong>Clique para enviar</strong> ou arraste aqui</p>
+              <small>JPG, PNG — máx. 10 fotos</small>
+            </div>
+            <div class="thumbs" id="thumbs"></div>
+          </div>
+
+          <!-- Dados -->
+          <div class="gcard">
+            <div class="gcard-header">
+              <div class="gcard-step">2</div>
+              <div><div class="gcard-title">Dados do imóvel</div><div class="gcard-sub">Informações factuais têm prioridade</div></div>
+            </div>
+            <div class="frow c2">
+              <div class="field"><label>Tipo</label>
+                <select id="tipo"><option>Apartamento</option><option>Casa</option><option>Cobertura</option><option>Sala Comercial</option><option>Terreno</option><option>Galpão</option></select>
+              </div>
+              <div class="field"><label>Finalidade</label>
+                <select id="finalidade"><option>Venda</option><option>Aluguel</option><option>Temporada</option></select>
+              </div>
+            </div>
+            <div class="frow c2">
+              <div class="field"><label>Bairro / Cidade</label><input type="text" id="bairro" placeholder="Ex: Pituba, Salvador"/></div>
+              <div class="field"><label>Preço</label><input type="text" id="preco" placeholder="Ex: R$ 580.000"/></div>
+            </div>
+            <div class="frow c3">
+              <div class="field"><label>Quartos</label><input type="text" id="quartos" placeholder="Ex: 3"/></div>
+              <div class="field"><label>Suítes</label><input type="text" id="suites" placeholder="Ex: 1"/></div>
+              <div class="field"><label>Área (m²)</label><input type="text" id="area" placeholder="Ex: 92"/></div>
+            </div>
+            <div class="frow">
+              <div class="field"><label>Observações do corretor</label>
+                <textarea id="obs" placeholder="Ex: 2 vagas, varanda gourmet, andar alto, vista mar, próximo ao metrô..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COL 2 -->
+        <div class="gen-col">
+          <!-- Tom -->
+          <div class="gcard">
+            <div class="gcard-header">
+              <div class="gcard-step">3</div>
+              <div><div class="gcard-title">Tom do anúncio</div><div class="gcard-sub">Define a linguagem e o comprador ideal</div></div>
+            </div>
+            <div class="btn-group">
+              <button class="tog-btn active" data-tom="Família" onclick="selectTom(this)">🏡 Família</button>
+              <button class="tog-btn luxo" data-tom="Luxo" onclick="selectTom(this)">✨ Luxo</button>
+              <button class="tog-btn invest" data-tom="Investimento" onclick="selectTom(this)">📈 Investimento</button>
+            </div>
+          </div>
+
+          <!-- Plataforma -->
+          <div class="gcard">
+            <div class="gcard-header">
+              <div class="gcard-step">4</div>
+              <div><div class="gcard-title">Plataforma de destino</div><div class="gcard-sub">Formato e tamanho adaptados</div></div>
+            </div>
+            <div class="btn-group">
+              <button class="tog-btn active" data-p="ZAP/OLX" onclick="selectP(this)">ZAP / OLX</button>
+              <button class="tog-btn" data-p="Instagram" onclick="selectP(this)">Instagram</button>
+              <button class="tog-btn" data-p="WhatsApp" onclick="selectP(this)">WhatsApp</button>
+              <button class="tog-btn" data-p="Site" onclick="selectP(this)">Site</button>
+            </div>
+          </div>
+
+          <!-- Info box -->
+          <div class="gcard" style="background:rgba(29,158,117,0.04);border-color:var(--border2)">
+            <p style="font-size:12px;color:var(--text2);line-height:1.7">
+              💡 <strong style="color:var(--text)">Dica:</strong> Quanto mais detalhes nas observações, melhor o anúncio. Mencione diferenciais como vista, andar, vagas, lazer e reformas recentes.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GERAR -->
+      <div class="gen-btn-wrap">
+        <button class="gen-btn" id="gen-btn" onclick="gerar()">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Analisar e gerar anúncio completo
         </button>
       </div>
-      <div id="result-body" class="result-body"></div>
-    </div>
 
-    <div id="captions-card" class="result-card" style="display:none;margin-top:1rem">
-      <div class="captions-title">Legendas por foto</div>
-      <div id="cap-list" class="cap-list"></div>
-    </div>
-  </main>
-</div>
+      <!-- DADOS DO CORRETOR (para PDF) -->
+      <div class="corretor-section" id="corretor-section">
+        <div class="corretor-title">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Seus dados para o PDF
+        </div>
+        <div class="corretor-grid">
+          <div class="field"><label>Nome do Corretor</label><input type="text" id="corr-nome" placeholder="Ex: João Silva"/></div>
+          <div class="field"><label>Telefone / WhatsApp</label><input type="text" id="corr-tel" placeholder="Ex: (71) 99999-9999"/></div>
+          <div class="field"><label>CRECI</label><input type="text" id="corr-creci" placeholder="Ex: 12345-F"/></div>
+        </div>
+      </div>
 
-<!-- SIGNUP MODAL (shown when guest clicks "Gerar") -->
+      <!-- RESULTADOS -->
+      <div class="results-section" id="results-section" style="display:none">
+
+        <!-- Título -->
+        <div class="res-card titulo-card" id="titulo-card" style="display:none">
+          <div class="res-header titulo-header">
+            <span class="res-label" style="color:var(--g)">Título do anúncio</span>
+            <button class="copy-btn" onclick="copiar('titulo-body',this)">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copiar
+            </button>
+          </div>
+          <div id="titulo-body" class="titulo-body"></div>
+        </div>
+
+        <!-- Corpo -->
+        <div class="res-card" id="result-card" style="display:none">
+          <div class="res-header">
+            <span class="res-label">Corpo do anúncio</span>
+            <button class="copy-btn" onclick="copiar('result-body',this)">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copiar
+            </button>
+          </div>
+          <div id="result-body" class="res-body"></div>
+        </div>
+
+        <!-- Score -->
+        <div class="score-card" id="score-card" style="display:none">
+          <div class="score-head">
+            <span class="res-label">Score do anúncio</span>
+            <div class="score-badge" id="score-badge"></div>
+          </div>
+          <div class="score-body-inner">
+            <div class="score-bar-bg"><div class="score-bar-fill" id="score-bar" style="width:0%"></div></div>
+            <div class="score-tips" id="score-tips"></div>
+          </div>
+        </div>
+
+        <!-- Hashtags -->
+        <div class="res-card" id="hash-card" style="display:none">
+          <div class="res-header">
+            <span class="res-label">Hashtags otimizadas</span>
+            <button class="copy-btn" onclick="copiarHashtags(this)">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copiar todas
+            </button>
+          </div>
+          <div class="hash-body-inner" id="hash-body"></div>
+        </div>
+
+        <!-- Legendas -->
+        <div class="res-card" id="captions-card" style="display:none">
+          <div class="res-header"><span class="res-label">Legendas por foto</span></div>
+          <div class="cap-list" id="cap-list"></div>
+        </div>
+
+        <!-- PDF Button -->
+        <div id="pdf-wrap" style="display:none">
+          <button class="pdf-gen-btn" id="pdf-btn" onclick="gerarPDF()">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+            Baixar PDF profissional do imóvel
+            <div class="pdf-lock-overlay" id="pdf-lock">
+              <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              <span>Exclusivo Pro — Assinar para desbloquear</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-logo">ImóvelText IA</span>
+    <span class="footer-copy">© 2025 ImóvelText — Anúncios imobiliários com inteligência artificial</span>
+  </div>
+</footer>
+
+<!-- SIGNUP MODAL -->
 <div id="signup-modal" class="modal-overlay" style="display:none" onclick="closeSignupOutside(event)">
   <div class="modal">
-    <div class="modal-icon">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </div>
+    <div class="modal-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
     <h2>Seu anúncio está pronto!</h2>
     <p>Entre com sua conta Google para receber o resultado — é grátis e leva 5 segundos.</p>
-    <div style="background:var(--green-light);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:1.5rem;text-align:left">
-      <div style="font-size:13px;color:var(--green-dark);font-weight:600;margin-bottom:6px">Você vai receber:</div>
-      <div class="modal-feature" style="margin-bottom:4px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:2.5;flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:13px">O anúncio que acabou de preencher</span></div>
-      <div class="modal-feature" style="margin-bottom:4px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:2.5;flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:13px">Legendas individuais para cada foto</span></div>
-      <div class="modal-feature"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:2.5;flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:13px">Mais 2 anúncios grátis para usar depois</span></div>
+    <div class="modal-list">
+      <div class="modal-list-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Título + corpo separados para copiar</div>
+      <div class="modal-list-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Score com dicas de melhoria específicas</div>
+      <div class="modal-list-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Hashtags por bloco (local, tipo, perfil)</div>
+      <div class="modal-list-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Legendas individuais para cada foto</div>
     </div>
-    <button class="google-btn" onclick="loginGoogle()" style="margin-bottom:10px">
+    <button class="google-btn" onclick="loginGoogle()">
       <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"/>
       Entrar com Google e ver meu anúncio
     </button>
-    <p class="auth-note">Seus dados preenchidos serão mantidos. Sem spam, sem cartão de crédito.</p>
+    <p class="auth-note">Dados preenchidos mantidos. Sem spam, sem cartão.</p>
   </div>
 </div>
 
-<!-- PAYWALL MODAL (shown when credits run out) -->
+<!-- PAYWALL MODAL -->
 <div id="paywall-modal" class="modal-overlay" style="display:none" onclick="closePaywallOutside(event)">
   <div class="modal">
-    <div class="modal-icon">
-      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <div class="modal-icon" style="background:rgba(212,168,67,0.1);border-color:rgba(212,168,67,0.3)">
+      <svg viewBox="0 0 24 24" style="stroke:var(--gold)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
     </div>
-    <h2>Seus créditos acabaram</h2>
-    <p>Assine o ImóvelText IA e gere anúncios ilimitados para todos os seus imóveis.</p>
-    <div class="modal-price">R$67<span>/mês</span></div>
-    <div class="modal-features">
-      <div class="modal-feature"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Anúncios ilimitados</div>
-      <div class="modal-feature"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Análise de fotos com IA</div>
-      <div class="modal-feature"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Legendas automáticas por foto</div>
-      <div class="modal-feature"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>ZAP, OLX, Instagram e WhatsApp</div>
-      <div class="modal-feature"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Cancele quando quiser</div>
+    <h2>Assine o plano Pro</h2>
+    <p>Anúncios ilimitados + PDF profissional para fechar mais negócios.</p>
+    <div class="paywall-price">R$67<span>/mês</span></div>
+    <div class="paywall-list">
+      <div class="paywall-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tudo do plano gratuito</div>
+      <div class="paywall-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Anúncios ilimitados</div>
+      <div class="paywall-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>PDF profissional com capa, fotos e seus dados</div>
+      <div class="paywall-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Prioridade no suporte</div>
+      <div class="paywall-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Cancele quando quiser</div>
     </div>
     <button class="modal-cta" onclick="assinar()">Quero assinar agora</button>
-    <button class="modal-close" onclick="closePaywall()">Agora não</button>
+    <button class="modal-close-btn" onclick="closePaywall()">Agora não</button>
   </div>
 </div>
 
 <script>
-const SUPABASE_URL = 'https://ynahunwezjbnbvyjxvfz.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluYWh1bndlempibmJ2eWp4dmZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxODc1NjAsImV4cCI6MjA5Mzc2MzU2MH0.F9YiTRck6b4SpsPGWlevkrfd8t1wX4sbk8OC30VYM3g';
+// ─── CONFIG ───────────────────────────────────────────
+const SUPABASE_URL='https://ynahunwezjbnbvyjxvfz.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluYWh1bndlempibmJ2eWp4dmZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxODc1NjAsImV4cCI6MjA5Mzc2MzU2MH0.F9YiTRck6b4SpsPGWlevkrfd8t1wX4sbk8OC30VYM3g';
+const REDIRECT_URL='https://pehesaal-design.github.io/imoveltext-site/';
+const STRIPE_LINK='STRIPE_PENDENTE';
+const FREE_CREDITS=3;
 
-// Redirect URL absoluto do site no GitHub Pages — usado no OAuth do Google
-const REDIRECT_URL = 'https://pehesaal-design.github.io/imoveltext-site/';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null,userCredits=0,isProUser=false;
+let plataforma='ZAP/OLX',tomAnuncio='Família';
+let fotos=[],pendingGeneration=false,hashtagsGeradas=[];
+let lastTitulo='',lastCorpo='',lastTipo='',lastBairro='',lastPreco='',lastArea='',lastQuartos='',lastSuites='';
 
-const STRIPE_LINK = 'STRIPE_PENDENTE';
-const FREE_CREDITS = 3;
-
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-let currentUser = null;
-let userCredits = 0;
-let plataforma = 'ZAP/OLX';
-let fotos = [];
-let pendingGeneration = false; // user clicked gerar before login
-
-async function init() {
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) await loadUser(session.user);
-
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (session) {
+// ─── INIT ──────────────────────────────────────────────
+async function init(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(session) await loadUser(session.user);
+  sb.auth.onAuthStateChange(async(event,session)=>{
+    if(session){
       await loadUser(session.user);
-      // If user just logged in after clicking Gerar, auto-trigger generation
-      if (pendingGeneration) {
-        pendingGeneration = false;
-        closeSignupModal();
-        await gerar();
-      }
+      if(pendingGeneration){pendingGeneration=false;closeSignupModal();await gerar();}
     }
   });
+  initReveal();
 }
 
-async function loadUser(user) {
-  currentUser = user;
-
-  // Show logged-in topbar, hide guest topbar
-  document.getElementById('topbar-guest').style.display = 'none';
-  document.getElementById('topbar-user').style.display = 'flex';
-  const avatar = user.user_metadata?.avatar_url || '';
-  if (avatar) document.getElementById('user-avatar').src = avatar;
-
-  let { data, error } = await sb.from('users').select('credits').eq('id', user.id).single();
-  if (error || !data) {
-    await sb.from('users').insert({ id: user.id, email: user.email, credits: FREE_CREDITS });
-    userCredits = FREE_CREDITS;
+async function loadUser(user){
+  currentUser=user;
+  document.getElementById('nav-guest').style.display='none';
+  const nu=document.getElementById('nav-user');
+  nu.style.display='flex';
+  const avatar=user.user_metadata?.avatar_url||'';
+  if(avatar) document.getElementById('nav-avatar').src=avatar;
+  let {data,error}=await sb.from('users').select('credits,is_pro').eq('id',user.id).single();
+  if(error||!data){
+    await sb.from('users').insert({id:user.id,email:user.email,credits:FREE_CREDITS,is_pro:false});
+    userCredits=FREE_CREDITS;isProUser=false;
   } else {
-    userCredits = data.credits;
+    userCredits=data.credits;isProUser=data.is_pro||false;
   }
   updateCreditsUI();
+  updatePDFAccess();
 }
 
-function updateCreditsUI() {
-  const dot = document.getElementById('credits-dot');
-  const label = document.getElementById('credits-label');
-  const banner = document.getElementById('credits-banner');
-  const bannerTitle = document.getElementById('banner-title');
-  const bannerSub = document.getElementById('banner-sub');
-  const bannerBtn = document.getElementById('banner-btn');
-
-  label.textContent = userCredits + (userCredits === 1 ? ' crédito' : ' créditos');
-
-  if (userCredits <= 0) {
-    dot.className = 'credits-dot empty';
-    banner.className = 'credits-banner empty';
-    bannerTitle.textContent = 'Seus créditos acabaram';
-    bannerSub.textContent = 'Assine para continuar gerando anúncios ilimitados.';
-    bannerBtn.style.display = 'block';
-  } else if (userCredits === 1) {
-    dot.className = 'credits-dot low';
-    banner.className = 'credits-banner low';
-    bannerTitle.textContent = 'Último crédito gratuito';
-    bannerSub.textContent = 'Após este, assine para continuar sem interrupção.';
-    bannerBtn.style.display = 'block';
+function updateCreditsUI(){
+  const dot=document.getElementById('cpill-dot');
+  const lbl=document.getElementById('cpill-label');
+  const banner=document.getElementById('gen-banner');
+  const bt=document.getElementById('banner-title');
+  const bs=document.getElementById('banner-sub');
+  const bu=document.getElementById('banner-upgrade-btn');
+  lbl.textContent=userCredits+(userCredits===1?' crédito':' créditos');
+  if(isProUser){
+    dot.className='cpill-dot';lbl.textContent='Pro ✦';
+    banner.className='gen-banner free-b';
+    bt.textContent='Plano Pro ativo — anúncios ilimitados + PDF';
+    bs.textContent='Obrigado por assinar! Use à vontade.';
+    bu.style.display='none';
+  } else if(userCredits<=0){
+    dot.className='cpill-dot empty';
+    banner.className='gen-banner empty-b';
+    bt.textContent='Seus créditos acabaram';
+    bs.textContent='Assine o plano Pro para continuar gerando.';
+    bu.style.display='block';
+  } else if(userCredits===1){
+    dot.className='cpill-dot low';
+    banner.className='gen-banner low-b';
+    bt.textContent='Último crédito gratuito';
+    bs.textContent='Após este, assine para continuar.';
+    bu.style.display='none';
   } else {
-    dot.className = 'credits-dot';
-    banner.className = 'credits-banner free';
-    bannerTitle.textContent = `Você tem ${userCredits} anúncio${userCredits > 1 ? 's' : ''} gratuito${userCredits > 1 ? 's' : ''}`;
-    bannerSub.textContent = 'Experimente agora sem nenhum custo.';
-    bannerBtn.style.display = 'none';
+    dot.className='cpill-dot';
+    banner.className='gen-banner free-b';
+    bt.textContent=`Você tem ${userCredits} anúncio${userCredits>1?'s':''} gratuito${userCredits>1?'s':''}`;
+    bs.textContent='Experimente agora sem nenhum custo.';
+    bu.style.display='none';
   }
 }
 
-async function loginGoogle() {
-  // Save form state to sessionStorage so it survives the OAuth redirect
-  sessionStorage.setItem('pending_gen', '1');
-  sessionStorage.setItem('form_tipo', document.getElementById('tipo').value);
-  sessionStorage.setItem('form_finalidade', document.getElementById('finalidade').value);
-  sessionStorage.setItem('form_bairro', document.getElementById('bairro').value);
-  sessionStorage.setItem('form_preco', document.getElementById('preco').value);
-  sessionStorage.setItem('form_quartos', document.getElementById('quartos').value);
-  sessionStorage.setItem('form_suites', document.getElementById('suites').value);
-  sessionStorage.setItem('form_area', document.getElementById('area').value);
-  sessionStorage.setItem('form_obs', document.getElementById('obs').value);
-  sessionStorage.setItem('form_plataforma', plataforma);
-  await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: REDIRECT_URL } });
+function updatePDFAccess(){
+  const lock=document.getElementById('pdf-lock');
+  const cs=document.getElementById('corretor-section');
+  if(lock) lock.style.display=isProUser?'none':'flex';
+  if(cs) cs.className='corretor-section'+(isProUser?' visible':'');
 }
 
-function restoreFormFromSession() {
-  const fields = ['tipo','finalidade','bairro','preco','quartos','suites','area','obs'];
-  fields.forEach(f => {
-    const val = sessionStorage.getItem('form_' + f);
-    if (val) document.getElementById(f).value = val;
+async function loginGoogle(){
+  sessionStorage.setItem('pending_gen','1');
+  ['tipo','finalidade','bairro','preco','quartos','suites','area','obs'].forEach(f=>sessionStorage.setItem('form_'+f,document.getElementById(f).value));
+  sessionStorage.setItem('form_plataforma',plataforma);
+  sessionStorage.setItem('form_tom',tomAnuncio);
+  await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:REDIRECT_URL}});
+}
+
+function restoreFormFromSession(){
+  ['tipo','finalidade','bairro','preco','quartos','suites','area','obs'].forEach(f=>{
+    const v=sessionStorage.getItem('form_'+f);
+    if(v) document.getElementById(f).value=v;
   });
-  const p = sessionStorage.getItem('form_plataforma');
-  if (p) {
-    plataforma = p;
-    document.querySelectorAll('.pbtn').forEach(b => {
-      b.classList.toggle('active', b.dataset.p === p);
-    });
-  }
-  if (sessionStorage.getItem('pending_gen') === '1') {
-    sessionStorage.removeItem('pending_gen');
-    pendingGeneration = true;
-  }
+  const p=sessionStorage.getItem('form_plataforma');
+  if(p){plataforma=p;document.querySelectorAll('[data-p]').forEach(b=>b.classList.toggle('active',b.dataset.p===p));}
+  const t=sessionStorage.getItem('form_tom');
+  if(t){tomAnuncio=t;document.querySelectorAll('[data-tom]').forEach(b=>b.classList.toggle('active',b.dataset.tom===t));}
+  if(sessionStorage.getItem('pending_gen')==='1'){sessionStorage.removeItem('pending_gen');pendingGeneration=true;}
 }
 
-async function logout() {
+async function logout(){
   await sb.auth.signOut();
-  currentUser = null;
-  userCredits = 0;
-  document.getElementById('topbar-guest').style.display = 'flex';
-  document.getElementById('topbar-user').style.display = 'none';
-  const banner = document.getElementById('credits-banner');
-  banner.className = 'credits-banner free';
-  document.getElementById('banner-title').textContent = 'Preencha os dados e gere seu primeiro anúncio grátis';
-  document.getElementById('banner-sub').textContent = 'Sem cadastro para começar — só na hora de gerar.';
-  document.getElementById('banner-btn').style.display = 'none';
+  currentUser=null;userCredits=0;isProUser=false;
+  document.getElementById('nav-guest').style.display='block';
+  document.getElementById('nav-user').style.display='none';
+  const banner=document.getElementById('gen-banner');
+  banner.className='gen-banner free-b';
+  document.getElementById('banner-title').textContent='Preencha e gere seu primeiro anúncio grátis';
+  document.getElementById('banner-sub').textContent='Sem cadastro para começar — só na hora de gerar.';
+  document.getElementById('banner-upgrade-btn').style.display='none';
 }
 
-function selectP(btn) {
-  document.querySelectorAll('.pbtn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  plataforma = btn.dataset.p;
-}
+function selectP(btn){document.querySelectorAll('[data-p]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');plataforma=btn.dataset.p;}
+function selectTom(btn){document.querySelectorAll('[data-tom]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');tomAnuncio=btn.dataset.tom;}
+function scrollToGen(){document.getElementById('gerador').scrollIntoView({behavior:'smooth'});}
 
-function handleFiles(files) {
-  const restante = 5 - fotos.length;
-  Array.from(files).slice(0, restante).forEach(f => {
-    const reader = new FileReader();
-    reader.onload = e => { fotos.push({ src: e.target.result }); renderThumbs(); };
-    reader.readAsDataURL(f);
+function handleFiles(files){
+  const rest=10-fotos.length;
+  Array.from(files).slice(0,rest).forEach(f=>{
+    const r=new FileReader();
+    r.onload=e=>{fotos.push({src:e.target.result});renderThumbs();};
+    r.readAsDataURL(f);
   });
 }
+function renderThumbs(){
+  document.getElementById('thumbs').innerHTML=fotos.map((f,i)=>`<div class="thumb"><img src="${f.src}" alt="Foto ${i+1}"/><button onclick="remFoto(${i})">✕</button></div>`).join('');
+  document.getElementById('drop-zone').classList.toggle('has-files',fotos.length>0);
+}
+function remFoto(i){fotos.splice(i,1);renderThumbs();}
+function b64(src){return src.split(',')[1];}
+function mime(src){return src.split(';')[0].split(':')[1];}
+const loadH=`<div class="loading-row"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>Gerando...</span></div>`;
 
-function renderThumbs() {
-  document.getElementById('thumbs').innerHTML = fotos.map((f, i) => `
-    <div class="thumb"><img src="${f.src}" alt="Foto ${i+1}"/>
-    <button onclick="remFoto(${i})">✕</button></div>`).join('');
-  document.getElementById('drop-zone').classList.toggle('has-files', fotos.length > 0);
+function tomDesc(t){
+  if(t==='Luxo') return 'sofisticado e exclusivo, voltado para alto padrão. Use linguagem refinada, destaque diferenciais premium e transmita exclusividade.';
+  if(t==='Investimento') return 'racional, focado em retorno financeiro. Destaque rentabilidade, valorização, localização estratégica. Use dados concretos.';
+  return 'caloroso e acolhedor, focado em qualidade de vida familiar. Destaque espaços, segurança, lazer e proximidade a escolas.';
 }
 
-function remFoto(i) { fotos.splice(i, 1); renderThumbs(); }
-function b64(src) { return src.split(',')[1]; }
-function mime(src) { return src.split(';')[0].split(':')[1]; }
+async function chamarGemini(parts){
+  const r=await fetch(`${SUPABASE_URL}/functions/v1/gerar`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_KEY}`},
+    body:JSON.stringify({parts})
+  });
+  const d=await r.json();
+  if(d.error) throw new Error(d.error.message||d.error);
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+}
 
-async function gerar() {
-  // Not logged in → show signup modal, remember intent
-  if (!currentUser) {
-    pendingGeneration = true;
-    showSignupModal();
-    return;
+// ─── GERAR ─────────────────────────────────────────────
+async function gerar(){
+  if(!currentUser){pendingGeneration=true;showSignupModal();return;}
+  if(!isProUser&&userCredits<=0){showPaywall();return;}
+
+  const btn=document.getElementById('gen-btn');
+  const tipo=document.getElementById('tipo').value;
+  const finalidade=document.getElementById('finalidade').value;
+  const bairro=document.getElementById('bairro').value||'não informado';
+  const preco=document.getElementById('preco').value||'a consultar';
+  const quartos=document.getElementById('quartos').value||'não informado';
+  const suites=document.getElementById('suites').value||'não informado';
+  const area=document.getElementById('area').value||'não informado';
+  const obs=document.getElementById('obs').value||'';
+
+  lastTipo=tipo;lastBairro=bairro;lastPreco=preco;lastArea=area;lastQuartos=quartos;lastSuites=suites;
+
+  btn.disabled=true;
+  const rs=document.getElementById('results-section');
+  rs.style.display='flex';
+  document.getElementById('titulo-card').style.display='block';
+  document.getElementById('result-card').style.display='block';
+  document.getElementById('score-card').style.display='block';
+  document.getElementById('hash-card').style.display='block';
+  document.getElementById('captions-card').style.display='none';
+  document.getElementById('pdf-wrap').style.display='block';
+  document.getElementById('titulo-body').innerHTML=loadH;
+  document.getElementById('result-body').innerHTML=loadH;
+  document.getElementById('score-tips').innerHTML=loadH;
+  document.getElementById('hash-body').innerHTML=loadH;
+  document.getElementById('titulo-card').scrollIntoView({behavior:'smooth',block:'start'});
+
+  const dadosBase=`Tipo: ${tipo} | Finalidade: ${finalidade} | Local: ${bairro} | Preço: ${preco} | Quartos: ${quartos} | Suítes: ${suites} | Área: ${area}m² | Obs: ${obs||'nenhuma'}`;
+  const fotoInfo=fotos.length>0?`Foram enviadas ${fotos.length} foto(s). Analise os ambientes e use as informações visuais para enriquecer o anúncio.`:'Nenhuma foto. Use apenas os dados textuais.';
+
+  const promptPrincipal=`Você é especialista em copywriting imobiliário brasileiro com 20 anos de experiência.
+
+${fotoInfo}
+
+DADOS DO IMÓVEL:
+${dadosBase}
+
+PLATAFORMA: ${plataforma}
+TOM: ${tomDesc(tomAnuncio)}
+
+REGRAS:
+- NUNCA use asteriscos, hashtags, markdown ou qualquer formatação especial
+- NUNCA use frases genéricas como "não perca essa oportunidade" ou "imóvel dos sonhos"
+- Escreva como um corretor experiente falando diretamente com o comprador certo
+- ZAP/OLX: texto corrido, destaque os pontos fortes na primeira linha, chamada para ação objetiva no final. Máx 280 palavras.
+- Instagram: leve, emojis naturais (não excessivos), primeira linha impactante. NÃO inclua hashtags. Máx 130 palavras.
+- WhatsApp: direto, amigável, parece mensagem real de corretor. Máx 90 palavras.
+- Site: narrativo, rico em detalhes de ambientes e estilo de vida, SEO-friendly. Máx 380 palavras.
+
+Responda SOMENTE em JSON puro sem markdown:
+{"titulo":"título em até 80 caracteres, impactante e específico","corpo":"corpo do anúncio conforme as regras"}`;
+
+  const partsAnuncio=[];
+  fotos.slice(0,10).forEach(f=>partsAnuncio.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));
+  partsAnuncio.push({text:promptPrincipal});
+
+  let corpoTexto='';
+  try{
+    const raw=await chamarGemini(partsAnuncio);
+    const parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    lastTitulo=parsed.titulo||'';lastCorpo=parsed.corpo||'';
+    document.getElementById('titulo-body').innerText=lastTitulo;
+    corpoTexto=lastCorpo;
+    document.getElementById('result-body').innerText=corpoTexto;
+  }catch(e){
+    document.getElementById('titulo-body').innerHTML=`<span style="color:#ef4444">Erro: ${e.message}</span>`;
+    document.getElementById('result-body').innerHTML=`<span style="color:#ef4444">Erro: ${e.message}</span>`;
+    btn.disabled=false;return;
   }
 
-  // Logged in but no credits → show paywall
-  if (userCredits <= 0) { showPaywall(); return; }
-
-  const btn = document.getElementById('gen-btn');
-  const resultCard = document.getElementById('result-card');
-  const resultBody = document.getElementById('result-body');
-  const captionsCard = document.getElementById('captions-card');
-  const capList = document.getElementById('cap-list');
-
-  const tipo = document.getElementById('tipo').value;
-  const finalidade = document.getElementById('finalidade').value;
-  const bairro = document.getElementById('bairro').value || 'não informado';
-  const preco = document.getElementById('preco').value || 'a consultar';
-  const quartos = document.getElementById('quartos').value || 'não informado';
-  const suites = document.getElementById('suites').value || 'não informado';
-  const area = document.getElementById('area').value || 'não informado';
-  const obs = document.getElementById('obs').value || '';
-
-  btn.disabled = true;
-  resultCard.style.display = 'block';
-  captionsCard.style.display = 'none';
-  resultBody.innerHTML = `<div class="loading-row"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>Analisando fotos e gerando anúncio...</span></div>`;
-  resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  const fotoInfo = fotos.length > 0
-    ? `O corretor enviou ${fotos.length} foto(s). Analise as imagens e descreva os ambientes visíveis.`
-    : 'Nenhuma foto enviada. Use apenas os dados.';
-
-  const promptAnuncio = `Você é especialista em marketing imobiliário brasileiro. ${fotoInfo}
-
-Dados do imóvel (têm prioridade absoluta):
-Tipo: ${tipo} | Finalidade: ${finalidade} | Local: ${bairro} | Preço: ${preco}
-Quartos: ${quartos} | Suítes: ${suites} | Área: ${area}m²
-Observações: ${obs}
-Plataforma: ${plataforma}
-
-Regras:
-- ZAP/OLX: título em maiúsculas, corpo completo com destaques, chamada para ação. Máx 300 palavras.
-- Instagram: emojis, tom aspiracional, hashtags no final. Máx 150 palavras.
-- WhatsApp: direto, amigável, fácil de encaminhar. Máx 100 palavras.
-- Site: narrativa rica, detalhes dos ambientes, boa para SEO. Máx 400 palavras.
-
-Escreva APENAS o anúncio final, sem comentários.`;
-
-  try {
-    // Build parts - text + images
-    const parts = [];
-    fotos.slice(0,5).forEach(f => {
-      parts.push({ inline_data: { mime_type: mime(f.src), data: b64(f.src) } });
-    });
-    parts.push({ text: promptAnuncio });
-
-    const r = await fetch(`${SUPABASE_URL}/functions/v1/gerar`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_KEY}`
-      },
-      body: JSON.stringify({ parts })
-    });
-    const d = await r.json();
-    if (d.error) throw new Error(d.error.message || d.error);
-    const texto = d.candidates?.[0]?.content?.parts?.[0]?.text || 'Erro ao gerar.';
-    resultBody.innerText = texto;
-
+  if(!isProUser){
     userCredits--;
-    await sb.from('users').update({ credits: userCredits }).eq('id', currentUser.id);
-    await sb.from('generations').insert({ user_id: currentUser.id, platform: plataforma, tipo, bairro });
+    await sb.from('users').update({credits:userCredits}).eq('id',currentUser.id);
     updateCreditsUI();
-  } catch(e) {
-    resultBody.innerHTML = `<span style="color:#c00">Erro: ${e.message}</span>`;
-    btn.disabled = false; return;
+  }
+  await sb.from('generations').insert({user_id:currentUser.id,platform:plataforma,tipo,bairro});
+  updatePDFAccess();
+
+  // Score + hashtags
+  const promptSH=`Analise este anúncio imobiliário.
+DADOS: ${dadosBase}
+ANÚNCIO: ${corpoTexto}
+FOTOS: ${fotos.length}
+
+Responda SOMENTE em JSON puro sem markdown:
+{"score":número de 0 a 100,"dicas":["dica específica 1","dica específica 2","dica específica 3"],"hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],"tipo":["#tag1","#tag2","#tag3","#tag4"],"perfil":["#tag1","#tag2","#tag3","#tag4"]}}
+Dicas devem ser específicas. Hashtags reais do mercado imobiliário brasileiro.`;
+
+  try{
+    const rawSH=await chamarGemini([{text:promptSH}]);
+    const ps=JSON.parse(rawSH.replace(/```json|```/g,'').trim());
+    const score=Math.min(100,Math.max(0,parseInt(ps.score)||70));
+    const cls=score>=75?'alto':score>=50?'medio':'baixo';
+    const emoji=score>=75?'🟢':score>=50?'🟡':'🔴';
+    document.getElementById('score-badge').textContent=`${emoji} ${score}/100`;
+    const bar=document.getElementById('score-bar');
+    bar.className=`score-bar-fill ${cls}`;bar.style.width=score+'%';
+    document.getElementById('score-tips').innerHTML=(ps.dicas||[]).slice(0,3).map((d,i)=>`<div class="score-tip"><span>${['💡','📸','✏️'][i]||'💡'}</span><span>${d}</span></div>`).join('');
+    const h=ps.hashtags||{};
+    hashtagsGeradas=[...(h.local||[]),...(h.tipo||[]),...(h.perfil||[])];
+    document.getElementById('hash-body').innerHTML=`
+      <div><div class="hash-group-label">Localização</div><div class="hash-tags">${(h.local||[]).map(t=>`<span class="hash-tag local">${t}</span>`).join('')}</div></div>
+      <div><div class="hash-group-label">Tipo de imóvel</div><div class="hash-tags">${(h.tipo||[]).map(t=>`<span class="hash-tag tipo">${t}</span>`).join('')}</div></div>
+      <div><div class="hash-group-label">Perfil do comprador</div><div class="hash-tags">${(h.perfil||[]).map(t=>`<span class="hash-tag perfil">${t}</span>`).join('')}</div></div>`;
+  }catch(e){
+    document.getElementById('score-tips').innerHTML='<div style="font-size:12px;color:var(--text3)">Não foi possível calcular o score.</div>';
+    document.getElementById('hash-body').innerHTML='<div style="font-size:12px;color:var(--text3)">Não foi possível gerar as hashtags.</div>';
   }
 
-  if (fotos.length > 0) {
-    captionsCard.style.display = 'block';
-    capList.innerHTML = `<div class="loading-row"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>Gerando legendas...</span></div>`;
-    const promptCap = `Para cada uma das ${Math.min(fotos.length,5)} fotos deste ${tipo} em ${bairro}, escreva uma legenda profissional para anúncio imobiliário. Tom: ${plataforma==='Instagram'?'moderno com emojis':'profissional e descritivo'}.
-Responda SOMENTE JSON sem markdown: {"legendas":["legenda 1","legenda 2",...]}`;
-    try {
-      const capParts = [];
-      fotos.slice(0,5).forEach(f => {
-        capParts.push({ inline_data: { mime_type: mime(f.src), data: b64(f.src) } });
-      });
-      capParts.push({ text: promptCap });
-      const r2 = await fetch(`${SUPABASE_URL}/functions/v1/gerar`, {
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          'Authorization':`Bearer ${SUPABASE_KEY}`
-        },
-        body:JSON.stringify({ parts: capParts })
-      });
-      const d2 = await r2.json();
-      if (d2.error) throw new Error(d2.error.message || d2.error);
-      const raw = d2.candidates?.[0]?.content?.parts?.[0]?.text || '{"legendas":[]}';
-      const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
-      capList.innerHTML = parsed.legendas.map((leg,i)=>`
-        <div class="cap-item">
-          <img class="cap-thumb" src="${fotos[i]?.src}" alt="Foto ${i+1}"/>
-          <div class="cap-text">${leg}</div>
-        </div>`).join('');
-    } catch(e) {
-      capList.innerHTML='<div style="padding:0;font-size:13px;color:#999">Não foi possível gerar as legendas.</div>';
+  // Legendas
+  if(fotos.length>0){
+    document.getElementById('captions-card').style.display='block';
+    document.getElementById('cap-list').innerHTML=loadH;
+    const promptCap=`Para cada uma das ${Math.min(fotos.length,10)} fotos deste ${tipo} em ${bairro}, escreva uma legenda profissional para anúncio imobiliário. Tom: ${tomAnuncio==='Luxo'?'sofisticado':tomAnuncio==='Investimento'?'objetivo':'caloroso'}. NUNCA use asteriscos. Responda SOMENTE em JSON puro: {"legendas":["legenda 1","legenda 2",...]}`;
+    try{
+      const cp=[];fotos.slice(0,10).forEach(f=>cp.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));cp.push({text:promptCap});
+      const rawCap=await chamarGemini(cp);
+      const pc=JSON.parse(rawCap.replace(/```json|```/g,'').trim());
+      document.getElementById('cap-list').innerHTML=pc.legendas.map((leg,i)=>`<div class="cap-item"><img class="cap-thumb" src="${fotos[i]?.src}" alt="Foto ${i+1}"/><div class="cap-text">${leg}</div></div>`).join('');
+    }catch(e){
+      document.getElementById('cap-list').innerHTML='<div style="padding:0;font-size:12px;color:var(--text3)">Não foi possível gerar as legendas.</div>';
     }
   }
 
-  btn.disabled = false;
+  btn.disabled=false;
 }
 
-function copiar(id, btn) {
+// ─── PDF ───────────────────────────────────────────────
+async function gerarPDF(){
+  if(!isProUser){showPaywall();return;}
+  const btn=document.getElementById('pdf-btn');
+  btn.disabled=true;
+  btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/></svg> Gerando PDF...';
+
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const W=210,H=297;
+  const corrNome=document.getElementById('corr-nome')?.value||'Corretor';
+  const corrTel=document.getElementById('corr-tel')?.value||'';
+  const corrCreci=document.getElementById('corr-creci')?.value||'';
+
+  // ── CAPA ──
+  // Fundo verde escuro
+  doc.setFillColor(8,24,18);doc.rect(0,0,W,H,'F');
+  // Gradiente simulado com retângulos
+  doc.setFillColor(15,110,86);doc.rect(0,0,W,80,'F');
+  doc.setFillColor(12,80,60);doc.rect(0,60,W,40,'F');
+
+  // Foto principal (se houver)
+  if(fotos.length>0){
+    try{
+      doc.addImage(fotos[0].src,'JPEG',0,0,W,100,'','MEDIUM');
+      // overlay escuro sobre a foto
+      doc.setFillColor(0,0,0);doc.setGState(doc.GState({opacity:0.45}));
+      doc.rect(0,0,W,100,'F');
+      doc.setGState(doc.GState({opacity:1}));
+    }catch(e){}
+  }
+
+  // Logo / título no topo
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');doc.setFontSize(10);
+  doc.text('ImóvelText IA',14,14);
+
+  // Tipo badge
+  doc.setFillColor(29,158,117);doc.roundedRect(14,70,40,8,2,2,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(255,255,255);
+  doc.text(lastTipo.toUpperCase(),34,75.5,{align:'center'});
+
+  // Título do imóvel
+  doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(255,255,255);
+  const tituloLines=doc.splitTextToSize(lastTitulo||`${lastTipo} em ${lastBairro}`,W-28);
+  doc.text(tituloLines,14,88);
+
+  // ── FICHA TÉCNICA ──
+  const fichaY=110;
+  doc.setFillColor(13,26,20);doc.rect(0,100,W,H-100,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(29,158,117);
+  doc.text('FICHA TÉCNICA',14,fichaY);
+
+  const fichaData=[
+    ['Tipo',lastTipo],['Local',lastBairro],['Preço',lastPreco],
+    ['Área',lastArea?lastArea+'m²':'—'],['Quartos',lastQuartos],['Suítes',lastSuites],
+  ];
+  doc.setFont('helvetica','normal');doc.setFontSize(9);
+  fichaData.forEach((row,i)=>{
+    const col=i%2===0?14:W/2+4;
+    const rowY=fichaY+10+Math.floor(i/2)*10;
+    doc.setTextColor(100,150,130);doc.text(row[0]+':',col,rowY);
+    doc.setTextColor(240,244,242);doc.text(row[1]||'—',col+22,rowY);
+  });
+
+  // Linha divisória
+  doc.setDrawColor(29,158,117,0.3);doc.setLineWidth(0.3);
+  doc.line(14,fichaY+46,W-14,fichaY+46);
+
+  // ── ANÚNCIO ──
+  const anuncioY=fichaY+54;
+  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(29,158,117);
+  doc.text('DESCRIÇÃO',14,anuncioY);
+  doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(200,220,212);
+  const corpoLines=doc.splitTextToSize(lastCorpo||'',W-28);
+  doc.text(corpoLines.slice(0,22),14,anuncioY+8);
+
+  // Linha divisória
+  const rodapeY=H-30;
+  doc.setDrawColor(29,158,117,0.3);doc.setLineWidth(0.3);
+  doc.line(14,rodapeY,W-14,rodapeY);
+
+  // ── RODAPÉ CORRETOR ──
+  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(240,244,242);
+  doc.text(corrNome,14,rodapeY+8);
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100,150,130);
+  if(corrTel) doc.text('📞 '+corrTel,14,rodapeY+15);
+  if(corrCreci) doc.text('CRECI: '+corrCreci,corrTel?80:14,rodapeY+15);
+  doc.setFont('helvetica','italic');doc.setFontSize(7);doc.setTextColor(60,100,80);
+  doc.text('Gerado por ImóvelText IA',W-14,rodapeY+15,{align:'right'});
+
+  // ── PÁGINA 2: GALERIA ──
+  if(fotos.length>1){
+    doc.addPage();
+    doc.setFillColor(8,24,18);doc.rect(0,0,W,H,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(29,158,117);
+    doc.text('GALERIA DE FOTOS',W/2,20,{align:'center'});
+    doc.setDrawColor(29,158,117);doc.setLineWidth(0.5);
+    doc.line(W/2-30,23,W/2+30,23);
+
+    const cols=2;const imgW=(W-42)/cols;const imgH=imgW*0.7;
+    let fx=14,fy=30;
+    for(let i=1;i<Math.min(fotos.length,10);i++){
+      try{
+        doc.addImage(fotos[i].src,'JPEG',fx,fy,imgW,imgH,'','MEDIUM');
+        doc.setDrawColor(29,158,117,0.3);doc.setLineWidth(0.2);
+        doc.rect(fx,fy,imgW,imgH);
+        doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(80,120,100);
+        doc.text(`Foto ${i+1}`,fx+imgW/2,fy+imgH+5,{align:'center'});
+      }catch(e){}
+      fx+=imgW+14;
+      if(fx+imgW>W){fx=14;fy+=imgH+12;}
+    }
+  }
+
+  doc.save(`imoveltext-${lastBairro.replace(/\s/g,'-').toLowerCase()}-${Date.now()}.pdf`);
+  btn.disabled=false;
+  btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg> Baixar PDF profissional do imóvel<div class="pdf-lock-overlay" id="pdf-lock" style="display:none"></div>';
+}
+
+// ─── UTILS ─────────────────────────────────────────────
+function copiar(id,btn){
   navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>{
-    btn.textContent='✓ Copiado!';
-    setTimeout(()=>{btn.innerHTML='<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar';},2000);
+    const o=btn.innerHTML;btn.textContent='✓ Copiado!';
+    setTimeout(()=>{btn.innerHTML=o;},2000);
   });
 }
+function copiarHashtags(btn){
+  navigator.clipboard.writeText(hashtagsGeradas.join(' ')).then(()=>{
+    const o=btn.innerHTML;btn.textContent='✓ Copiado!';
+    setTimeout(()=>{btn.innerHTML=o;},2000);
+  });
+}
+function showSignupModal(){document.getElementById('signup-modal').style.display='flex';}
+function closeSignupModal(){document.getElementById('signup-modal').style.display='none';}
+function closeSignupOutside(e){if(e.target===document.getElementById('signup-modal')){pendingGeneration=false;closeSignupModal();}}
+function showPaywall(){document.getElementById('paywall-modal').style.display='flex';}
+function closePaywall(){document.getElementById('paywall-modal').style.display='none';}
+function closePaywallOutside(e){if(e.target===document.getElementById('paywall-modal'))closePaywall();}
+function assinar(){window.open(STRIPE_LINK,'_blank');}
 
-function showSignupModal() { document.getElementById('signup-modal').style.display = 'flex'; }
-function closeSignupModal() { document.getElementById('signup-modal').style.display = 'none'; }
-function closeSignupOutside(e) { if (e.target === document.getElementById('signup-modal')) { pendingGeneration = false; closeSignupModal(); } }
-function showPaywall() { document.getElementById('paywall-modal').style.display = 'flex'; }
-function closePaywall() { document.getElementById('paywall-modal').style.display = 'none'; }
-function closePaywallOutside(e) { if (e.target === document.getElementById('paywall-modal')) closePaywall(); }
-function assinar() { window.open(STRIPE_LINK, '_blank'); }
+// ─── SCROLL REVEAL ─────────────────────────────────────
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');}});
+  },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
+}
 
 restoreFormFromSession();
 init();
