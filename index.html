@@ -1135,9 +1135,10 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações:
   let corpoTexto='';
   try{
     const raw=await chamarGemini(partsAnuncio);
-    const jsonMatchMain=raw.match(/\{[\s\S]*\}/);
-    if(!jsonMatchMain) throw new Error('JSON não encontrado na resposta');
-    const parsed=JSON.parse(jsonMatchMain[0]);
+    const jsonMatchesMain=raw.match(/\{[\s\S]*\}/g)||[];
+    const jsonStrMain=jsonMatchesMain.reduce((a,b)=>b.length>a.length?b:a,'');
+    if(!jsonStrMain) throw new Error('JSON não encontrado na resposta');
+    const parsed=JSON.parse(jsonStrMain);
     lastTitulo=parsed.titulo||'';lastCorpo=parsed.corpo||'';
     document.getElementById('titulo-body').innerText=lastTitulo;
     corpoTexto=lastCorpo;
@@ -1157,20 +1158,29 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações:
   updatePDFAccess();
 
   // Score + hashtags
-  const promptSH=`Analise este anúncio imobiliário.
-DADOS: ${dadosBase}
-ANÚNCIO: ${corpoTexto}
-FOTOS: ${fotos.length}
+  const corpoEscapado=corpoTexto.replace(/`/g,"'");
+  const promptSH=`Analise este anúncio imobiliário e retorne SOMENTE um objeto JSON válido, sem markdown, sem texto antes ou depois.
 
-Responda SOMENTE em JSON puro sem markdown:
-{"score":número de 0 a 100,"dicas":["dica específica 1","dica específica 2","dica específica 3"],"hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],"tipo":["#tag1","#tag2","#tag3","#tag4"],"perfil":["#tag1","#tag2","#tag3","#tag4"]}}
-Dicas devem ser específicas. Hashtags reais do mercado imobiliário brasileiro.`;
+DADOS DO IMÓVEL: ${dadosBase}
+TOTAL DE FOTOS: ${fotos.length}
+
+ANÚNCIO GERADO:
+${corpoEscapado}
+
+O JSON deve ter exatamente esta estrutura:
+- score: número inteiro de 0 a 100
+- dicas: array com 3 strings, cada uma sendo uma dica específica para este imóvel (não genérica)
+- hashtags: objeto com 3 arrays: local (4 hashtags de localização), tipo (4 hashtags do tipo de imóvel), perfil (4 hashtags do perfil do comprador)
+
+Use hashtags reais do mercado imobiliário brasileiro. Retorne apenas o JSON, nada mais.`;
 
   try{
     const rawSH=await chamarGemini([{text:promptSH}]);
-    const jsonMatchSH=rawSH.match(/\{[\s\S]*\}/);
-    if(!jsonMatchSH) throw new Error('JSON não encontrado');
-    const ps=JSON.parse(jsonMatchSH[0]);
+    // Extrai o maior bloco JSON da resposta (ignora texto antes/depois)
+    const jsonMatchesSH=rawSH.match(/\{[\s\S]*\}/g)||[];
+    const jsonStrSH=jsonMatchesSH.reduce((a,b)=>b.length>a.length?b:a,'');
+    if(!jsonStrSH) throw new Error('JSON não encontrado');
+    const ps=JSON.parse(jsonStrSH);
     const score=Math.min(100,Math.max(0,parseInt(ps.score)||70));
     const cls=score>=75?'alto':score>=50?'medio':'baixo';
     const emoji=score>=75?'🟢':score>=50?'🟡':'🔴';
