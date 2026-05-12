@@ -1189,18 +1189,27 @@ function tomDesc(t){
 }
 
 async function chamarGemini(parts){
-  const r=await fetch(`${SUPABASE_URL}/functions/v1/gerar`,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_KEY}`},
-    body:JSON.stringify({parts, maxOutputTokens: 65536})
-  });
-  const d=await r.json();
-  if(d.error) throw new Error(d.error.message||d.error);
-  const allParts=d.candidates?.[0]?.content?.parts||[];
-  const textParts=allParts.filter(p=>p.text&&!p.thought).map(p=>p.text);
-  const raw=textParts.length>0?textParts.join(''):allParts.map(p=>p.text||'').join('');
-  // Remove markdown code blocks que o modelo às vezes adiciona
-  return raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),30000); // 30s timeout
+  try{
+    const r=await fetch(`${SUPABASE_URL}/functions/v1/gerar`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${SUPABASE_KEY}`},
+      body:JSON.stringify({parts}),
+      signal:controller.signal
+    });
+    clearTimeout(timeout);
+    const d=await r.json();
+    if(d.error) throw new Error(d.error.message||d.error);
+    const allParts=d.candidates?.[0]?.content?.parts||[];
+    const textParts=allParts.filter(p=>p.text&&!p.thought).map(p=>p.text);
+    const raw=textParts.length>0?textParts.join(''):allParts.map(p=>p.text||'').join('');
+    return raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+  }catch(e){
+    clearTimeout(timeout);
+    if(e.name==='AbortError') throw new Error('Tempo limite excedido — tente novamente');
+    throw e;
+  }
 }
 
 // ─── GERAR ─────────────────────────────────────────────
@@ -1334,7 +1343,6 @@ Use hashtags reais do mercado imobiliário brasileiro. Retorne apenas o JSON, na
 
   try{
     const rawSH=await chamarGemini([{text:promptSH}]);
-    console.log('=== RESPOSTA SCORE/HASHTAGS ===', rawSH);
     let ps={score:70,dicas:[],hashtags:{}};
     try{
       const matchSH=rawSH.match(/\{[\s\S]*"score"[\s\S]*\}/)||
