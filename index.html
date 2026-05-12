@@ -355,136 +355,152 @@ section{position:relative;z-index:1}
 #pdf-template{position:fixed;left:-9999px;top:0;z-index:-1;pointer-events:none}
 .pdf-page{
   width:794px;height:1123px;position:relative;overflow:hidden;
-  background:#f0eeeb;font-family:'Playfair Display',serif;
-  flex-shrink:0;
+  background:#faf9f7;font-family:'Playfair Display',serif;
+  display:flex;flex-direction:column;
 }
-/* Textura mármore simulada */
-.pdf-page::before{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 60% 40% at 20% 30%,rgba(255,255,255,0.6) 0%,transparent 60%),
-    radial-gradient(ellipse 40% 60% at 80% 70%,rgba(200,195,188,0.3) 0%,transparent 50%),
-    radial-gradient(ellipse 80% 30% at 50% 10%,rgba(255,255,255,0.4) 0%,transparent 40%);
-  pointer-events:none;z-index:0;
-}
-.pdf-page>*{position:relative;z-index:1}
 
-/* PÁGINA 1 — CAPA */
-.pdf-p1-top{
+/* ══ PÁGINA 1 — CAPA ══ */
+.pdf-capa-foto{
+  width:100%;height:520px;object-fit:cover;display:block;flex-shrink:0;
+}
+.pdf-capa-foto-placeholder{
+  width:100%;height:520px;background:#d0ccc6;flex-shrink:0;
+}
+.pdf-capa-body{
+  flex:1;display:flex;flex-direction:column;
+  padding:36px 48px 0;background:#faf9f7;
+}
+.pdf-capa-meta{
   display:flex;justify-content:space-between;align-items:flex-start;
-  padding:36px 48px 0;
+  margin-bottom:20px;
 }
-.pdf-p1-brand{
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;color:#1a1a1a;
-}
-.pdf-p1-date{
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;color:#1a1a1a;
-}
-.pdf-p1-title{
-  padding:32px 48px 0;
-  font-size:72px;font-weight:700;line-height:1.05;
-  letter-spacing:-.02em;color:#1a1a1a;
-}
-.pdf-p1-faixa{
-  margin:32px 0 0;
-  background:#6b5d4f;
-  padding:14px 48px;
-  display:flex;align-items:center;gap:24px;
-}
-.pdf-p1-faixa-label{
+.pdf-capa-brand{
   font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:.15em;text-transform:uppercase;color:#fff;white-space:nowrap;
+  letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a;
 }
-.pdf-p1-faixa-nome{
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;
-  color:#fff;
+.pdf-capa-data{
+  font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a;
 }
-.pdf-p1-foto{
-  width:100%;height:340px;object-fit:cover;display:block;
-  margin-top:0;
+.pdf-capa-titulo{
+  font-size:34px;font-weight:700;line-height:1.1;
+  letter-spacing:-.02em;color:#1a1a1a;
+  margin-bottom:16px;
 }
-.pdf-p1-foto-placeholder{
-  width:100%;height:340px;background:#c8c0b8;
-  display:flex;align-items:center;justify-content:center;
+.pdf-capa-linha{
+  width:40px;height:2px;background:#1D9E75;margin-bottom:20px;flex-shrink:0;
 }
-.pdf-p1-footer{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:18px 48px;
+.pdf-capa-ficha{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;margin-bottom:0;
+}
+.pdf-capa-ficha-item{
+  padding:12px 0;border-top:1px solid #e0dbd4;
+}
+.pdf-capa-ficha-item:nth-child(4),
+.pdf-capa-ficha-item:nth-child(5),
+.pdf-capa-ficha-item:nth-child(6){
+  border-bottom:1px solid #e0dbd4;
+}
+.pdf-capa-ficha-label{
+  font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:#9a9a9a;
+  display:block;margin-bottom:4px;
+}
+.pdf-capa-ficha-val{
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  color:#1a1a1a;display:block;
+}
+.pdf-capa-ficha-val.verde{color:#1D9E75;}
+.pdf-capa-footer{
+  margin-top:auto;padding:20px 0 28px;
+  border-top:1px solid #e0dbd4;
   display:flex;justify-content:space-between;align-items:center;
-  border-top:1px solid rgba(0,0,0,0.1);
 }
-.pdf-p1-footer-item{
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;color:#1a1a1a;
-  display:flex;gap:8px;align-items:center;
+.pdf-capa-corretor-nome{
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#1a1a1a;
 }
-.pdf-p1-footer-val{
-  font-weight:400;text-transform:none;letter-spacing:0;color:#4a4a4a;
+.pdf-capa-corretor-info{
+  font-family:'DM Sans',sans-serif;font-size:11px;color:#6a6a6a;margin-top:2px;
+}
+.pdf-capa-badge{
+  background:#1D9E75;color:#fff;
+  font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:5px 12px;
 }
 
-/* PÁGINAS GALERIA / DESCRIÇÃO */
-.pdf-pg{position:relative}
-.pdf-pg-tri-left{
-  position:absolute;left:0;bottom:0;
-  width:0;height:0;
-  border-style:solid;
-  border-width:0 0 140px 56px;
-  border-color:transparent transparent #1a1a1a transparent;
-  z-index:2;
+/* ══ PÁGINAS FOTO ══ */
+.pdf-foto-page{
+  width:794px;height:1123px;background:#1a1a1a;
+  display:flex;flex-direction:column;overflow:hidden;
+  font-family:'Playfair Display',serif;
 }
-.pdf-pg-tri-right{
-  position:absolute;right:0;top:0;
-  width:0;height:0;
-  border-style:solid;
-  border-width:140px 56px 0 0;
-  border-color:#1a1a1a transparent transparent transparent;
-  z-index:2;
+.pdf-foto-img{
+  width:100%;height:680px;object-fit:cover;display:block;flex-shrink:0;
 }
-.pdf-pg-title{
-  padding:40px 72px 0 48px;
-  font-size:52px;font-weight:700;line-height:1.1;
-  letter-spacing:-.01em;color:#1a1a1a;
+.pdf-foto-img-placeholder{
+  width:100%;height:680px;background:#2a2a2a;flex-shrink:0;
 }
-.pdf-pg-desc{
-  padding:16px 72px 0 48px;
-  font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.85;
-  color:#1a1a1a;font-weight:400;text-align:justify;
-  max-width:100%;
+.pdf-foto-bottom{
+  flex:1;padding:32px 48px;display:flex;flex-direction:column;justify-content:space-between;
 }
-.pdf-pg-foto{
-  margin:20px 48px 0;
-  width:calc(100% - 96px);height:520px;
-  object-fit:cover;display:block;
+.pdf-foto-legenda{
+  font-size:19px;font-style:italic;font-weight:400;
+  color:#f0ede8;line-height:1.55;
 }
-.pdf-pg-foto-placeholder{
-  margin:20px 48px 0;
-  width:calc(100% - 96px);height:520px;
-  background:#c8c0b8;display:flex;align-items:center;justify-content:center;
+.pdf-foto-footer{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  border-top:1px solid rgba(255,255,255,0.12);padding-top:16px;
 }
-.pdf-pg-num{
-  position:absolute;bottom:24px;right:48px;
+.pdf-foto-corretor{
+  font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,0.5);
+}
+.pdf-foto-num{
   font-family:'DM Sans',sans-serif;font-size:11px;
-  color:#6a6a6a;font-weight:400;
+  color:rgba(255,255,255,0.3);letter-spacing:.08em;
 }
 
-/* PÁGINA DESCRIÇÃO DETALHADA */
-.pdf-pd-foto{
-  width:100%;height:340px;object-fit:cover;display:block;
+/* ══ PÁGINA DESCRIÇÃO ══ */
+.pdf-desc-page{
+  width:794px;height:1123px;background:#faf9f7;
+  display:flex;flex-direction:column;overflow:hidden;
+  font-family:'Playfair Display',serif;
 }
-.pdf-pd-foto-placeholder{
-  width:100%;height:340px;background:#c8c0b8;
+.pdf-desc-foto{
+  width:100%;height:440px;object-fit:cover;display:block;flex-shrink:0;
 }
-.pdf-pd-bottom{
-  background:#6a6a6a;
-  padding:36px 48px;
+.pdf-desc-foto-placeholder{
+  width:100%;height:440px;background:#d0ccc6;flex-shrink:0;
+}
+.pdf-desc-body{
+  flex:1;padding:36px 48px;display:flex;flex-direction:column;
+}
+.pdf-desc-label{
+  font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a;
+  margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.pdf-desc-label::after{
+  content:'';flex:1;height:1px;background:#e0dbd4;
+}
+.pdf-desc-texto{
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  line-height:1.85;color:#3a3a3a;font-weight:400;
   flex:1;
 }
-.pdf-pd-desc{
-  font-family:'DM Sans',sans-serif;font-size:14px;
-  line-height:1.85;color:rgba(255,255,255,0.95);
-  text-align:justify;font-weight:400;
+.pdf-desc-footer{
+  border-top:1px solid #e0dbd4;padding-top:16px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.pdf-desc-corretor-nome{
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#1a1a1a;
+}
+.pdf-desc-corretor-info{
+  font-family:'DM Sans',sans-serif;font-size:10px;color:#6a6a6a;margin-top:2px;
+}
+.pdf-desc-num{
+  font-family:'DM Sans',sans-serif;font-size:11px;color:#9a9a9a;
 }
 
   .how-grid,.features-grid,.preview-grid,.why-grid,.pdf-inner,.gen-body,.corretor-grid{grid-template-columns:1fr}
@@ -1390,47 +1406,79 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações, com EXATAMENTE es
 // ─── PDF COM HTML2CANVAS ────────────────────────────────
 function criarPaginaHTML(tipo, dados){
   const {titulo,corpo,corretor,tel,creci,fotoSrc,legenda,pageNum,totalPages}=dados;
-  const mes=new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'}).toUpperCase();
 
   if(tipo==='capa') return `
     <div class="pdf-page">
-      <div class="pdf-p1-top">
-        <span class="pdf-p1-brand">ImóvelText</span>
-        <span class="pdf-p1-date">${mes}</span>
-      </div>
-      <div class="pdf-p1-title">${titulo||'Proposta Imobiliária'}</div>
-      <div class="pdf-p1-faixa">
-        <span class="pdf-p1-faixa-label">Apresentado por</span>
-        <span class="pdf-p1-faixa-nome">${corretor||'[Nome do Corretor]'}</span>
-      </div>
-      ${fotoSrc?`<img class="pdf-p1-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-p1-foto-placeholder"></div>`}
-      <div class="pdf-p1-footer">
-        <div class="pdf-p1-footer-item">Contato: <span class="pdf-p1-footer-val">${tel||''}</span></div>
-        <div class="pdf-p1-footer-item">Creci: <span class="pdf-p1-footer-val">${creci||''}</span></div>
+      ${fotoSrc?`<img class="pdf-capa-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-capa-foto-placeholder"></div>`}
+      <div class="pdf-capa-body">
+        <div class="pdf-capa-meta">
+          <span class="pdf-capa-brand">ImóvelText</span>
+          <span class="pdf-capa-data">${mes}</span>
+        </div>
+        <div class="pdf-capa-titulo">${titulo||'Proposta Imobiliária'}</div>
+        <div class="pdf-capa-linha"></div>
+        <div class="pdf-capa-ficha">
+          <div class="pdf-capa-ficha-item">
+            <span class="pdf-capa-ficha-label">Local</span>
+            <span class="pdf-capa-ficha-val">${dados.bairro||'—'}</span>
+          </div>
+          <div class="pdf-capa-ficha-item">
+            <span class="pdf-capa-ficha-label">Preço</span>
+            <span class="pdf-capa-ficha-val verde">${dados.preco?'R$ '+dados.preco:'—'}</span>
+          </div>
+          <div class="pdf-capa-ficha-item">
+            <span class="pdf-capa-ficha-label">Área</span>
+            <span class="pdf-capa-ficha-val">${dados.area?dados.area+'m²':'—'}</span>
+          </div>
+          <div class="pdf-capa-ficha-item">
+            <span class="pdf-capa-ficha-label">Quartos</span>
+            <span class="pdf-capa-ficha-val">${dados.quartos||'—'}</span>
+          </div>
+          <div class="pdf-capa-ficha-item">
+            <span class="pdf-capa-ficha-label">Suítes</span>
+            <span class="pdf-capa-ficha-val">${dados.suites||'—'}</span>
+          </div>
+          <div class="pdf-capa-ficha-item">
+            <span class="pdf-capa-ficha-label">Tipo</span>
+            <span class="pdf-capa-ficha-val">${dados.tipo||'—'}</span>
+          </div>
+        </div>
+        <div class="pdf-capa-footer">
+          <div>
+            <div class="pdf-capa-corretor-nome">${corretor||''}</div>
+            <div class="pdf-capa-corretor-info">${[tel,creci?'CRECI '+creci:''].filter(Boolean).join('  ·  ')}</div>
+          </div>
+          <div class="pdf-capa-badge">${dados.tipo||'Imóvel'}</div>
+        </div>
       </div>
     </div>`;
 
   if(tipo==='galeria') return `
-    <div class="pdf-page pdf-pg">
-      <div class="pdf-pg-tri-right"></div>
-      <div class="pdf-pg-tri-left"></div>
-      <div style="padding:36px 72px 0 48px;display:flex;align-items:center;gap:12px">
-        <div style="width:28px;height:2px;background:#1a1a1a"></div>
-        <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#9a9a9a">Foto ${pageNum}</span>
+    <div class="pdf-foto-page">
+      ${fotoSrc?`<img class="pdf-foto-img" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-foto-img-placeholder"></div>`}
+      <div class="pdf-foto-bottom">
+        <div class="pdf-foto-legenda">${legenda||''}</div>
+        <div class="pdf-foto-footer">
+          <div class="pdf-foto-corretor">${corretor||''} ${tel?'· '+tel:''}</div>
+          <div class="pdf-foto-num">${pageNum} / ${totalPages}</div>
+        </div>
       </div>
-      <div class="pdf-pg-desc" style="padding-top:12px">${legenda||''}</div>
-      ${fotoSrc?`<img class="pdf-pg-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-pg-foto-placeholder"></div>`}
-      <div class="pdf-pg-num">${pageNum}</div>
     </div>`;
 
   if(tipo==='descricao') return `
-    <div class="pdf-page pdf-pg" style="display:flex;flex-direction:column">
-      <div class="pdf-pg-tri-right"></div>
-      ${fotoSrc?`<img class="pdf-pd-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-pd-foto-placeholder"></div>`}
-      <div class="pdf-pd-bottom" style="flex:1">
-        <div class="pdf-pd-desc">${corpo||''}</div>
+    <div class="pdf-desc-page">
+      ${fotoSrc?`<img class="pdf-desc-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-desc-foto-placeholder"></div>`}
+      <div class="pdf-desc-body">
+        <div class="pdf-desc-label">Descrição do Imóvel</div>
+        <div class="pdf-desc-texto">${corpo||''}</div>
+        <div class="pdf-desc-footer">
+          <div>
+            <div class="pdf-desc-corretor-nome">${corretor||''}</div>
+            <div class="pdf-desc-corretor-info">${[tel,creci?'CRECI '+creci:''].filter(Boolean).join('  ·  ')}</div>
+          </div>
+          <div class="pdf-desc-num">${pageNum} / ${totalPages}</div>
+        </div>
       </div>
-      <div class="pdf-pg-num" style="color:rgba(255,255,255,.4)">${pageNum}</div>
     </div>`;
 
   return '';
@@ -1475,7 +1523,9 @@ async function gerarPDF(){
     titulo:lastTitulo,corpo:lastCorpo,
     corretor:corrNome,tel:corrTel,creci:corrCreci,
     fotoSrc:fotosOrdenadas[0]?.src,
-    pageNum:'1',totalPages
+    pageNum:'1',totalPages,
+    bairro:lastBairro,preco:lastPreco,area:lastArea,
+    quartos:lastQuartos,suites:lastSuites,tipo:lastTipo
   }));
 
   // Páginas galeria — fotos sem a capa (mínimo 0, máximo 9)
@@ -1484,6 +1534,7 @@ async function gerarPDF(){
     paginas.push(criarPaginaHTML('galeria',{
       fotoSrc:fotosGaleria[i]?.src,
       legenda:legendas[fotoOrigIdx]||legendas[i+1]||'',
+      corretor:corrNome,tel:corrTel,
       pageNum:String(i+2),totalPages
     }));
   }
@@ -1492,6 +1543,7 @@ async function gerarPDF(){
   paginas.push(criarPaginaHTML('descricao',{
     corpo:lastCorpo,
     fotoSrc:fotoDescricao,
+    corretor:corrNome,tel:corrTel,creci:corrCreci,
     pageNum:String(totalGaleria+2),totalPages
   }));
 
