@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ImóvelText — Assistente de Marketing Imobiliário com IA</title>
 <meta name="description" content="Transforme qualquer imóvel em um pacote completo de marketing em segundos. Anúncios, hashtags, PDF profissional e muito mais para corretores modernos."/>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -351,7 +352,145 @@ section{position:relative;z-index:1}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
 /* RESPONSIVE */
-@media(max-width:900px){
+/* ── PDF TEMPLATE ── */
+#pdf-template{position:fixed;left:-9999px;top:0;z-index:-1;pointer-events:none}
+.pdf-page{
+  width:794px;height:1123px;position:relative;overflow:hidden;
+  background:#f0eeeb;font-family:'Playfair Display',serif;
+  flex-shrink:0;
+}
+/* Textura mármore simulada */
+.pdf-page::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 30%,rgba(255,255,255,0.6) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 60% at 80% 70%,rgba(200,195,188,0.3) 0%,transparent 50%),
+    radial-gradient(ellipse 80% 30% at 50% 10%,rgba(255,255,255,0.4) 0%,transparent 40%);
+  pointer-events:none;z-index:0;
+}
+.pdf-page>*{position:relative;z-index:1}
+
+/* PÁGINA 1 — CAPA */
+.pdf-p1-top{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:36px 48px 0;
+}
+.pdf-p1-brand{
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:#1a1a1a;
+}
+.pdf-p1-date{
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:#1a1a1a;
+}
+.pdf-p1-title{
+  padding:32px 48px 0;
+  font-size:72px;font-weight:700;line-height:1.05;
+  letter-spacing:-.02em;color:#1a1a1a;
+}
+.pdf-p1-faixa{
+  margin:32px 0 0;
+  background:#6b5d4f;
+  padding:14px 48px;
+  display:flex;align-items:center;gap:24px;
+}
+.pdf-p1-faixa-label{
+  font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;color:#fff;white-space:nowrap;
+}
+.pdf-p1-faixa-nome{
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;
+  color:#fff;
+}
+.pdf-p1-foto{
+  width:100%;height:340px;object-fit:cover;display:block;
+  margin-top:0;
+}
+.pdf-p1-foto-placeholder{
+  width:100%;height:340px;background:#c8c0b8;
+  display:flex;align-items:center;justify-content:center;
+}
+.pdf-p1-footer{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:18px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid rgba(0,0,0,0.1);
+}
+.pdf-p1-footer-item{
+  font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:#1a1a1a;
+  display:flex;gap:8px;align-items:center;
+}
+.pdf-p1-footer-val{
+  font-weight:400;text-transform:none;letter-spacing:0;color:#4a4a4a;
+}
+
+/* PÁGINAS GALERIA / DESCRIÇÃO */
+.pdf-pg{position:relative}
+.pdf-pg-tri-left{
+  position:absolute;left:0;bottom:0;
+  width:0;height:0;
+  border-style:solid;
+  border-width:0 0 200px 80px;
+  border-color:transparent transparent #1a1a1a transparent;
+  z-index:2;
+}
+.pdf-pg-tri-right{
+  position:absolute;right:0;top:0;
+  width:0;height:0;
+  border-style:solid;
+  border-width:200px 80px 0 0;
+  border-color:#1a1a1a transparent transparent transparent;
+  z-index:2;
+}
+.pdf-pg-title{
+  padding:52px 48px 0;
+  font-size:52px;font-weight:700;line-height:1.1;
+  letter-spacing:-.01em;color:#1a1a1a;
+}
+.pdf-pg-desc{
+  padding:20px 48px 0 48px;
+  font-family:'DM Sans',sans-serif;font-size:11px;line-height:1.8;
+  color:#3a3a3a;font-weight:400;text-align:justify;
+}
+.pdf-pg-foto{
+  margin:24px 48px 0;
+  width:calc(100% - 96px);height:420px;
+  object-fit:cover;display:block;
+}
+.pdf-pg-foto-placeholder{
+  margin:24px 48px 0;
+  width:calc(100% - 96px);height:420px;
+  background:#c8c0b8;display:flex;align-items:center;justify-content:center;
+}
+.pdf-pg-num{
+  position:absolute;bottom:24px;right:48px;
+  font-family:'DM Sans',sans-serif;font-size:11px;
+  color:#6a6a6a;font-weight:400;
+}
+
+/* PÁGINA DESCRIÇÃO DETALHADA */
+.pdf-pd-foto{
+  width:100%;height:380px;object-fit:cover;display:block;
+}
+.pdf-pd-foto-placeholder{
+  width:100%;height:380px;background:#c8c0b8;
+}
+.pdf-pd-bottom{
+  background:#8a8a8a;
+  padding:40px 48px;
+  flex:1;
+}
+.pdf-pd-title{
+  font-size:40px;font-weight:700;color:#fff;
+  margin-bottom:16px;line-height:1.15;
+}
+.pdf-pd-desc{
+  font-family:'DM Sans',sans-serif;font-size:11px;
+  line-height:1.8;color:rgba(255,255,255,0.85);
+  text-align:justify;font-weight:300;
+}
+
   .how-grid,.features-grid,.preview-grid,.why-grid,.pdf-inner,.gen-body,.corretor-grid{grid-template-columns:1fr}
   .frow.c2,.frow.c3{grid-template-columns:1fr}
   .gen-top,.results-section,.corretor-section,.gen-btn-wrap{padding-left:1.25rem;padding-right:1.25rem}
@@ -901,8 +1040,10 @@ section{position:relative;z-index:1}
   </div>
 </div>
 
+<!-- PDF TEMPLATE INVISÍVEL -->
+<div id="pdf-template"></div>
+
 <script>
-// ─── CONFIG ───────────────────────────────────────────
 const SUPABASE_URL='https://ynahunwezjbnbvyjxvfz.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InluYWh1bndlempibmJ2eWp4dmZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxODc1NjAsImV4cCI6MjA5Mzc2MzU2MH0.F9YiTRck6b4SpsPGWlevkrfd8t1wX4sbk8OC30VYM3g';
 const REDIRECT_URL='https://pehesaal-design.github.io/imoveltext-site/';
@@ -1261,233 +1402,134 @@ Use hashtags reais do mercado imobiliário brasileiro. Retorne apenas o JSON, na
   btn.disabled=false;
 }
 
-// ─── PDF TEMPLATE CLARO PREMIUM ────────────────────────
+// ─── PDF COM HTML2CANVAS ────────────────────────────────
+function criarPaginaHTML(tipo, dados){
+  const {titulo,corpo,corretor,tel,creci,fotoSrc,legenda,pageNum,totalPages}=dados;
+  const mes=new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'}).toUpperCase();
+
+  if(tipo==='capa') return `
+    <div class="pdf-page">
+      <div class="pdf-p1-top">
+        <span class="pdf-p1-brand">ImóvelText</span>
+        <span class="pdf-p1-date">${mes}</span>
+      </div>
+      <div class="pdf-p1-title">${titulo||'Proposta Imobiliária'}</div>
+      <div class="pdf-p1-faixa">
+        <span class="pdf-p1-faixa-label">Apresentado por</span>
+        <span class="pdf-p1-faixa-nome">${corretor||'[Nome do Corretor]'}</span>
+      </div>
+      ${fotoSrc?`<img class="pdf-p1-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-p1-foto-placeholder"></div>`}
+      <div class="pdf-p1-footer">
+        <div class="pdf-p1-footer-item">Contato: <span class="pdf-p1-footer-val">${tel||''}</span></div>
+        <div class="pdf-p1-footer-item">Creci: <span class="pdf-p1-footer-val">${creci||''}</span></div>
+      </div>
+    </div>`;
+
+  if(tipo==='galeria') return `
+    <div class="pdf-page pdf-pg">
+      <div class="pdf-pg-tri-right"></div>
+      <div class="pdf-pg-tri-left"></div>
+      <div class="pdf-pg-title">Galeria</div>
+      <div class="pdf-pg-desc">${legenda||''}</div>
+      ${fotoSrc?`<img class="pdf-pg-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-pg-foto-placeholder"></div>`}
+      <div class="pdf-pg-num">${pageNum}</div>
+    </div>`;
+
+  if(tipo==='descricao') return `
+    <div class="pdf-page pdf-pg" style="display:flex;flex-direction:column">
+      <div class="pdf-pg-tri-right"></div>
+      ${fotoSrc?`<img class="pdf-pd-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-pd-foto-placeholder"></div>`}
+      <div class="pdf-pd-bottom" style="flex:1">
+        <div class="pdf-pd-title">Descrição<br>Detalhada</div>
+        <div class="pdf-pd-desc">${corpo||''}</div>
+      </div>
+      <div class="pdf-pg-num" style="color:rgba(255,255,255,.5)">${pageNum}</div>
+    </div>`;
+
+  return '';
+}
+
 async function gerarPDF(){
   if(!isProUser){showPaywall();return;}
   const btn=document.getElementById('pdf-btn');
   btn.disabled=true;
   btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Gerando PDF...';
 
-  const {jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  const W=210,H=297;
-
   const corrNome=document.getElementById('corr-nome')?.value||'';
   const corrTel=document.getElementById('corr-tel')?.value||'';
   const corrCreci=document.getElementById('corr-creci')?.value||'';
 
-  // ── PALETA CLARO PREMIUM ──
-  const C={
-    white:[255,255,255],
-    offwhite:[250,249,247],
-    light:[245,243,240],
-    border:[220,215,208],
-    green:[29,158,117],
-    greenDark:[15,110,86],
-    text:[28,28,28],
-    text2:[80,80,80],
-    text3:[150,145,138],
-    accent:[29,158,117],
-  };
-
-  const fill=(r,g,b,x,y,w,h)=>{doc.setFillColor(r,g,b);doc.rect(x,y,w,h,'F');};
-  const hline=(y,x1=0,x2=W,color=C.border,lw=0.3)=>{
-    doc.setDrawColor(...color);doc.setLineWidth(lw);doc.line(x1,y,x2,y);
-  };
-
-  // Helper: imagem centralizada mantendo proporção original (sem distorção)
-  const addImgFit=(src,areaX,areaY,areaW,areaH)=>{
-    try{
-      const img=new Image();img.src=src;
-      const srcW=img.naturalWidth||1200;
-      const srcH=img.naturalHeight||800;
-      const ratio=srcW/srcH;
-      let iw=areaW,ih=areaW/ratio;
-      if(ih>areaH){ih=areaH;iw=areaH*ratio;}
-      const ix=areaX+(areaW-iw)/2;
-      const iy=areaY+(areaH-ih)/2;
-      doc.addImage(src,'JPEG',ix,iy,iw,ih,'','MEDIUM');
-    }catch(e){}
-  };
-
-  // Pega legendas do cap-list
   const legendas=[];
   document.querySelectorAll('#cap-list .cap-text').forEach(el=>legendas.push(el.innerText));
 
-  // Reordena fotos com a capa escolhida na frente
   const fotosOrdenadas=[fotos[fotoCapaIdx],...fotos.filter((_,i)=>i!==fotoCapaIdx)];
   const totalFotos=Math.min(fotosOrdenadas.length,10);
 
-  // ════════════════════════════════════════════
-  // PÁGINA 1 — CAPA + FICHA TÉCNICA + DESCRIÇÃO
-  // ════════════════════════════════════════════
-  fill(...C.white,0,0,W,H);
+  // Monta as páginas seguindo a lógica:
+  // P1: Capa
+  // P2+: Galeria (uma por foto, mínimo 1)
+  // Última: Descrição detalhada (com foto da capa repetida se necessário)
+  const paginas=[];
+  const totalPages=totalFotos+2; // capa + galerias + descrição
 
-  // Barra verde fina no topo — elemento de identidade
-  fill(...C.green,0,0,W,2);
+  // Página 1 — Capa
+  paginas.push(criarPaginaHTML('capa',{
+    titulo:lastTitulo,corpo:lastCorpo,
+    corretor:corrNome,tel:corrTel,creci:corrCreci,
+    fotoSrc:fotosOrdenadas[0]?.src,
+    pageNum:'1',totalPages
+  }));
 
-  // Logo ImóvelText no topo
-  doc.setFont('helvetica','bold');doc.setFontSize(8);
-  doc.setTextColor(...C.green);
-  doc.text('ImóvelText',14,12);
-  doc.setFont('helvetica','normal');doc.setFontSize(7);
-  doc.setTextColor(...C.text3);
-  doc.text('Assistente de Marketing Imobiliário',14,17);
-
-  // Dados do corretor no topo direito
-  if(corrNome){
-    doc.setFont('helvetica','bold');doc.setFontSize(8);
-    doc.setTextColor(...C.text);
-    doc.text(corrNome,W-14,12,{align:'right'});
-  }
-  const corrInfo=[];
-  if(corrTel) corrInfo.push(corrTel);
-  if(corrCreci) corrInfo.push('CRECI '+corrCreci);
-  if(corrInfo.length){
-    doc.setFont('helvetica','normal');doc.setFontSize(7);
-    doc.setTextColor(...C.text3);
-    doc.text(corrInfo.join('  •  '),W-14,17,{align:'right'});
-  }
-
-  // Linha separadora
-  hline(21,0,W,C.border,0.3);
-
-  // ── FOTO DE CAPA ──
-  const capaY=25;
-  const capaH=120;
-  fill(...C.light,0,capaY,W,capaH);
-  if(fotosOrdenadas.length>0){
-    addImgFit(fotosOrdenadas[0].src,0,capaY,W,capaH);
-  }
-
-  // Badge tipo sobre a foto (canto inferior esquerdo)
-  fill(...C.green,14,capaY+capaH-12,32,8);
-  doc.setFont('helvetica','bold');doc.setFontSize(6);
-  doc.setTextColor(...C.white);
-  doc.text((lastTipo||'Imóvel').toUpperCase(),30,capaY+capaH-6.5,{align:'center'});
-
-  // ── TÍTULO ──
-  const titleY=capaY+capaH+10;
-  doc.setFont('helvetica','bold');doc.setFontSize(17);
-  doc.setTextColor(...C.text);
-  const tituloTxt=lastTitulo||`${lastTipo} — ${lastBairro}`;
-  const tituloLines=doc.splitTextToSize(tituloTxt,W-28);
-  doc.text(tituloLines.slice(0,2),14,titleY);
-
-  // Linha verde fina sob o título
-  const linhaY=titleY+(tituloLines.length>1?12:6);
-  hline(linhaY,14,W-14,C.green,0.5);
-
-  // ── FICHA TÉCNICA ──
-  const fichaY=linhaY+8;
-  const fichaItems=[
-    {label:'LOCAL',val:lastBairro||'—'},
-    {label:'PREÇO',val:lastPreco?'R$ '+lastPreco:'—'},
-    {label:'ÁREA',val:lastArea?(lastArea+'m²'):'—'},
-    {label:'QUARTOS',val:lastQuartos||'—'},
-    {label:'SUÍTES',val:lastSuites||'—'},
-    {label:'TIPO',val:lastTipo||'—'},
-  ];
-  const fichaColW=(W-28)/fichaItems.length;
-  fichaItems.forEach((item,i)=>{
-    const cx=14+i*fichaColW;
-    doc.setFont('helvetica','normal');doc.setFontSize(6);
-    doc.setTextColor(...C.text3);
-    doc.text(item.label,cx+fichaColW/2,fichaY,{align:'center'});
-    doc.setFont('helvetica','bold');doc.setFontSize(8.5);
-    doc.setTextColor(...C.text);
-    doc.text(doc.splitTextToSize(item.val,fichaColW-2)[0],cx+fichaColW/2,fichaY+6,{align:'center'});
-    if(i<fichaItems.length-1){
-      doc.setDrawColor(...C.border);doc.setLineWidth(0.2);
-      doc.line(cx+fichaColW,fichaY-3,cx+fichaColW,fichaY+9);
-    }
-  });
-
-  // Linha após ficha
-  hline(fichaY+14,14,W-14,C.border,0.2);
-
-  // ── DESCRIÇÃO ──
-  const descY=fichaY+20;
-  doc.setFont('helvetica','bold');doc.setFontSize(7);
-  doc.setTextColor(...C.text3);
-  doc.text('DESCRIÇÃO',14,descY);
-  hline(descY+2,14,W-14,C.border,0.2);
-  doc.setFont('helvetica','normal');doc.setFontSize(8.5);
-  doc.setTextColor(...C.text2);
-  doc.setLineHeightFactor(1.6);
-  const corpoLines=doc.splitTextToSize(lastCorpo||'',W-28);
-  doc.text(corpoLines.slice(0,16),14,descY+8);
-
-  // ── RODAPÉ PÁGINA 1 ──
-  hline(H-14,0,W,C.border,0.3);
-  fill(...C.green,0,H-2,W,2);
-  doc.setFont('helvetica','normal');doc.setFontSize(6.5);
-  doc.setTextColor(...C.text3);
-  doc.text('1 / '+(totalFotos+1),W-14,H-7,{align:'right'});
-
-  // ════════════════════════════════════════════
-  // PÁGINAS DE FOTOS — 1 foto por página
-  // ════════════════════════════════════════════
+  // Páginas galeria — uma por foto
   for(let i=0;i<totalFotos;i++){
-    doc.addPage();
-    fill(...C.offwhite,0,0,W,H);
-
-    // Barra verde topo
-    fill(...C.green,0,0,W,2);
-
-    // Header — nome do imóvel à esquerda, contador à direita
-    doc.setFont('helvetica','normal');doc.setFontSize(7);
-    doc.setTextColor(...C.text3);
-    const headerTxt=lastTitulo||`${lastTipo} — ${lastBairro}`;
-    doc.text(doc.splitTextToSize(headerTxt,W-50)[0],14,11);
-    doc.setFont('helvetica','bold');doc.setFontSize(7);
-    doc.setTextColor(...C.green);
-    doc.text(`${i+2} / ${totalFotos+1}`,W-14,11,{align:'right'});
-    hline(15,0,W,C.border,0.2);
-
-    // ── FOTO CENTRALIZADA ──
-    const imgY=20;
-    const imgH=200; // área generosa para a foto
-    fill(...C.light,14,imgY,W-28,imgH);
-    addImgFit(fotosOrdenadas[i].src,14,imgY,W-28,imgH);
-
-    // ── LEGENDA ──
     const fotoOrigIdx=i===0?fotoCapaIdx:fotos.indexOf(fotosOrdenadas[i]);
-    const leg=legendas[fotoOrigIdx]||legendas[i]||'';
-    const legY=imgY+imgH+10;
-
-    // Linha verde antes da legenda
-    hline(legY-4,14,W-14,C.green,0.4);
-
-    if(leg){
-      doc.setFont('helvetica','italic');doc.setFontSize(9);
-      doc.setTextColor(...C.text2);
-      doc.setLineHeightFactor(1.55);
-      const legLines=doc.splitTextToSize(leg,W-28);
-      doc.text(legLines.slice(0,4),14,legY);
-    }
-
-    // ── RODAPÉ COM DADOS DO CORRETOR ──
-    hline(H-22,14,W-14,C.border,0.2);
-
-    if(corrNome){
-      doc.setFont('helvetica','bold');doc.setFontSize(8);
-      doc.setTextColor(...C.text);
-      doc.text(corrNome,14,H-15);
-    }
-    const fpInfo=[];
-    if(corrTel) fpInfo.push(corrTel);
-    if(corrCreci) fpInfo.push('CRECI '+corrCreci);
-    if(fpInfo.length){
-      doc.setFont('helvetica','normal');doc.setFontSize(7);
-      doc.setTextColor(...C.text3);
-      doc.text(fpInfo.join('  •  '),14,H-9);
-    }
-
-    // Barra verde rodapé
-    fill(...C.green,0,H-2,W,2);
+    paginas.push(criarPaginaHTML('galeria',{
+      fotoSrc:fotosOrdenadas[i]?.src,
+      legenda:legendas[fotoOrigIdx]||legendas[i]||'',
+      pageNum:String(i+2),totalPages
+    }));
   }
 
+  // Última página — Descrição detalhada
+  paginas.push(criarPaginaHTML('descricao',{
+    corpo:lastCorpo,
+    fotoSrc:fotosOrdenadas[0]?.src, // repete foto de capa
+    pageNum:String(totalFotos+2),totalPages
+  }));
+
+  // Renderiza cada página com html2canvas e monta o PDF
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'px',format:[794,1123]});
+  const template=document.getElementById('pdf-template');
+
+  for(let i=0;i<paginas.length;i++){
+    template.innerHTML=paginas[i];
+    // Aguarda imagens carregarem
+    await new Promise(res=>{
+      const imgs=template.querySelectorAll('img');
+      if(imgs.length===0){setTimeout(res,100);return;}
+      let loaded=0;
+      imgs.forEach(img=>{
+        if(img.complete){loaded++;if(loaded===imgs.length)res();}
+        else{img.onload=()=>{loaded++;if(loaded===imgs.length)res();};
+             img.onerror=()=>{loaded++;if(loaded===imgs.length)res();};}
+      });
+      setTimeout(res,3000); // timeout de segurança
+    });
+    await new Promise(res=>setTimeout(res,200));
+
+    const canvas=await html2canvas(template.firstElementChild,{
+      scale:2,useCORS:true,allowTaint:true,
+      width:794,height:1123,
+      backgroundColor:null,
+      logging:false
+    });
+    const imgData=canvas.toDataURL('image/jpeg',0.95);
+    if(i>0) doc.addPage([794,1123],'p');
+    doc.addImage(imgData,'JPEG',0,0,794,1123);
+  }
+
+  template.innerHTML='';
   doc.save(`imoveltext-${(lastBairro||'imovel').replace(/[\s/]/g,'-').toLowerCase()}-${Date.now()}.pdf`);
   btn.disabled=false;
   btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg> Baixar PDF profissional do imóvel<div class="pdf-lock-overlay" id="pdf-lock" style="display:none"></div>';
