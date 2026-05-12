@@ -1555,35 +1555,43 @@ async function gerarPDF(){
   const doc=new jsPDF({orientation:'portrait',unit:'px',format:[794,1123]});
   const template=document.getElementById('pdf-template');
 
-  for(let i=0;i<paginas.length;i++){
-    template.innerHTML=paginas[i];
-    // Aguarda imagens carregarem
-    await new Promise(res=>{
-      const imgs=template.querySelectorAll('img');
-      if(imgs.length===0){setTimeout(res,100);return;}
-      let loaded=0;
-      imgs.forEach(img=>{
-        if(img.complete){loaded++;if(loaded===imgs.length)res();}
-        else{img.onload=()=>{loaded++;if(loaded===imgs.length)res();};
-             img.onerror=()=>{loaded++;if(loaded===imgs.length)res();};}
+  try{
+    for(let i=0;i<paginas.length;i++){
+      template.innerHTML=paginas[i];
+      // Aguarda imagens carregarem
+      await new Promise(res=>{
+        const imgs=template.querySelectorAll('img');
+        if(imgs.length===0){setTimeout(res,200);return;}
+        let loaded=0;
+        imgs.forEach(img=>{
+          if(img.complete){loaded++;if(loaded===imgs.length)res();}
+          else{img.onload=()=>{loaded++;if(loaded===imgs.length)res();};
+               img.onerror=()=>{loaded++;if(loaded===imgs.length)res();};}
+        });
+        setTimeout(res,4000);
       });
-      setTimeout(res,3000); // timeout de segurança
-    });
-    await new Promise(res=>setTimeout(res,200));
+      await new Promise(res=>setTimeout(res,300));
 
-    const canvas=await html2canvas(template.firstElementChild,{
-      scale:2,useCORS:true,allowTaint:true,
-      width:794,height:1123,
-      backgroundColor:null,
-      logging:false
-    });
-    const imgData=canvas.toDataURL('image/jpeg',0.95);
-    if(i>0) doc.addPage([794,1123],'p');
-    doc.addImage(imgData,'JPEG',0,0,794,1123);
+      const canvas=await html2canvas(template.firstElementChild,{
+        scale:1.5,useCORS:true,allowTaint:true,
+        width:794,height:1123,
+        backgroundColor:'#faf9f7',
+        logging:false,
+        foreignObjectRendering:false
+      });
+      const imgData=canvas.toDataURL('image/jpeg',0.92);
+      if(i>0) doc.addPage([794,1123],'p');
+      doc.addImage(imgData,'JPEG',0,0,794,1123);
+    }
+
+    template.innerHTML='';
+    doc.save(`imoveltext-${(lastBairro||'imovel').replace(/[\s/]/g,'-').toLowerCase()}-${Date.now()}.pdf`);
+  }catch(err){
+    console.error('Erro PDF:',err);
+    alert('Erro ao gerar PDF: '+err.message+'\nTente novamente.');
+    template.innerHTML='';
   }
 
-  template.innerHTML='';
-  doc.save(`imoveltext-${(lastBairro||'imovel').replace(/[\s/]/g,'-').toLowerCase()}-${Date.now()}.pdf`);
   btn.disabled=false;
   btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg> Baixar PDF profissional do imóvel<div class="pdf-lock-overlay" id="pdf-lock" style="display:none"></div>';
 }
