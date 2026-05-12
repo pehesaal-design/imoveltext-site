@@ -1312,9 +1312,11 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações, com EXATAMENTE es
     document.getElementById('titulo-body').innerText=lastTitulo;
     document.getElementById('result-body').innerText=corpoTexto;
   }catch(e){
-    document.getElementById('titulo-body').innerHTML=`<span style="color:#ef4444">Erro: ${e.message}</span>`;
-    document.getElementById('result-body').innerHTML=`<span style="color:#ef4444">Erro: ${e.message}</span>`;
-    btn.disabled=false;return;
+    document.getElementById('titulo-body').innerHTML=`<span style="color:#ef4444">⚠️ ${e.message}</span>`;
+    document.getElementById('result-body').innerHTML=`<span style="color:var(--text3);font-size:12px">Recarregue a página e tente novamente. Se o erro persistir, aguarde alguns segundos — pode ser instabilidade temporária da IA.</span>`;
+    btn.disabled=false;
+    btn.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> Tentar novamente';
+    return;
   }
 
   if(!isProUser){
@@ -1352,7 +1354,7 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações, com EXATAMENTE es
   if(fotos.length>0){
     document.getElementById('captions-card').style.display='block';
     document.getElementById('cap-list').innerHTML=loadH;
-    const promptCap=`Escreva uma legenda curta (máx 2 frases) para cada uma das ${Math.min(fotos.length,10)} fotos deste ${tipo} em ${bairro}. Use a preposição correta para o bairro (ex: na Pituba, no Itaigara, em Moema). Tom: ${tomAnuncio==="Luxo"?"sofisticado":tomAnuncio==="Investimento"?"objetivo":"caloroso"}. Responda APENAS com JSON sem markdown: {"legendas":["legenda 1","legenda 2",...]}}`;
+    const promptCap=`Você é especialista em marketing imobiliário. Analise cada foto e escreva uma legenda profissional (3 a 4 frases) para cada uma das ${Math.min(fotos.length,10)} imagens deste ${tipo}. REGRAS: descreva materiais, cores, móveis e acabamento visíveis na foto; NUNCA mencione o bairro ou cidade nas legendas; não repita informações entre legendas; tom ${tomAnuncio==="Luxo"?"sofisticado e exclusivo":tomAnucio==="Investimento"?"objetivo e valorativo":"caloroso e acolhedor"}; cada legenda deve ser única e específica para aquela foto. Responda APENAS com JSON sem markdown: {"legendas":["legenda 1","legenda 2",...]}`;
     try{
       const cp=[];fotos.slice(0,10).forEach(f=>cp.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));cp.push({text:promptCap});
       const rawCap=await chamarGemini(cp);
