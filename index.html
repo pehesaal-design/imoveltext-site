@@ -1233,15 +1233,13 @@ async function gerar(){
   rs.style.display='flex';
   document.getElementById('titulo-card').style.display='block';
   document.getElementById('result-card').style.display='none';
-  document.getElementById('score-card').style.display='block';
-  document.getElementById('hash-card').style.display='block';
+  document.getElementById('score-card').style.display='none';
+  document.getElementById('hash-card').style.display='none';
   document.getElementById('captions-card').style.display='none';
-  document.getElementById('pdf-wrap').style.display='none'; // só aparece no final
+  document.getElementById('pdf-wrap').style.display='none';
   document.getElementById('capa-selector').style.display='none';
   document.getElementById('titulo-body').innerHTML=loadH;
   document.getElementById('result-body').innerHTML=loadH;
-  document.getElementById('score-tips').innerHTML=loadH;
-  document.getElementById('hash-body').innerHTML=loadH;
   document.getElementById('titulo-card').scrollIntoView({behavior:'smooth',block:'start'});
 
   const dadosBase=`Tipo: ${tipo} | Finalidade: ${finalidade} | Local: ${bairro} | Preço: ${preco} | Quartos: ${quartos} | Suítes: ${suites} | Área: ${area}m² | Obs: ${obs||'nenhuma'}`;
@@ -1274,40 +1272,46 @@ REGRAS ABSOLUTAS:
 - Escreva como um corretor experiente conversando diretamente com o comprador ideal
 - Integre as observações visuais das fotos naturalmente no texto — não liste, narre
 - ZAP/OLX: texto corrido, primeira frase impacta com o diferencial principal, termine com chamada para ação direta. Máx 280 palavras.
-- Instagram: primeira linha captura atenção antes do "ver mais", emojis naturais (máx 4), narrativa aspiracional. NÃO inclua hashtags. Máx 130 palavras.
+- Instagram: primeira linha captura atenção antes do "ver mais", emojis naturais (máx 3), narrativa aspiracional. NÃO inclua hashtags. Máx 80 palavras.
 - WhatsApp: tom de mensagem real de corretor para cliente, direto e pessoal. Máx 90 palavras.
 - Site: narrativa rica, percorre os ambientes como se fosse uma visita guiada, SEO-friendly. Máx 380 palavras.
 
-Responda SOMENTE em JSON puro sem markdown, sem explicações:
-{"titulo":"título em até 80 caracteres, específico para este imóvel, impactante","corpo":"corpo do anúncio conforme as regras acima"}`;
+Responda SOMENTE em JSON puro sem markdown, sem explicações, com EXATAMENTE esta estrutura:
+{
+  "titulo": "título em até 80 caracteres, específico para este imóvel",
+  "corpo": "corpo do anúncio conforme as regras acima",
+  "score": 85,
+  "dicas": ["dica específica 1", "dica específica 2", "dica específica 3"],
+  "hashtags": {
+    "local": ["#tag1", "#tag2", "#tag3", "#tag4"],
+    "tipo": ["#tag1", "#tag2", "#tag3", "#tag4"],
+    "perfil": ["#tag1", "#tag2", "#tag3", "#tag4"]
+  }
+}`;
 
   const partsAnuncio=[];
   fotos.slice(0,10).forEach(f=>partsAnuncio.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));
   partsAnuncio.push({text:promptPrincipal});
 
   let corpoTexto='';
+  let parsedPrincipal={titulo:'',corpo:'',score:70,dicas:[],hashtags:{}};
   try{
     const raw=await chamarGemini(partsAnuncio);
-    // Procura especificamente pelo objeto com "titulo" e "corpo"
-    let parsed={titulo:'',corpo:''};
     try{
-      // Tenta encontrar JSON que começa com {"titulo" ou {"corpo"
-      const match=raw.match(/\{"titulo"[\s\S]*?\}(?=\s*$|\s*```)/)||
-                  raw.match(/\{"titulo"[\s\S]*\}/)||
-                  raw.match(/\{[\s\S]*"titulo"[\s\S]*"corpo"[\s\S]*\}/);
-      if(match) parsed=JSON.parse(match[0]);
-      else {
-        // Fallback: tenta o último bloco JSON da resposta
+      const match=raw.match(/\{[\s\S]*"titulo"[\s\S]*"corpo"[\s\S]*\}/);
+      if(match) parsedPrincipal={...parsedPrincipal,...JSON.parse(match[0])};
+      else{
         const blocos=raw.match(/\{[\s\S]*?\}/g)||[];
         for(let i=blocos.length-1;i>=0;i--){
-          try{const t=JSON.parse(blocos[i]);if(t.titulo||t.corpo){parsed=t;break;}}catch(e2){}
+          try{const t=JSON.parse(blocos[i]);if(t.titulo||t.corpo){parsedPrincipal={...parsedPrincipal,...t};break;}}catch(e2){}
         }
       }
     }catch(e){ throw new Error('Erro ao processar resposta da IA'); }
-    if(!parsed.titulo&&!parsed.corpo) throw new Error('Resposta incompleta da IA — tente novamente');
-    lastTitulo=parsed.titulo||'';lastCorpo=parsed.corpo||'';
-    document.getElementById('titulo-body').innerText=lastTitulo;
+    if(!parsedPrincipal.titulo&&!parsedPrincipal.corpo) throw new Error('Resposta incompleta da IA — tente novamente');
+    lastTitulo=parsedPrincipal.titulo||'';
+    lastCorpo=parsedPrincipal.corpo||'';
     corpoTexto=lastCorpo;
+    document.getElementById('titulo-body').innerText=lastTitulo;
     document.getElementById('result-body').innerText=corpoTexto;
   }catch(e){
     document.getElementById('titulo-body').innerHTML=`<span style="color:#ef4444">Erro: ${e.message}</span>`;
@@ -1323,40 +1327,20 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações:
   await sb.from('generations').insert({user_id:currentUser.id,platform:plataforma,tipo,bairro});
   updatePDFAccess();
 
-  // Score + hashtags — prompt curto para evitar timeout
-  const promptSH=`Analise o anúncio imobiliário abaixo e responda APENAS com JSON válido.
-
-Imóvel: ${lastTipo} em ${lastBairro}, ${lastArea}m², R$ ${lastPreco}
-Anúncio: ${corpoTexto.substring(0,300)}
-
-JSON esperado:
-{"score":85,"dicas":["dica 1","dica 2","dica 3"],"hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],"tipo":["#tag1","#tag2","#tag3","#tag4"],"perfil":["#tag1","#tag2","#tag3","#tag4"]}}
-
-Substitua os valores. Score de 0-100. Dicas específicas para este imóvel. Hashtags reais brasileiras.`;
-
+  // Processar score e hashtags do mesmo JSON — sem segunda chamada ao Supabase
   try{
-    const rawSH=await chamarGemini([{text:promptSH}]);
-    let ps={score:70,dicas:[],hashtags:{}};
-    try{
-      const matchSH=rawSH.match(/\{[\s\S]*"score"[\s\S]*\}/)||
-                    rawSH.match(/\{[\s\S]*"hashtags"[\s\S]*\}/);
-      if(matchSH) ps=JSON.parse(matchSH[0]);
-      else{
-        const blocosSH=rawSH.match(/\{[\s\S]*?\}/g)||[];
-        for(let i=blocosSH.length-1;i>=0;i--){
-          try{const t=JSON.parse(blocosSH[i]);if(t.score!==undefined||t.hashtags){ps=t;break;}}catch(e2){}
-        }
-      }
-    }catch(e){ throw new Error('Erro ao processar score'); }
+    const ps=parsedPrincipal;
     const score=Math.min(100,Math.max(0,parseInt(ps.score)||70));
     const cls=score>=75?'alto':score>=50?'medio':'baixo';
     const emoji=score>=75?'🟢':score>=50?'🟡':'🔴';
+    document.getElementById('score-card').style.display='block';
     document.getElementById('score-badge').textContent=`${emoji} ${score}/100`;
     const bar=document.getElementById('score-bar');
     bar.className=`score-bar-fill ${cls}`;bar.style.width=score+'%';
     document.getElementById('score-tips').innerHTML=(ps.dicas||[]).slice(0,3).map((d,i)=>`<div class="score-tip"><span>${['💡','📸','✏️'][i]||'💡'}</span><span>${d}</span></div>`).join('');
     const h=ps.hashtags||{};
     hashtagsGeradas=[...(h.local||[]),...(h.tipo||[]),...(h.perfil||[])];
+    document.getElementById('hash-card').style.display='block';
     document.getElementById('hash-body').innerHTML=`
       <div><div class="hash-group-label">Localização</div><div class="hash-tags">${(h.local||[]).map(t=>`<span class="hash-tag local">${t}</span>`).join('')}</div></div>
       <div><div class="hash-group-label">Tipo de imóvel</div><div class="hash-tags">${(h.tipo||[]).map(t=>`<span class="hash-tag tipo">${t}</span>`).join('')}</div></div>
