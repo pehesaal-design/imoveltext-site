@@ -1405,7 +1405,10 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações, com EXATAMENTE es
 
 // ─── PDF COM HTML2CANVAS ────────────────────────────────
 function criarPaginaHTML(tipo, dados){
-  const {titulo,corpo,corretor,tel,creci,fotoSrc,legenda,pageNum,totalPages}=dados;
+  const {titulo,corpo,corretor,tel,creci,fotoSrc,legenda,pageNum,totalPages,
+         bairro,preco,area,quartos,suites}=dados;
+  const tipoimovel=dados.tipo||'Imóvel';
+  const mes=new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'}).toUpperCase();
 
   if(tipo==='capa') return `
     <div class="pdf-page">
@@ -1420,27 +1423,27 @@ function criarPaginaHTML(tipo, dados){
         <div class="pdf-capa-ficha">
           <div class="pdf-capa-ficha-item">
             <span class="pdf-capa-ficha-label">Local</span>
-            <span class="pdf-capa-ficha-val">${dados.bairro||'—'}</span>
+            <span class="pdf-capa-ficha-val">${bairro||'—'}</span>
           </div>
           <div class="pdf-capa-ficha-item">
             <span class="pdf-capa-ficha-label">Preço</span>
-            <span class="pdf-capa-ficha-val verde">${dados.preco?'R$ '+dados.preco:'—'}</span>
+            <span class="pdf-capa-ficha-val verde">${preco?'R$ '+preco:'—'}</span>
           </div>
           <div class="pdf-capa-ficha-item">
             <span class="pdf-capa-ficha-label">Área</span>
-            <span class="pdf-capa-ficha-val">${dados.area?dados.area+'m²':'—'}</span>
+            <span class="pdf-capa-ficha-val">${area?area+'m²':'—'}</span>
           </div>
           <div class="pdf-capa-ficha-item">
             <span class="pdf-capa-ficha-label">Quartos</span>
-            <span class="pdf-capa-ficha-val">${dados.quartos||'—'}</span>
+            <span class="pdf-capa-ficha-val">${quartos||'—'}</span>
           </div>
           <div class="pdf-capa-ficha-item">
             <span class="pdf-capa-ficha-label">Suítes</span>
-            <span class="pdf-capa-ficha-val">${dados.suites||'—'}</span>
+            <span class="pdf-capa-ficha-val">${suites||'—'}</span>
           </div>
           <div class="pdf-capa-ficha-item">
             <span class="pdf-capa-ficha-label">Tipo</span>
-            <span class="pdf-capa-ficha-val">${dados.tipo||'—'}</span>
+            <span class="pdf-capa-ficha-val">${tipoimovel}</span>
           </div>
         </div>
         <div class="pdf-capa-footer">
@@ -1448,7 +1451,7 @@ function criarPaginaHTML(tipo, dados){
             <div class="pdf-capa-corretor-nome">${corretor||''}</div>
             <div class="pdf-capa-corretor-info">${[tel,creci?'CRECI '+creci:''].filter(Boolean).join('  ·  ')}</div>
           </div>
-          <div class="pdf-capa-badge">${dados.tipo||'Imóvel'}</div>
+          <div class="pdf-capa-badge">${tipoimovel}</div>
         </div>
       </div>
     </div>`;
