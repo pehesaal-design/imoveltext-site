@@ -1324,22 +1324,16 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações:
   await sb.from('generations').insert({user_id:currentUser.id,platform:plataforma,tipo,bairro});
   updatePDFAccess();
 
-  // Score + hashtags
-  const corpoEscapado=corpoTexto.replace(/`/g,"'");
-  const promptSH=`Analise este anúncio imobiliário e retorne SOMENTE um objeto JSON válido, sem markdown, sem texto antes ou depois.
+  // Score + hashtags — prompt curto para evitar timeout
+  const promptSH=`Analise o anúncio imobiliário abaixo e responda APENAS com JSON válido.
 
-DADOS DO IMÓVEL: ${dadosBase}
-TOTAL DE FOTOS: ${fotos.length}
+Imóvel: ${lastTipo} em ${lastBairro}, ${lastArea}m², R$ ${lastPreco}
+Anúncio: ${corpoTexto.substring(0,300)}
 
-ANÚNCIO GERADO:
-${corpoEscapado}
+JSON esperado:
+{"score":85,"dicas":["dica 1","dica 2","dica 3"],"hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],"tipo":["#tag1","#tag2","#tag3","#tag4"],"perfil":["#tag1","#tag2","#tag3","#tag4"]}}
 
-O JSON deve ter exatamente esta estrutura:
-- score: número inteiro de 0 a 100
-- dicas: array com 3 strings, cada uma sendo uma dica específica para este imóvel (não genérica)
-- hashtags: objeto com 3 arrays: local (4 hashtags de localização), tipo (4 hashtags do tipo de imóvel), perfil (4 hashtags do perfil do comprador)
-
-Use hashtags reais do mercado imobiliário brasileiro. Retorne apenas o JSON, nada mais.`;
+Substitua os valores. Score de 0-100. Dicas específicas para este imóvel. Hashtags reais brasileiras.`;
 
   try{
     const rawSH=await chamarGemini([{text:promptSH}]);
@@ -1377,7 +1371,7 @@ Use hashtags reais do mercado imobiliário brasileiro. Retorne apenas o JSON, na
   if(fotos.length>0){
     document.getElementById('captions-card').style.display='block';
     document.getElementById('cap-list').innerHTML=loadH;
-    const promptCap=`Para cada uma das ${Math.min(fotos.length,10)} fotos deste ${tipo} em ${bairro}, escreva uma legenda profissional para anúncio imobiliário. Tom: ${tomAnuncio==='Luxo'?'sofisticado':tomAnuncio==='Investimento'?'objetivo':'caloroso'}. NUNCA use asteriscos. Responda SOMENTE em JSON puro sem markdown e sem texto extra: {"legendas":["legenda 1","legenda 2",...]}`;
+    const promptCap=`Escreva uma legenda curta (máx 2 frases) para cada uma das ${Math.min(fotos.length,10)} fotos deste ${tipo} em ${bairro}. Tom: ${tomAnuncio==='Luxo'?'sofisticado':tomAnuncio==='Investimento'?'objetivo':'caloroso'}. Responda APENAS com JSON sem markdown: {"legendas":["legenda 1","legenda 2",...]}}`;
     try{
       const cp=[];fotos.slice(0,10).forEach(f=>cp.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));cp.push({text:promptCap});
       const rawCap=await chamarGemini(cp);
