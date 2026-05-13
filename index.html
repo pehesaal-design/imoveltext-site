@@ -1374,12 +1374,16 @@ REGRAS PARA AS LEGENDAS — CRÍTICO:
     return;
   }
 
-  if(!isProUser){
-    userCredits--;
-    await sb.from('users').update({credits:userCredits}).eq('id',currentUser.id);
-    updateCreditsUI();
+  try{
+    if(!isProUser){
+      userCredits--;
+      await sb.from('users').update({credits:userCredits}).eq('id',currentUser.id);
+      updateCreditsUI();
+    }
+    await sb.from('generations').insert({user_id:currentUser.id,platform:plataforma,tipo,bairro});
+  }catch(e){
+    console.log('⚠️ Erro Supabase (não crítico):', e.message);
   }
-  await sb.from('generations').insert({user_id:currentUser.id,platform:plataforma,tipo,bairro});
   updatePDFAccess();
 
   console.log('🔵 [8] processando score...');
