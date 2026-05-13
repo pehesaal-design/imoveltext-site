@@ -1235,6 +1235,12 @@ async function gerar(){
   if(!currentUser){pendingGeneration=true;showSignupModal();return;}
   if(!isProUser&&userCredits<=0){showPaywall();return;}
 
+  // Reset completo do estado anterior
+  lastTitulo='';lastCorpo='';
+  hashtagsGeradas=[];
+  fotoCapaIdx=0;
+  window.html2canvas=window.html2canvas||null; // mantém biblioteca carregada
+
   const btn=document.getElementById('gen-btn');
   const tipo=document.getElementById('tipo').value;
   const finalidade=document.getElementById('finalidade').value;
@@ -1322,6 +1328,8 @@ REGRAS PARA AS LEGENDAS:
 - Escreva 3 a 4 frases por legenda — descritivo mas objetivo
 - Descreva APENAS o que é possível concluir com certeza analisando a imagem: iluminação natural ou artificial, presença de janelas grandes ou basculantes, ventilação aparente, cores predominantes, móveis planejados ou soltos, amplitude do ambiente, estilo decorativo, pé-direito aparente, integração entre ambientes
 - NUNCA especule sobre materiais — não diga "mármore", "granito", "madeira", "porcelanato", "inox" etc. pois não é possível confirmar isso por foto
+- NUNCA especule sobre características arquitetônicas que não são confirmáveis — não diga "borda infinita", "piso aquecido", "acústica especial", "impermeabilizado" etc.
+- Descreva apenas o que é visível com absoluta certeza na imagem
 - Cada legenda deve ser única e específica para aquela foto — não repita descrições
 - Nunca mencione bairro, cidade ou localização`;
 
