@@ -1235,12 +1235,24 @@ async function gerar(){
   if(!currentUser){pendingGeneration=true;showSignupModal();return;}
   if(!isProUser&&userCredits<=0){showPaywall();return;}
 
-  // Reset só do resultado anterior — fotos são preservadas
-  lastTitulo='';lastCorpo='';
-  hashtagsGeradas=[];
-  fotoCapaIdx=0;
+  // Limpa apenas o resultado anterior — fotos e dados preenchidos são preservados
+  lastTitulo='';lastCorpo='';hashtagsGeradas=[];fotoCapaIdx=0;
+  document.getElementById('titulo-body').innerHTML=loadH;
+  document.getElementById('result-body').innerHTML=loadH;
+  document.getElementById('result-card').style.display='none';
+  document.getElementById('score-card').style.display='none';
+  document.getElementById('hash-card').style.display='none';
+  document.getElementById('captions-card').style.display='none';
+  document.getElementById('pdf-wrap').style.display='none';
+  document.getElementById('capa-selector').style.display='none';
 
   const btn=document.getElementById('gen-btn');
+  btn.disabled=true;
+  const rs=document.getElementById('results-section');
+  rs.style.display='flex';
+  document.getElementById('titulo-card').style.display='block';
+  document.getElementById('titulo-card').scrollIntoView({behavior:'smooth',block:'start'});
+
   const tipo=document.getElementById('tipo').value;
   const finalidade=document.getElementById('finalidade').value;
   const bairro=document.getElementById('bairro').value||'não informado';
@@ -1249,22 +1261,7 @@ async function gerar(){
   const suites=document.getElementById('suites').value||'não informado';
   const area=document.getElementById('area').value||'não informado';
   const obs=document.getElementById('obs').value||'';
-
   lastTipo=tipo;lastBairro=bairro;lastPreco=preco;lastArea=area;lastQuartos=quartos;lastSuites=suites;
-
-  btn.disabled=true;
-  const rs=document.getElementById('results-section');
-  rs.style.display='flex';
-  document.getElementById('titulo-card').style.display='block';
-  document.getElementById('result-card').style.display='none';
-  document.getElementById('score-card').style.display='none';
-  document.getElementById('hash-card').style.display='none';
-  document.getElementById('captions-card').style.display='none';
-  document.getElementById('pdf-wrap').style.display='none';
-  document.getElementById('capa-selector').style.display='none';
-  document.getElementById('titulo-body').innerHTML=loadH;
-  document.getElementById('result-body').innerHTML=loadH;
-  document.getElementById('titulo-card').scrollIntoView({behavior:'smooth',block:'start'});
 
   const dadosBase=`Tipo: ${tipo} | Finalidade: ${finalidade} | Local: ${bairro} | Preço: ${preco} | Quartos: ${quartos} | Suítes: ${suites} | Área: ${area}m² | Obs: ${obs||'nenhuma'}`;
 
@@ -1290,48 +1287,51 @@ PLATAFORMA: ${plataforma}
 TOM: ${tomDesc(tomAnuncio)}
 
 REGRAS ABSOLUTAS:
-- NUNCA use asteriscos, hashtags, markdown ou qualquer formatação especial
+- NUNCA use asteriscos, markdown ou qualquer formatação especial
 - NUNCA use frases genéricas como "não perca essa oportunidade", "imóvel dos sonhos", "venha conferir", "oportunidade única"
 - NUNCA descreva a ordem ou sequência dos ambientes ("ao entrar", "logo na entrada", "ao fundo") a menos que o corretor tenha explicitado isso nas observações
 - NUNCA invente informações que não estão nos dados nem nas fotos
 - Use a preposição correta para o bairro — "na Pituba", "no Itaigara", "na Barra", "em Moema" etc.
-- Escreva como um corretor experiente conversando diretamente com o comprador ideal
 - Integre as observações visuais das fotos naturalmente no texto — não liste, narre
-- ZAP/OLX: texto corrido, primeira frase impacta com o diferencial principal, termine com chamada para ação direta. Máx 280 palavras.
-- Instagram: primeira linha captura atenção antes do "ver mais", emojis naturais (máx 3), narrativa aspiracional. NÃO inclua hashtags. Máx 80 palavras.
-- WhatsApp: tom de mensagem real de corretor para cliente, direto e pessoal. Máx 90 palavras.
-- Site: narrativa rica, percorre os ambientes como se fosse uma visita guiada, SEO-friendly. Máx 380 palavras.
+
+FORMATO OBRIGATÓRIO POR PLATAFORMA — siga rigorosamente:
+
+ZAP/OLX: texto corrido e objetivo. Primeira frase destaca o principal diferencial. Dados técnicos integrados naturalmente. Termina com chamada para ação direta ("Agende sua visita", "Entre em contato"). Máx 280 palavras. SEM emojis.
+
+Instagram: formato completamente diferente — começa com frase de impacto curta que prende antes do "ver mais" (máx 15 palavras na primeira linha). Usa 2 a 3 emojis estratégicos para dar ritmo. Tom aspiracional e emocional. Texto fluido como um post real de Instagram. Máx 80 palavras.
+
+WhatsApp: escreva como uma mensagem real de corretor para cliente — informal, direto, pessoal. Como se estivesse digitando agora. Pode usar 1 emoji no máximo. Sem parágrafos longos. Máx 90 palavras.
+
+Site: texto rico em detalhes, percorre os ambientes com narrativa envolvente. Tom mais formal. Otimizado para SEO com palavras-chave naturais. Máx 380 palavras.
 
 Responda SOMENTE em JSON puro sem markdown, sem explicações, com EXATAMENTE esta estrutura:
 {
   "titulo": "título em até 80 caracteres, específico para este imóvel",
-  "corpo": "corpo do anúncio conforme as regras acima",
+  "corpo": "corpo do anúncio no formato correto para ${plataforma}",
   "score": 72,
   "dicas": ["o que falta ou poderia melhorar 1", "ponto de melhoria 2", "ponto de melhoria 3"],
   "hashtags": {"local": ["#tag1", "#tag2", "#tag3", "#tag4"], "tipo": ["#tag1", "#tag2", "#tag3", "#tag4"], "perfil": ["#tag1", "#tag2", "#tag3", "#tag4"]},
-  "legendas": ["legenda da foto 1 (3 frases, descreva materiais e acabamentos visíveis, sem mencionar bairro)", "legenda da foto 2"]
+  "legendas": ["legenda foto 1", "legenda foto 2", "legenda foto 3"]
 }
 
 REGRAS PARA O SCORE:
 - Avalie de 0 a 100 com critério real — não seja generoso
 - ATENÇÃO: os dados do imóvel já foram informados acima — NÃO diga que faltou algo que já foi informado
-- Desconte pontos apenas por informações que REALMENTE não foram fornecidas ou que poderiam melhorar
+- Desconte pontos apenas por informações que REALMENTE não foram fornecidas
 - Score 90+ só se tiver fotos + todos os dados + descrição rica e detalhada
 - Score típico sem fotos: 45-65. Com fotos e dados completos: 70-85
 
 REGRAS PARA AS DICAS:
 - Aponte especificamente o que FALTA ou poderia MELHORAR — não elogie o que já está bom
-- Exemplos: "Faltou informar o valor do condomínio", "Adicionar fotos da área de lazer aumentaria a conversão", "O preço não foi informado — isso reduz o interesse do comprador"
 
-REGRAS PARA AS LEGENDAS:
-- Uma legenda por foto enviada (${fotos.length} foto${fotos.length>1?'s':''})
-- Escreva 3 a 4 frases por legenda — descritivo mas objetivo
-- Descreva APENAS o que é possível concluir com certeza analisando a imagem: iluminação natural ou artificial, presença de janelas grandes ou basculantes, ventilação aparente, cores predominantes, móveis planejados ou soltos, amplitude do ambiente, estilo decorativo, pé-direito aparente, integração entre ambientes
-- NUNCA especule sobre materiais — não diga "mármore", "granito", "madeira", "porcelanato", "inox" etc. pois não é possível confirmar isso por foto
-- NUNCA especule sobre características arquitetônicas que não são confirmáveis — não diga "borda infinita", "piso aquecido", "acústica especial", "impermeabilizado" etc.
-- Descreva apenas o que é visível com absoluta certeza na imagem
-- Cada legenda deve ser única e específica para aquela foto — não repita descrições
-- Nunca mencione bairro, cidade ou localização`;
+REGRAS PARA AS LEGENDAS — CRÍTICO:
+- Escreva EXATAMENTE ${fotos.length} legenda${fotos.length>1?'s':''}, uma para cada foto na ordem exata em que foram enviadas
+- A legenda 1 descreve a foto 1, a legenda 2 descreve a foto 2, e assim por diante — NUNCA troque a ordem
+- Escreva 3 a 4 frases por legenda descrevendo: iluminação, janelas, ventilação aparente, cores predominantes, móveis planejados ou soltos, amplitude, estilo decorativo, integração entre ambientes
+- NUNCA especule sobre materiais (mármore, granito, madeira, porcelanato, inox etc.)
+- NUNCA especule sobre características não confirmáveis (borda infinita, piso aquecido etc.)
+- Cada legenda deve ser única — não repita descrições entre fotos
+- Nunca mencione bairro ou cidade`;
 
   const partsAnuncio=[];
   fotos.slice(0,10).forEach(f=>partsAnuncio.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));
