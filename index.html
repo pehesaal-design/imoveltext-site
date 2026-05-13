@@ -446,7 +446,7 @@ section{position:relative;z-index:1}
   flex:1;padding:32px 48px;display:flex;flex-direction:column;justify-content:space-between;
 }
 .pdf-foto-legenda{
-  font-size:19px;font-style:italic;font-weight:400;
+  font-size:22px;font-style:italic;font-weight:400;
   color:#f0ede8;line-height:1.55;
 }
 .pdf-foto-footer{
@@ -1303,11 +1303,7 @@ Responda SOMENTE em JSON puro sem markdown, sem explicações, com EXATAMENTE es
   "corpo": "corpo do anúncio conforme as regras acima",
   "score": 72,
   "dicas": ["o que falta ou poderia melhorar 1", "ponto de melhoria 2", "ponto de melhoria 3"],
-  ${plataforma==='Instagram'||plataforma==='Site'?`"hashtags": {
-    "local": ["#tag1", "#tag2", "#tag3", "#tag4"],
-    "tipo": ["#tag1", "#tag2", "#tag3", "#tag4"],
-    "perfil": ["#tag1", "#tag2", "#tag3", "#tag4"]
-  },`:`"hashtags": {},`}
+  "hashtags": {"local": ["#tag1", "#tag2", "#tag3", "#tag4"], "tipo": ["#tag1", "#tag2", "#tag3", "#tag4"], "perfil": ["#tag1", "#tag2", "#tag3", "#tag4"]},
   "legendas": ["legenda da foto 1 (3 frases, descreva materiais e acabamentos visíveis, sem mencionar bairro)", "legenda da foto 2"]
 }
 
@@ -1323,9 +1319,11 @@ REGRAS PARA AS DICAS:
 
 REGRAS PARA AS LEGENDAS:
 - Uma legenda por foto enviada (${fotos.length} foto${fotos.length>1?'s':''})
-- Descreva materiais, cores, móveis e acabamentos visíveis na foto
-- Cada legenda deve ser única — não repita informações entre elas
-- Nunca mencione bairro, cidade ou localização`;`;
+- Escreva 3 a 4 frases por legenda — descritivo mas objetivo
+- Descreva APENAS o que é possível concluir com certeza analisando a imagem: iluminação natural ou artificial, presença de janelas grandes ou basculantes, ventilação aparente, cores predominantes, móveis planejados ou soltos, amplitude do ambiente, estilo decorativo, pé-direito aparente, integração entre ambientes
+- NUNCA especule sobre materiais — não diga "mármore", "granito", "madeira", "porcelanato", "inox" etc. pois não é possível confirmar isso por foto
+- Cada legenda deve ser única e específica para aquela foto — não repita descrições
+- Nunca mencione bairro, cidade ou localização`;
 
   const partsAnuncio=[];
   fotos.slice(0,10).forEach(f=>partsAnuncio.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));
@@ -1537,8 +1535,6 @@ async function gerarPDF(){
       return;
     }
   }
-  const btn=document.getElementById('pdf-btn');
-  btn.disabled=true;
   const corrNome=document.getElementById('corr-nome')?.value||'';
   const corrTel=document.getElementById('corr-tel')?.value||'';
   const corrCreci=document.getElementById('corr-creci')?.value||'';
