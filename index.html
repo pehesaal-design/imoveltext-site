@@ -1360,9 +1360,9 @@ REGRAS PARA AS LEGENDAS — CRÍTICO:
     document.getElementById('result-card').style.display='block';
   }catch(e){
     document.getElementById('titulo-body').innerHTML=`<span style="color:#ef4444">⚠️ ${e.message}</span>`;
-    document.getElementById('result-body').innerHTML=`<span style="color:var(--text3);font-size:12px">Recarregue a página e tente novamente. Se o erro persistir, aguarde alguns segundos — pode ser instabilidade temporária da IA.</span>`;
+    document.getElementById('result-body').innerHTML=`<span style="color:var(--text3);font-size:12px">Tente gerar novamente. Se o erro persistir, aguarde alguns segundos — pode ser instabilidade temporária da IA.</span>`;
     btn.disabled=false;
-    btn.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> Tentar novamente';
+    btn.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> Gerar anúncio';
     return;
   }
 
@@ -1374,61 +1374,70 @@ REGRAS PARA AS LEGENDAS — CRÍTICO:
   await sb.from('generations').insert({user_id:currentUser.id,platform:plataforma,tipo,bairro});
   updatePDFAccess();
 
-  // Processar score e hashtags do mesmo JSON — sem segunda chamada ao Supabase
+  // Score
   try{
     const ps=parsedPrincipal;
     const score=Math.min(100,Math.max(0,parseInt(ps.score)||70));
     const cls=score>=75?'alto':score>=50?'medio':'baixo';
     const emoji=score>=75?'🟢':score>=50?'🟡':'🔴';
-    document.getElementById('score-card').style.display='block';
     document.getElementById('score-badge').textContent=`${emoji} ${score}/100`;
     const bar=document.getElementById('score-bar');
     bar.className=`score-bar-fill ${cls}`;bar.style.width=score+'%';
     document.getElementById('score-tips').innerHTML=(ps.dicas||[]).slice(0,3).map((d,i)=>`<div class="score-tip"><span>${['⚠️','💡','📝'][i]||'💡'}</span><span>${d}</span></div>`).join('');
+  }catch(e){
+    document.getElementById('score-tips').innerHTML='<div style="font-size:12px;color:var(--text3)">Não foi possível calcular o score.</div>';
+  }
+  document.getElementById('score-card').style.display='block';
 
-    // Hashtags só para Instagram e Site — WhatsApp e ZAP/OLX não usam
-    const usaHashtags=plataforma==='Instagram'||plataforma==='Site';
-    const hashCard=document.getElementById('hash-card');
-    if(usaHashtags){
-      const h=ps.hashtags||{};
+  // Hashtags só para Instagram e Site
+  const usaHashtags=plataforma==='Instagram'||plataforma==='Site';
+  if(usaHashtags){
+    try{
+      const h=parsedPrincipal.hashtags||{};
       hashtagsGeradas=[...(h.local||[]),...(h.tipo||[]),...(h.perfil||[])];
-      hashCard.style.display='block';
       document.getElementById('hash-body').innerHTML=`
         <div><div class="hash-group-label">Localização</div><div class="hash-tags">${(h.local||[]).map(t=>`<span class="hash-tag local">${t}</span>`).join('')}</div></div>
         <div><div class="hash-group-label">Tipo de imóvel</div><div class="hash-tags">${(h.tipo||[]).map(t=>`<span class="hash-tag tipo">${t}</span>`).join('')}</div></div>
         <div><div class="hash-group-label">Perfil do comprador</div><div class="hash-tags">${(h.perfil||[]).map(t=>`<span class="hash-tag perfil">${t}</span>`).join('')}</div></div>`;
-    } else {
-      hashCard.style.display='none';
+      document.getElementById('hash-card').style.display='block';
+    }catch(e){
+      document.getElementById('hash-card').style.display='none';
     }
-  }catch(e){
-    document.getElementById('score-tips').innerHTML='<div style="font-size:12px;color:var(--text3)">Não foi possível calcular o score.</div>';
-    document.getElementById('hash-body').innerHTML='<div style="font-size:12px;color:var(--text3)">Não foi possível gerar as hashtags.</div>';
+  } else {
+    document.getElementById('hash-card').style.display='none';
   }
 
-  // Legendas — já vêm no mesmo JSON, sem segunda chamada
+  // Legendas
   if(fotos.length>0){
-    document.getElementById('captions-card').style.display='block';
-    const legendas=parsedPrincipal.legendas||[];
-    document.getElementById('cap-list').innerHTML=legendas.length>0
-      ?legendas.map((leg,i)=>`<div class="cap-item"><img class="cap-thumb" src="${fotos[i]?.src}" alt="Foto ${i+1}"/><div class="cap-text">${leg}</div></div>`).join('')
-      :'<div style="padding:0;font-size:12px;color:var(--text3)">Legendas não geradas.</div>';
+    try{
+      const legendas=parsedPrincipal.legendas||[];
+      document.getElementById('cap-list').innerHTML=legendas.length>0
+        ?legendas.map((leg,i)=>`<div class="cap-item"><img class="cap-thumb" src="${fotos[i]?.src}" alt="Foto ${i+1}"/><div class="cap-text">${leg}</div></div>`).join('')
+        :'<div style="padding:0;font-size:12px;color:var(--text3)">Legendas não geradas.</div>';
+      document.getElementById('captions-card').style.display='block';
+    }catch(e){
+      document.getElementById('captions-card').style.display='none';
+    }
   }
 
-  // Mostrar seletor de capa + botão PDF só agora que tudo está pronto
+  // Seletor de capa
   if(fotos.length>0){
     fotoCapaIdx=0;
     const capaSel=document.getElementById('capa-selector');
     const capaThumbs=document.getElementById('capa-thumbs');
-    capaSel.style.display='block';
     capaThumbs.innerHTML=fotos.slice(0,10).map((f,i)=>`
       <div class="capa-thumb-item${i===0?' selected':''}" onclick="selecionarCapa(${i})" id="capa-thumb-${i}">
         <img src="${f.src}" alt="Foto ${i+1}"/>
         <div class="capa-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>`).join('');
+    capaSel.style.display='block';
   }
+
+  // PDF — sempre mostra ao final
   document.getElementById('pdf-wrap').style.display='block';
   updatePDFAccess();
   btn.disabled=false;
+  btn.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> Gerar anúncio';
 }
 
 // ─── PDF COM HTML2CANVAS ────────────────────────────────
