@@ -1232,8 +1232,11 @@ async function chamarGemini(parts){
 
 // ─── GERAR ─────────────────────────────────────────────
 async function gerar(){
+  console.log('🔵 [1] gerar() chamada');
   if(!currentUser){pendingGeneration=true;showSignupModal();return;}
   if(!isProUser&&userCredits<=0){showPaywall();return;}
+  console.log('🔵 [2] usuário autenticado, créditos:', userCredits, 'isPro:', isProUser);
+  console.log('🔵 [3] fotos.length:', fotos.length, 'plataforma:', plataforma);
 
   // Limpa apenas o resultado anterior — fotos e dados preenchidos são preservados
   lastTitulo='';lastCorpo='';hashtagsGeradas=[];fotoCapaIdx=0;
@@ -1340,7 +1343,9 @@ REGRAS PARA AS LEGENDAS — CRÍTICO:
   let corpoTexto='';
   let parsedPrincipal={titulo:'',corpo:'',score:70,dicas:[],hashtags:{}};
   try{
+    console.log('🔵 [4] enviando para Gemini, parts:', partsAnuncio.length);
     const raw=await chamarGemini(partsAnuncio);
+    console.log('🔵 [5] resposta recebida, tamanho:', raw.length);
     try{
       const match=raw.match(/\{[\s\S]*"titulo"[\s\S]*"corpo"[\s\S]*\}/);
       if(match) parsedPrincipal={...parsedPrincipal,...JSON.parse(match[0])};
@@ -1355,10 +1360,13 @@ REGRAS PARA AS LEGENDAS — CRÍTICO:
     lastTitulo=parsedPrincipal.titulo||'';
     lastCorpo=parsedPrincipal.corpo||'';
     corpoTexto=lastCorpo;
+    console.log('🔵 [6] anúncio parseado, titulo OK:', !!lastTitulo, 'corpo OK:', !!lastCorpo);
     document.getElementById('titulo-body').innerText=lastTitulo;
     document.getElementById('result-body').innerText=corpoTexto;
     document.getElementById('result-card').style.display='block';
+    console.log('🔵 [7] anúncio exibido na tela');
   }catch(e){
+    console.log('🔴 [ERRO] geração falhou:', e.message, e);
     document.getElementById('titulo-body').innerHTML=`<span style="color:#ef4444">⚠️ ${e.message}</span>`;
     document.getElementById('result-body').innerHTML=`<span style="color:var(--text3);font-size:12px">Tente gerar novamente. Se o erro persistir, aguarde alguns segundos — pode ser instabilidade temporária da IA.</span>`;
     btn.disabled=false;
@@ -1374,6 +1382,7 @@ REGRAS PARA AS LEGENDAS — CRÍTICO:
   await sb.from('generations').insert({user_id:currentUser.id,platform:plataforma,tipo,bairro});
   updatePDFAccess();
 
+  console.log('🔵 [8] processando score...');
   // Score
   try{
     const ps=parsedPrincipal;
@@ -1407,6 +1416,7 @@ REGRAS PARA AS LEGENDAS — CRÍTICO:
     document.getElementById('hash-card').style.display='none';
   }
 
+  console.log('🔵 [9] processando legendas... fotos:', fotos.length);
   // Legendas
   if(fotos.length>0){
     try{
@@ -1420,6 +1430,7 @@ REGRAS PARA AS LEGENDAS — CRÍTICO:
     }
   }
 
+  console.log('🔵 [10] processando seletor de capa...');
   // Seletor de capa
   if(fotos.length>0){
     fotoCapaIdx=0;
@@ -1433,11 +1444,13 @@ REGRAS PARA AS LEGENDAS — CRÍTICO:
     capaSel.style.display='block';
   }
 
+  console.log('🔵 [11] mostrando PDF wrap');
   // PDF — sempre mostra ao final
   document.getElementById('pdf-wrap').style.display='block';
   updatePDFAccess();
   btn.disabled=false;
   btn.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> Gerar anúncio';
+  console.log('🟢 [FIM] geração completa com sucesso');
 }
 
 // ─── PDF COM HTML2CANVAS ────────────────────────────────
