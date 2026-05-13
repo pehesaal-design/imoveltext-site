@@ -1374,16 +1374,17 @@ REGRAS PARA AS LEGENDAS — CRÍTICO:
     return;
   }
 
-  try{
-    if(!isProUser){
-      userCredits--;
-      await sb.from('users').update({credits:userCredits}).eq('id',currentUser.id);
-      updateCreditsUI();
-    }
-    await sb.from('generations').insert({user_id:currentUser.id,platform:plataforma,tipo,bairro});
-  }catch(e){
-    console.log('⚠️ Erro Supabase (não crítico):', e.message);
-  }
+  // Operações Supabase em background — não bloqueiam o fluxo
+  // Se travar/falhar, não impacta a UI
+  (async()=>{
+    try{
+      if(!isProUser){
+        userCredits--;
+        sb.from('users').update({credits:userCredits}).eq('id',currentUser.id).then(()=>updateCreditsUI()).catch(e=>console.log('⚠️ update users:',e.message));
+      }
+      sb.from('generations').insert({user_id:currentUser.id,platform:plataforma,tipo,bairro}).then().catch(e=>console.log('⚠️ insert generations:',e.message));
+    }catch(e){console.log('⚠️ Supabase bg:',e.message);}
+  })();
   updatePDFAccess();
 
   console.log('🔵 [8] processando score...');
