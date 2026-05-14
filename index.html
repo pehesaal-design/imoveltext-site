@@ -1212,68 +1212,40 @@ async function gerar(){
     ?`Foram enviadas ${fotos.length} foto(s) do imóvel. ANALISE CADA IMAGEM com atenção antes de escrever. Observe: ambiente (sala, cozinha, quarto, banheiro, varanda, piscina etc.), iluminação natural, presença de janelas grandes, amplitude dos espaços, cores predominantes, móveis planejados ou soltos, integração entre ambientes. USE essas observações no texto — o comprador deve sentir que você descreveu o imóvel real, não um genérico.`
     :'Nenhuma foto enviada. Use apenas os dados textuais.';
 
-  const promptPrincipal=`Você é especialista em copywriting imobiliário brasileiro com 20 anos de experiência.
-
-${fotoInfo}
+  const promptPrincipal=`Especialista em copywriting imobiliário brasileiro. ${fotos.length>0?`Analise as ${fotos.length} foto(s) — observe ambiente, iluminação, cores, amplitude, móveis. Use essas observações no texto.`:'Use apenas os dados textuais.'}
 
 DADOS DO IMÓVEL:
 ${dadosBase}
 
-PLATAFORMA: ${plataforma}
-TOM: ${tomDesc(tomAnuncio)}
+PLATAFORMA: ${plataforma} | TOM: ${tomDesc(tomAnuncio)}
 
-REGRAS ABSOLUTAS:
-- NUNCA use asteriscos, markdown ou formatação especial
-- NUNCA use frases como "não perca essa oportunidade", "imóvel dos sonhos", "venha conferir", "oportunidade única"
-- NUNCA descreva sequência de ambientes ("ao entrar", "logo na entrada") sem que o corretor tenha informado isso
-- NUNCA invente informações que não estão nos dados nem nas fotos
-- NUNCA especule materiais (mármore, granito, porcelanato) ou características não confirmáveis (borda infinita, piso aquecido)
-- Use preposição correta para o bairro: "na Pituba", "no Itaigara", "na Barra"
-- Integre observações das fotos naturalmente no texto — não liste, narre
+REGRAS:
+- Sem asteriscos, markdown ou formatação especial
+- Sem frases clichê ("não perca", "imóvel dos sonhos", "oportunidade única")
+- Sem sequência de ambientes ("ao entrar") sem o corretor ter informado
+- Sem inventar dados que não estão nos dados nem nas fotos
+- Sem especular materiais (mármore, granito) ou características não confirmáveis
+- Preposição correta: "na Pituba", "no Itaigara", "na Barra"
 
-FORMATO E EXEMPLO POR PLATAFORMA:
+FORMATO POR PLATAFORMA:
+ZAP/OLX: objetivo, sem emojis, diferencial na 1ª frase, storytelling, dados técnicos, localização, CTA. Máx 280 palavras.
+Instagram: GANCHO (≤125 chars na 1ª linha), corpo aspiracional 2-3 linhas com 2-3 emojis, CTA para DM. Máx 120 palavras.
+WhatsApp: mensagem direta de corretor, diferencial + dados compactos + pergunta. Termina com "Segue também o material completo do imóvel em anexo." Máx 90 palavras, máx 1 emoji.
+Site: narrativa longa SEO, abertura emocional, referências locais, dados contextualizados, CTA. Máx 400 palavras.
 
-ZAP/OLX — texto corrido, objetivo, sem emojis. Estrutura: (1) primeira frase destaca o diferencial principal do imóvel. (2) parágrafo de storytelling curto fazendo o comprador se imaginar vivendo lá. (3) dados técnicos contextualizados como benefícios. (4) referências de localização próximas. (5) CTA direto. Máx 280 palavras.
-EXEMPLO ZAP/OLX: "Apartamento de 100m² com vista definitiva para o mar na Pituba, Salvador. 3 quartos, 1 suíte, 2 vagas cobertas. R$ 850 mil. Imagine acordar todos os dias com a brisa do mar e a orla iluminada pela manhã. A sala integrada com varanda cria um ambiente amplo e luminoso. Condomínio completo com piscina, academia e portaria 24h. A dois quarteirões do Shopping da Bahia, próximo a escolas e restaurantes. Agende sua visita."
+SCORE — verifique item a item nos DADOS DO IMÓVEL e some os pontos:
+Bairro informado +10 | Cidade/estado +5 | Referências próximas (escola/shopping/metrô) nas obs +10
+Preço +10 | Área m² +8 | Quartos +8 | Vagas nas obs +6 | Condomínio/IPTU nas obs +8
+Tipo +5 | Finalidade +5
+Fotos: 3+ fotos +10 | 5+ fotos +5 | Ambientes variados +10
+IMPORTANTE: se o dado aparece nos DADOS acima com valor real, ele FOI informado — some os pontos. Não invente critérios extras.
 
-Instagram — estrutura rígida em 3 partes: (1) GANCHO: primeira linha até 125 caracteres que pare o scroll — cenário aspiracional, pergunta provocadora ou benefício concreto surpreendente. (2) CORPO: 2-3 linhas com diferenciais principais, tom emocional e aspiracional, 2-3 emojis estratégicos. (3) CTA: convida para DM ou comentário com palavra-chave. Máx 120 palavras total.
-EXEMPLO Instagram: "Sua manhã começa com café na varanda e vista pro mar. Todo dia. ☀️\n\n3 quartos · suíte master · 12º andar · vista definitiva\nPituba, Salvador — o endereço que combina com quem quer mais.\n\nQuer ver o tour completo? Manda 'VISTA' na DM 📩"
+DICAS: 3 itens baseados SOMENTE no que está faltando (itens que não somaram pontos). Nunca mencione como falta algo que já foi informado.
 
-WhatsApp — mensagem como corretor enviando para cliente. Tom direto e pessoal. Estrutura: (1) diferencial principal em 1 frase marcante. (2) dados essenciais compactos em 1 linha. (3) pergunta que abre conversa e força resposta. Termina com: "Segue também o material completo do imóvel em anexo." Máx 90 palavras. No máximo 1 emoji.
-EXEMPLO WhatsApp: "Separei um apartamento na Pituba com vista definitiva pro mar que acho que vai te interessar.\n\n3 quartos · 1 suíte · 100m² · 2 vagas cobertas · R$ 850 mil\n\nPosso te mandar o tour completo agora?\n\nSegue também o material completo do imóvel em anexo."
+Responda SOMENTE em JSON puro sem markdown:
+{"titulo":"tipo+quartos+bairro+diferencial em até 80 chars","corpo":"texto para ${plataforma}","score":72,"dicas":["falta 1","falta 2","falta 3"],"hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],"tipo":["#tag1","#tag2","#tag3","#tag4"],"perfil":["#tag1","#tag2","#tag3","#tag4"]},"legendas":["legenda foto 1","legenda foto 2"]}
 
-Site — texto longo, narrativo, otimizado para SEO. Estrutura: (1) abertura emocional que vende o estilo de vida. (2) storytelling com referências locais reais como palavras-chave (nomes de ruas, shoppings, escolas, parques). (3) detalhes técnicos contextualizados como benefícios. (4) lazer e infraestrutura do condomínio. (5) CTA com menção a financiamento se aplicável. Máx 400 palavras.
-EXEMPLO Site: "Imagine acordar todos os dias com a brisa do mar e a orla iluminada pela manhã, tudo isso a partir do 12º andar na Pituba. A dois quarteirões do Shopping da Bahia e próximo à Avenida Tancredo Neves, este apartamento de 100m² foi pensado para quem não aceita compromissos com qualidade de vida. São 3 quartos, sendo 1 suíte, sala integrada com varanda, cozinha planejada e 2 vagas cobertas. Condomínio com piscina, academia e portaria 24h. Agende sua visita."
-
-SCORE — OBRIGATÓRIO: siga este processo EXATO, passo a passo:
-
-PASSO 1 — Verifique cada item nos DADOS DO IMÓVEL acima e marque ✓ se presente ou ✗ se ausente:
-[ ] Bairro foi informado? → +10pts
-[ ] Cidade ou estado foi mencionado nas observações ou no bairro? → +5pts
-[ ] Referências próximas mencionadas nas observações (escola, shopping, metrô, avenida, parque)? → +10pts
-[ ] Preço foi informado (qualquer valor diferente de "não informado")? → +10pts
-[ ] Área em m² foi informada (diferente de "não informada")? → +8pts
-[ ] Quartos foram informados (diferente de "não informado")? → +8pts
-[ ] Vagas de garagem foram mencionadas nas observações? → +6pts
-[ ] Condomínio, IPTU ou valor mensal foi mencionado nas observações? → +8pts
-[ ] Tipo de imóvel foi especificado (apartamento, casa, etc.)? → +5pts
-[ ] Finalidade foi especificada (Venda, Aluguel ou Temporada)? → +5pts
-
-PASSO 2 — Verifique as fotos:
-[ ] 3 ou mais fotos foram enviadas? → +10pts
-[ ] 5 ou mais fotos foram enviadas? → +5pts (adicional ao anterior)
-[ ] As fotos mostram ambientes variados (pelo menos 3 tipos diferentes)? → +10pts
-
-PASSO 3 — Some APENAS os pontos dos itens marcados ✓. Esse é o score final.
-
-REGRAS CRÍTICAS:
-- Se o dado aparece nos DADOS DO IMÓVEL com valor real (não "não informado"), ele FOI informado — marque ✓
-- Não penalize por dados ausentes além de simplesmente não somar os pontos daquele item
-- Não invente critérios fora desta lista
-- Score máximo: 100. Score mínimo: 0
-
-DICAS: gere 3 dicas baseadas SOMENTE nos itens marcados ✗ — o que realmente faltou fornecer. Se o item foi informado, jamais mencione como sugestão de melhoria.
-LEGENDAS: exatamente ${fotos.length} legenda${fotos.length>1?'s':''} na ordem das fotos. Cada legenda: 3-4 frases descrevendo iluminação, cores, amplitude, móveis, estilo decorativo. Sem mencionar bairro ou cidade. Sem especular materiais.`;
+LEGENDAS: exatamente ${fotos.length} legenda${fotos.length>1?'s':''} na ordem das fotos. 2-3 frases por legenda: iluminação, cores, amplitude, móveis, estilo. Sem bairro/cidade. Sem especular materiais.`;
 
   const partsAnuncio=[];
   fotos.slice(0,10).forEach(f=>partsAnuncio.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));
