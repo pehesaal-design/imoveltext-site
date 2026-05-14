@@ -355,94 +355,109 @@ section{position:relative;z-index:1}
 /* ── PDF TEMPLATE ── */
 #pdf-template{position:fixed;left:-9999px;top:0;z-index:-1;pointer-events:none}
 
-/* PALETA DO CANVA */
-/* Escuro: #2C2017  Claro: #E8D5B7  Branco: #fff */
+/* PALETA */
+/* Escuro: #2C2017  Claro: #E8D5B7 */
 
 /* ══ BASE ══ */
 .pf{width:794px;height:1123px;overflow:hidden;display:flex;font-family:'DM Sans',sans-serif;background:#2C2017;position:relative;}
 .pf *{box-sizing:border-box;}
+.pf-circ{position:absolute;border-radius:50%;border:6px solid #E8D5B7;opacity:.25;pointer-events:none;}
 
-/* Círculos decorativos do Canva */
-.pf-circ{position:absolute;border-radius:50%;border:6px solid #E8D5B7;opacity:.35;pointer-events:none;}
-
-/* ══ L1 — CAPA ══ */
+/* ══ L1 — CAPA VERTICAL (foto retrato) ══ */
 .pf-l1{flex-direction:row;}
-.pf-l1-left{width:45%;background:#2C2017;display:flex;flex-direction:column;padding:40px 36px;position:relative;z-index:1;flex-shrink:0;}
-.pf-l1-tag{font-size:11px;font-weight:500;color:#E8D5B7;letter-spacing:.12em;margin-bottom:28px;opacity:.7;}
-.pf-l1-titulo{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:#E8D5B7;line-height:1.1;margin-bottom:24px;flex:1;}
-.pf-l1-ficha{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:24px;}
+.pf-l1-left{width:44%;background:#2C2017;display:flex;flex-direction:column;padding:36px 32px;position:relative;z-index:1;flex-shrink:0;}
+.pf-brand{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,213,183,.4);margin-bottom:6px;}
+.pf-l1-tag{font-size:11px;font-weight:500;color:#E8D5B7;letter-spacing:.1em;margin-bottom:20px;opacity:.6;}
+.pf-l1-titulo{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:#E8D5B7;line-height:1.1;margin-bottom:20px;flex:1;}
+.pf-l1-ficha{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:20px;}
 .pf-l1-item{padding:10px 0;border-top:1px solid rgba(232,213,183,.2);}
 .pf-l1-item:nth-child(5),.pf-l1-item:nth-child(6){border-bottom:1px solid rgba(232,213,183,.2);}
-.pf-l1-label{font-size:8px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,213,183,.5);display:block;margin-bottom:3px;}
-.pf-l1-val{font-size:15px;font-weight:700;color:#E8D5B7;display:block;}
+.pf-l1-label{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(232,213,183,.45);display:block;margin-bottom:4px;}
+.pf-l1-val{font-size:16px;font-weight:700;color:#E8D5B7;display:block;}
 .pf-l1-val.dest{color:#C8A96A;}
 .pf-l1-footer{border-top:1px solid rgba(232,213,183,.2);padding-top:14px;}
-.pf-l1-nome{font-size:12px;font-weight:600;color:#E8D5B7;}
-.pf-l1-info{font-size:10px;color:rgba(232,213,183,.5);margin-top:2px;}
-.pf-l1-right{flex:1;position:relative;}
+.pf-l1-nome{font-size:13px;font-weight:600;color:#E8D5B7;}
+.pf-l1-info{font-size:11px;color:rgba(232,213,183,.45);margin-top:3px;}
+.pf-l1-right{flex:1;position:relative;overflow:hidden;}
 .pf-l1-foto{width:100%;height:100%;object-fit:cover;display:block;}
-.pf-l1-foto-ph{width:100%;height:100%;background:#3a2e1e;}
-.pf-brand{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,213,183,.4);margin-bottom:6px;}
 
-/* ══ L2 — TEXTO ESQUERDO + FOTO DIREITA ══ */
+/* ══ L1H — CAPA HORIZONTAL (foto paisagem) ══ */
+.pf-l1h{flex-direction:column;}
+.pf-l1h-foto-wrap{position:relative;height:500px;flex-shrink:0;overflow:hidden;}
+.pf-l1h-foto{width:100%;height:100%;object-fit:cover;display:block;}
+.pf-l1h-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(44,32,23,.9) 0%,rgba(44,32,23,.3) 50%,transparent 100%);}
+.pf-l1h-titulo-wrap{position:absolute;bottom:0;left:0;right:0;padding:0 40px 28px;}
+.pf-l1h-badge{display:inline-block;background:#C8A96A;color:#2C2017;font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;padding:4px 12px;margin-bottom:10px;}
+.pf-l1h-titulo{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#E8D5B7;line-height:1.1;}
+.pf-l1h-body{flex:1;padding:24px 40px;display:flex;flex-direction:column;}
+.pf-l1h-ficha{display:grid;grid-template-columns:repeat(3,1fr);gap:0;flex:1;}
+.pf-l1h-item{padding:12px 12px;border-left:1px solid rgba(232,213,183,.15);}
+.pf-l1h-item:first-child{border-left:none;}
+.pf-l1h-label{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(232,213,183,.4);display:block;margin-bottom:4px;}
+.pf-l1h-val{font-size:17px;font-weight:700;color:#E8D5B7;display:block;}
+.pf-l1h-val.dest{color:#C8A96A;}
+.pf-l1h-footer{border-top:1px solid rgba(232,213,183,.15);padding-top:14px;}
+.pf-l1h-nome{font-size:13px;font-weight:600;color:#E8D5B7;}
+.pf-l1h-info{font-size:11px;color:rgba(232,213,183,.4);margin-top:3px;}
+
+/* ══ L2 — TEXTO ESQUERDO + FOTO DIREITA (vertical) ══ */
 .pf-l2{flex-direction:row;}
-.pf-l2-left{width:44%;background:#2C2017;display:flex;flex-direction:column;justify-content:center;padding:40px 36px;position:relative;z-index:1;flex-shrink:0;}
-.pf-l2-num{font-size:10px;font-weight:600;letter-spacing:.14em;color:rgba(232,213,183,.4);margin-bottom:16px;}
-.pf-l2-titulo{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#E8D5B7;line-height:1.15;margin-bottom:20px;}
-.pf-l2-desc{font-size:12px;line-height:1.8;color:rgba(232,213,183,.7);font-weight:300;}
+.pf-l2-left{width:42%;background:#2C2017;display:flex;flex-direction:column;justify-content:center;padding:40px 32px;position:relative;z-index:1;flex-shrink:0;}
+.pf-l2-num{font-size:11px;font-weight:600;letter-spacing:.12em;color:rgba(232,213,183,.4);margin-bottom:16px;}
+.pf-l2-titulo{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:#E8D5B7;line-height:1.15;margin-bottom:18px;}
+.pf-l2-desc{font-size:14px;line-height:1.8;color:rgba(232,213,183,.72);font-weight:300;}
 .pf-l2-footer{margin-top:auto;border-top:1px solid rgba(232,213,183,.15);padding-top:14px;}
-.pf-l2-nome{font-size:11px;font-weight:600;color:rgba(232,213,183,.6);}
-.pf-l2-info{font-size:9px;color:rgba(232,213,183,.35);margin-top:2px;}
-.pf-l2-right{flex:1;position:relative;}
+.pf-l2-nome{font-size:12px;font-weight:600;color:rgba(232,213,183,.65);}
+.pf-l2-info{font-size:10px;color:rgba(232,213,183,.35);margin-top:3px;}
+.pf-l2-right{flex:1;position:relative;overflow:hidden;}
 .pf-l2-foto{width:100%;height:100%;object-fit:cover;display:block;}
-.pf-l2-foto-ph{width:100%;height:100%;background:#3a2e1e;}
 
-/* ══ L3 — FOTO FULL-WIDTH + TEXTO EMBAIXO ══ */
+/* ══ L3 — FOTO FULL-WIDTH + TEXTO EMBAIXO (horizontal) ══ */
 .pf-l3{flex-direction:column;}
-.pf-l3-header{background:#2C2017;padding:28px 40px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;}
-.pf-l3-titulo{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#E8D5B7;}
-.pf-l3-num{font-size:10px;color:rgba(232,213,183,.4);letter-spacing:.1em;}
-.pf-l3-foto{width:100%;flex:1;object-fit:cover;display:block;min-height:0;}
-.pf-l3-foto-ph{width:100%;flex:1;background:#3a2e1e;min-height:0;}
-.pf-l3-footer{background:#2C2017;padding:20px 40px;flex-shrink:0;}
-.pf-l3-desc{font-size:12px;line-height:1.75;color:rgba(232,213,183,.7);font-weight:300;}
-.pf-l3-corretor{font-size:10px;color:rgba(232,213,183,.4);margin-top:8px;}
+.pf-l3-header{background:#2C2017;padding:24px 40px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;}
+.pf-l3-titulo{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#E8D5B7;}
+.pf-l3-num{font-size:11px;color:rgba(232,213,183,.4);letter-spacing:.1em;}
+.pf-l3-foto-wrap{flex:1;overflow:hidden;position:relative;}
+.pf-l3-foto{width:100%;height:100%;object-fit:cover;display:block;}
+.pf-l3-footer{background:#2C2017;padding:18px 40px 22px;flex-shrink:0;}
+.pf-l3-desc{font-size:14px;line-height:1.75;color:rgba(232,213,183,.72);font-weight:300;}
+.pf-l3-corretor{font-size:11px;color:rgba(232,213,183,.4);margin-top:10px;}
 
-/* ══ L4 — 2 FOTOS SEM TEXTO ══ */
+/* ══ L4 — 2 FOTOS HORIZONTAIS ══ */
 .pf-l4{flex-direction:column;}
-.pf-l4-header{background:#2C2017;padding:22px 40px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;}
-.pf-l4-titulo{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#E8D5B7;}
-.pf-l4-num{font-size:10px;color:rgba(232,213,183,.4);}
-.pf-l4-fotos{display:flex;flex:1;gap:3px;background:#1a1208;}
-.pf-l4-foto{width:50%;height:100%;object-fit:cover;display:block;}
-.pf-l4-foto-ph{width:50%;height:100%;background:#3a2e1e;}
-.pf-l4-footer{background:#2C2017;padding:14px 40px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center;}
-.pf-l4-corretor{font-size:10px;color:rgba(232,213,183,.4);}
+.pf-l4-header{background:#2C2017;padding:20px 40px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;}
+.pf-l4-titulo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#E8D5B7;}
+.pf-l4-num{font-size:11px;color:rgba(232,213,183,.4);}
+.pf-l4-fotos{display:flex;flex-direction:column;flex:1;gap:3px;background:#1a1208;}
+.pf-l4-foto-wrap{flex:1;overflow:hidden;position:relative;}
+.pf-l4-foto{width:100%;height:100%;object-fit:cover;display:block;}
+.pf-l4-footer{background:#2C2017;padding:14px 40px;flex-shrink:0;}
+.pf-l4-corretor{font-size:11px;color:rgba(232,213,183,.4);}
 
-/* ══ L5 — 2 FOTOS COM TEXTO EMBAIXO ══ */
+/* ══ L5 — 2 FOTOS VERTICAIS COM TEXTO ══ */
 .pf-l5{flex-direction:column;}
-.pf-l5-header{background:#2C2017;padding:24px 40px 20px;flex-shrink:0;}
-.pf-l5-titulo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#E8D5B7;text-align:center;}
+.pf-l5-header{background:#2C2017;padding:22px 40px 18px;flex-shrink:0;}
+.pf-l5-titulo{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#E8D5B7;text-align:center;}
 .pf-l5-fotos{display:flex;flex:1;gap:3px;background:#1a1208;}
-.pf-l5-col{flex:1;display:flex;flex-direction:column;}
-.pf-l5-foto{width:100%;flex:1;object-fit:cover;display:block;min-height:0;}
-.pf-l5-foto-ph{width:100%;flex:1;background:#3a2e1e;min-height:0;}
-.pf-l5-desc{font-size:11px;line-height:1.65;color:rgba(232,213,183,.65);padding:14px 16px;background:#2C2017;flex-shrink:0;}
-.pf-l5-footer{background:#2C2017;padding:12px 40px;border-top:1px solid rgba(232,213,183,.1);flex-shrink:0;display:flex;justify-content:space-between;}
-.pf-l5-corretor{font-size:10px;color:rgba(232,213,183,.4);}
-.pf-l5-num{font-size:10px;color:rgba(232,213,183,.3);}
+.pf-l5-col{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.pf-l5-foto-wrap{flex:1;overflow:hidden;position:relative;}
+.pf-l5-foto{width:100%;height:100%;object-fit:cover;display:block;}
+.pf-l5-desc{font-size:13px;line-height:1.6;color:rgba(232,213,183,.65);padding:12px 14px;background:#2C2017;flex-shrink:0;min-height:60px;}
+.pf-l5-footer{background:#2C2017;padding:10px 40px;border-top:1px solid rgba(232,213,183,.1);flex-shrink:0;display:flex;justify-content:space-between;}
+.pf-l5-corretor{font-size:11px;color:rgba(232,213,183,.4);}
+.pf-l5-num{font-size:11px;color:rgba(232,213,183,.3);}
 
-/* ══ L6 — ENCERRAMENTO ══ */
-.pf-l6{flex-direction:row;}
-.pf-l6-left{width:44%;background:#2C2017;display:flex;flex-direction:column;justify-content:center;padding:40px 36px;position:relative;z-index:1;flex-shrink:0;}
-.pf-l6-titulo{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:#E8D5B7;margin-bottom:36px;}
-.pf-l6-item{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
-.pf-l6-icon{width:36px;height:36px;border-radius:50%;background:rgba(232,213,183,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.pf-l6-icon svg{width:16px;height:16px;stroke:#E8D5B7;fill:none;stroke-width:1.5;}
-.pf-l6-text{font-size:13px;color:#E8D5B7;font-weight:400;}
-.pf-l6-right{flex:1;position:relative;}
-.pf-l6-foto{width:100%;height:100%;object-fit:cover;display:block;}
-.pf-l6-foto-ph{width:100%;height:100%;background:#3a2e1e;}
+/* ══ L6 — ENCERRAMENTO SEM FOTO ══ */
+.pf-l6{flex-direction:column;align-items:center;justify-content:center;}
+.pf-l6-logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:rgba(232,213,183,.3);letter-spacing:.08em;margin-bottom:60px;text-align:center;}
+.pf-l6-titulo{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:#E8D5B7;margin-bottom:48px;text-align:center;line-height:1.1;}
+.pf-l6-itens{display:flex;flex-direction:column;gap:20px;width:380px;}
+.pf-l6-item{display:flex;align-items:center;gap:16px;}
+.pf-l6-icon{width:40px;height:40px;border-radius:50%;background:rgba(232,213,183,.1);border:1px solid rgba(232,213,183,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pf-l6-icon svg{width:18px;height:18px;stroke:#E8D5B7;fill:none;stroke-width:1.5;}
+.pf-l6-text{font-size:15px;color:#E8D5B7;font-weight:400;}
+.pf-l6-divider{width:60px;height:2px;background:#C8A96A;margin:40px auto;}
+.pf-l6-rodape{font-size:11px;color:rgba(232,213,183,.3);text-align:center;letter-spacing:.08em;}
 
   .how-grid,.features-grid,.preview-grid,.why-grid,.pdf-inner,.gen-body,.corretor-grid{grid-template-columns:1fr}
   .frow.c2,.frow.c3{grid-template-columns:1fr}
@@ -1376,37 +1391,47 @@ LEGENDAS: exatamente ${fotos.length} legenda${fotos.length>1?'s':''} na ordem da
 
 // ─── PDF COM HTML2CANVAS ────────────────────────────────
 
-// Classifica ambiente da foto pela legenda
-function classificarAmbiente(legenda) {
-  const l = (legenda||'').toLowerCase();
+// Detecta proporção da foto — retorna 'v' vertical, 'h' horizontal/quadrada
+function propFoto(src){
+  return new Promise(res=>{
+    const img=new Image();
+    img.onload=()=>res(img.naturalHeight>img.naturalWidth*1.1?'v':'h');
+    img.onerror=()=>res('h');
+    img.src=src;
+  });
+}
+
+// Classifica ambiente pela legenda
+function classificarAmbiente(legenda){
+  const l=(legenda||'').toLowerCase();
   if(/fachada|prédio|edificio|entrada|hall|portaria|externo|exterior|jardim|área externa/.test(l)) return 0;
-  if(/piscina|area de lazer|área de lazer|churrasqueira|gourmet|varanda|sacada/.test(l)) return 1;
+  if(/piscina|lazer|churrasqueira|gourmet|varanda|sacada/.test(l)) return 1;
   if(/sala|living|estar|jantar/.test(l)) return 2;
   if(/cozinha|copa/.test(l)) return 3;
   if(/quarto|suíte|suite|master|dormitório/.test(l)) return 4;
   if(/closet|escritório|home office/.test(l)) return 5;
-  if(/banheiro|lavabo|wc|box|chuveiro/.test(l)) return 8; // sempre último
-  return 6; // outros
+  if(/banheiro|lavabo|wc|box|chuveiro/.test(l)) return 8;
+  return 6;
 }
 
 function circ(top,left,size){
   return `<div class="pf-circ" style="width:${size}px;height:${size}px;top:${top}px;left:${left}px;"></div>`;
 }
 
-function imgOrPh(src,cls){
-  return src
-    ? `<img class="${cls}" src="${src}" crossorigin="anonymous"/>`
-    : `<div class="${cls}-ph"></div>`;
+function imgTag(src,cls){
+  return src?`<img class="${cls}" src="${src}" crossorigin="anonymous"/>`:
+    `<div style="width:100%;height:100%;background:#3a2e1e;"></div>`;
 }
 
 // ─── TEMPLATES ───────────────────────────────────────────
 
-function pgCapa(d){
+function pgCapaVertical(d){
   const mes=new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'}).toUpperCase();
   return `<div class="pf pf-l1">
-    ${circ(-60,-60,180)}${circ(900,330,140)}
+    ${circ(-60,-60,180)}${circ(900,280,140)}
     <div class="pf-l1-left">
       <div class="pf-brand">ImóvelText · ${mes}</div>
+      <div class="pf-l1-tag">${d.tipo||'Imóvel'}</div>
       <div class="pf-l1-titulo">${d.titulo||'Proposta Imobiliária'}</div>
       <div class="pf-l1-ficha">
         <div class="pf-l1-item"><span class="pf-l1-label">Local</span><span class="pf-l1-val">${d.bairro||'—'}</span></div>
@@ -1421,13 +1446,42 @@ function pgCapa(d){
         <div class="pf-l1-info">${[d.tel,d.creci?'CRECI '+d.creci:''].filter(Boolean).join('  ·  ')}</div>
       </div>
     </div>
-    <div class="pf-l1-right">${imgOrPh(d.foto,'pf-l1-foto')}</div>
+    <div class="pf-l1-right">${imgTag(d.foto,'pf-l1-foto')}</div>
   </div>`;
 }
 
-function pgTextoFoto(d){ // L2
+function pgCapaHorizontal(d){
+  const mes=new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'}).toUpperCase();
+  return `<div class="pf pf-l1h">
+    <div class="pf-l1h-foto-wrap">
+      ${imgTag(d.foto,'pf-l1h-foto')}
+      <div class="pf-l1h-overlay"></div>
+      <div class="pf-l1h-titulo-wrap">
+        <div class="pf-l1h-badge">${d.tipo||'Imóvel'}</div>
+        <div class="pf-l1h-titulo">${d.titulo||'Proposta Imobiliária'}</div>
+      </div>
+    </div>
+    <div class="pf-l1h-body">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,213,183,.35);margin-bottom:18px;">ImóvelText · ${mes}</div>
+      <div class="pf-l1h-ficha">
+        <div class="pf-l1h-item"><span class="pf-l1h-label">Local</span><span class="pf-l1h-val">${d.bairro||'—'}</span></div>
+        <div class="pf-l1h-item"><span class="pf-l1h-label">Preço</span><span class="pf-l1h-val dest">${d.preco?'R$ '+d.preco:'—'}</span></div>
+        <div class="pf-l1h-item"><span class="pf-l1h-label">Área</span><span class="pf-l1h-val">${d.area?d.area+'m²':'—'}</span></div>
+        <div class="pf-l1h-item"><span class="pf-l1h-label">Quartos</span><span class="pf-l1h-val">${d.quartos||'—'}</span></div>
+        <div class="pf-l1h-item"><span class="pf-l1h-label">Suítes</span><span class="pf-l1h-val">${d.suites||'—'}</span></div>
+        <div class="pf-l1h-item"><span class="pf-l1h-label">Tipo</span><span class="pf-l1h-val">${d.tipo||'—'}</span></div>
+      </div>
+      <div class="pf-l1h-footer">
+        <div class="pf-l1h-nome">${d.corretor||''}</div>
+        <div class="pf-l1h-info">${[d.tel,d.creci?'CRECI '+d.creci:''].filter(Boolean).join('  ·  ')}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function pgTextoFoto(d){ // L2 — foto vertical
   return `<div class="pf pf-l2">
-    ${circ(-50,300,160)}${circ(960,-40,120)}
+    ${circ(-50,300,150)}${circ(960,-40,120)}
     <div class="pf-l2-left">
       <div class="pf-l2-num">${d.num} / ${d.total}</div>
       <div class="pf-l2-titulo">${d.label||''}</div>
@@ -1437,18 +1491,18 @@ function pgTextoFoto(d){ // L2
         <div class="pf-l2-info">${d.tel||''}</div>
       </div>
     </div>
-    <div class="pf-l2-right">${imgOrPh(d.foto,'pf-l2-foto')}</div>
+    <div class="pf-l2-right">${imgTag(d.foto,'pf-l2-foto')}</div>
   </div>`;
 }
 
-function pgFotoFullDesc(d){ // L3
+function pgFotoFull(d){ // L3 — foto horizontal
   return `<div class="pf pf-l3">
-    ${circ(-50,700,150)}${circ(950,20,110)}
+    ${circ(-50,680,150)}${circ(940,20,110)}
     <div class="pf-l3-header">
       <div class="pf-l3-titulo">${d.label||''}</div>
       <div class="pf-l3-num">${d.num} / ${d.total}</div>
     </div>
-    ${imgOrPh(d.foto,'pf-l3-foto')}
+    <div class="pf-l3-foto-wrap">${imgTag(d.foto,'pf-l3-foto')}</div>
     <div class="pf-l3-footer">
       <div class="pf-l3-desc">${d.legenda||''}</div>
       <div class="pf-l3-corretor">${d.corretor||''} ${d.tel?'· '+d.tel:''}</div>
@@ -1456,16 +1510,16 @@ function pgFotoFullDesc(d){ // L3
   </div>`;
 }
 
-function pg2FotosSemTexto(d){ // L4
+function pg2FotasH(d){ // L4 — 2 fotos horizontais empilhadas
   return `<div class="pf pf-l4">
-    ${circ(-50,700,140)}${circ(940,10,110)}
+    ${circ(-50,680,140)}${circ(940,10,110)}
     <div class="pf-l4-header">
       <div class="pf-l4-titulo">${d.label||''}</div>
       <div class="pf-l4-num">${d.num} / ${d.total}</div>
     </div>
     <div class="pf-l4-fotos">
-      ${imgOrPh(d.foto1,'pf-l4-foto')}
-      ${imgOrPh(d.foto2,'pf-l4-foto')}
+      <div class="pf-l4-foto-wrap">${imgTag(d.foto1,'pf-l4-foto')}</div>
+      <div class="pf-l4-foto-wrap">${imgTag(d.foto2,'pf-l4-foto')}</div>
     </div>
     <div class="pf-l4-footer">
       <div class="pf-l4-corretor">${d.corretor||''} ${d.tel?'· '+d.tel:''}</div>
@@ -1473,7 +1527,7 @@ function pg2FotosSemTexto(d){ // L4
   </div>`;
 }
 
-function pg2FotasComTexto(d){ // L5
+function pg2FotasV(d){ // L5 — 2 fotos verticais lado a lado com texto
   return `<div class="pf pf-l5">
     ${circ(-40,300,130)}${circ(950,650,120)}
     <div class="pf-l5-header">
@@ -1481,11 +1535,11 @@ function pg2FotasComTexto(d){ // L5
     </div>
     <div class="pf-l5-fotos">
       <div class="pf-l5-col">
-        ${imgOrPh(d.foto1,'pf-l5-foto')}
+        <div class="pf-l5-foto-wrap">${imgTag(d.foto1,'pf-l5-foto')}</div>
         <div class="pf-l5-desc">${d.leg1||''}</div>
       </div>
       <div class="pf-l5-col">
-        ${imgOrPh(d.foto2,'pf-l5-foto')}
+        <div class="pf-l5-foto-wrap">${imgTag(d.foto2,'pf-l5-foto')}</div>
         <div class="pf-l5-desc">${d.leg2||''}</div>
       </div>
     </div>
@@ -1496,164 +1550,143 @@ function pg2FotasComTexto(d){ // L5
   </div>`;
 }
 
-function pgEncerramento(d){ // L6
+function pgEncerramento(d){
   return `<div class="pf pf-l6">
-    ${circ(-50,-50,160)}${circ(850,280,130)}
-    <div class="pf-l6-left">
-      <div class="pf-l6-titulo">Entre em contato</div>
+    ${circ(80,80,200)}${circ(800,520,160)}
+    <div class="pf-l6-logo">ImóvelText</div>
+    <div class="pf-l6-titulo">Entre em<br>contato</div>
+    <div class="pf-l6-itens">
+      ${d.nome?`<div class="pf-l6-item"><div class="pf-l6-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="pf-l6-text">${d.nome}</div></div>`:''}
       ${d.tel?`<div class="pf-l6-item"><div class="pf-l6-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.09 5.18 2 2 0 015.09 3h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 10a16 16 0 006.91 6.91l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></div><div class="pf-l6-text">${d.tel}</div></div>`:''}
       ${d.creci?`<div class="pf-l6-item"><div class="pf-l6-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="pf-l6-text">CRECI ${d.creci}</div></div>`:''}
-      <div class="pf-l6-item"><div class="pf-l6-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div class="pf-l6-text">Gerado por ImóvelText</div></div>
     </div>
-    <div class="pf-l6-right">${imgOrPh(d.foto,'pf-l6-foto')}</div>
+    <div class="pf-l6-divider"></div>
+    <div class="pf-l6-rodape">GERADO POR IMÓVELTEXT · MARKETING IMOBILIÁRIO COM IA</div>
   </div>`;
 }
 
 // ─── DISTRIBUIÇÃO DE FOTOS ────────────────────────────────
 
-function distribuirFotos(fotosOrdenadas, legendas, fotoCapaIdx){
-  // 1. Classificar e ordenar fotos por ambiente (exceto capa)
-  const fotosComMeta = fotosOrdenadas.map((f,i) => {
-    const origIdx = i===0 ? fotoCapaIdx : fotos.indexOf(f);
-    const leg = legendas[origIdx] || legendas[i] || '';
-    return { src: f.src, legenda: leg, ordem: classificarAmbiente(leg), origIdx };
-  });
+async function distribuirFotos(fotosOrdenadas, legendas, fotoCapaIdx){
+  const fotosComMeta = await Promise.all(fotosOrdenadas.map(async (f,i)=>{
+    const origIdx = i===0?fotoCapaIdx:fotos.indexOf(f);
+    const leg = legendas[origIdx]||legendas[i]||'';
+    const prop = await propFoto(f.src);
+    return {src:f.src, legenda:leg, ordem:classificarAmbiente(leg), prop, origIdx};
+  }));
 
-  // Separa capa e o resto
-  const fotoCapaObj = fotosComMeta[0];
-  const restantes = fotosComMeta.slice(1).sort((a,b) => a.ordem - b.ordem);
-
-  return { capa: fotoCapaObj, galeria: restantes };
+  const capaObj = fotosComMeta[0];
+  const restantes = fotosComMeta.slice(1).sort((a,b)=>a.ordem-b.ordem);
+  return {capa:capaObj, galeria:restantes};
 }
 
 // ─── MONTA PÁGINAS ────────────────────────────────────────
 
-function montarPaginas(capa, galeria, d){
+function montarPaginas(capa, galeria, d, props){
   const pages = [];
   const n = galeria.length;
-
-  // Calcula total de páginas para numeração
-  // Capa + páginas de galeria + encerramento
-  let totalPags = 1; // capa
-  let i = 0;
-  while(i < n){
-    // Tenta fazer página dupla se próximas 2 forem banheiro/similar
-    if(i+1 < n && galeria[i].ordem >= 8 && galeria[i+1].ordem >= 8){
-      totalPags++; i+=2;
-    } else if(i+1 < n && galeria[i].ordem === galeria[i+1].ordem && galeria[i].ordem >= 4){
-      totalPags++; i+=2;
-    } else {
-      totalPags++; i++;
-    }
-  }
-  totalPags++; // encerramento
-
-  // Agora monta
-  pages.push(pgCapa({
-    titulo: lastTitulo, bairro: lastBairro, preco: lastPreco,
-    area: lastArea, quartos: lastQuartos, suites: lastSuites,
-    tipo: lastTipo, corretor: d.nome, tel: d.tel, creci: d.creci,
-    foto: capa.src
-  }));
-
-  let pageNum = 2;
-  i = 0;
-
-  // Labels para ambientes
   const labels = ['Fachada','Área de Lazer','Sala de Estar','Cozinha','Quarto','Escritório','Detalhe','Detalhe','Banheiro'];
-  function getLabel(ordem){ return labels[Math.min(ordem,8)] || 'Detalhe'; }
+  function getLabel(o){return labels[Math.min(o,8)]||'Detalhe';}
 
-  while(i < n){
-    const f1 = galeria[i];
-    const f2 = galeria[i+1];
-    const usarDupla = f2 && (
-      (f1.ordem >= 8 && f2.ordem >= 8) || // dois banheiros
-      (f1.ordem === f2.ordem && f1.ordem >= 4) // dois quartos/similares
-    );
+  // Calcula total
+  let totalPags=2; // capa + encerramento
+  let i=0;
+  while(i<n){
+    const f1=galeria[i], f2=galeria[i+1];
+    if(f2&&f1.prop==='v'&&f2.prop==='v'){totalPags++;i+=2;}
+    else if(f2&&f1.prop==='h'&&f2.prop==='h'&&f1.ordem>=3){totalPags++;i+=2;}
+    else{totalPags++;i++;}
+  }
 
-    if(usarDupla){
-      // Decide entre L4 (sem texto) ou L5 (com texto)
-      const temTexto = f1.legenda && f2.legenda;
-      if(temTexto){
-        pages.push(pg2FotasComTexto({
-          label: getLabel(f1.ordem), foto1: f1.src, foto2: f2.src,
-          leg1: f1.legenda, leg2: f2.legenda,
-          corretor: d.nome, tel: d.tel, num: pageNum, total: totalPags
-        }));
-      } else {
-        pages.push(pg2FotosSemTexto({
-          label: getLabel(f1.ordem), foto1: f1.src, foto2: f2.src,
-          corretor: d.nome, tel: d.tel, num: pageNum, total: totalPags
-        }));
-      }
-      i += 2;
+  // Capa — escolhe layout pela proporção
+  if(capa.prop==='v'){
+    pages.push(pgCapaVertical({...d,...{titulo:lastTitulo,bairro:lastBairro,preco:lastPreco,area:lastArea,quartos:lastQuartos,suites:lastSuites,tipo:lastTipo,foto:capa.src}}));
+  } else {
+    pages.push(pgCapaHorizontal({...d,...{titulo:lastTitulo,bairro:lastBairro,preco:lastPreco,area:lastArea,quartos:lastQuartos,suites:lastSuites,tipo:lastTipo,foto:capa.src}}));
+  }
+
+  let pageNum=2;
+  i=0;
+
+  while(i<n){
+    const f1=galeria[i];
+    const f2=galeria[i+1];
+
+    // Decide layout pela proporção + ambiente
+    if(f2&&f1.prop==='v'&&f2.prop==='v'){
+      // Duas fotos verticais lado a lado
+      pages.push(pg2FotasV({
+        label:getLabel(f1.ordem),foto1:f1.src,foto2:f2.src,
+        leg1:f1.legenda,leg2:f2.legenda,
+        corretor:d.nome,tel:d.tel,num:pageNum,total:totalPags
+      }));
+      i+=2;
+    } else if(f2&&f1.prop==='h'&&f2.prop==='h'){
+      // Duas fotos horizontais empilhadas
+      pages.push(pg2FotasH({
+        label:getLabel(f1.ordem),foto1:f1.src,foto2:f2.src,
+        corretor:d.nome,tel:d.tel,num:pageNum,total:totalPags
+      }));
+      i+=2;
+    } else if(f1.prop==='v'){
+      // Foto vertical — texto à esquerda
+      pages.push(pgTextoFoto({
+        label:getLabel(f1.ordem),foto:f1.src,legenda:f1.legenda,
+        corretor:d.nome,tel:d.tel,num:pageNum,total:totalPags
+      }));
+      i++;
     } else {
-      // Página individual — alterna entre L2 e L3
-      if(pageNum % 2 === 0){
-        pages.push(pgTextoFoto({
-          label: getLabel(f1.ordem), foto: f1.src, legenda: f1.legenda,
-          corretor: d.nome, tel: d.tel, num: pageNum, total: totalPags
-        }));
-      } else {
-        pages.push(pgFotoFullDesc({
-          label: getLabel(f1.ordem), foto: f1.src, legenda: f1.legenda,
-          corretor: d.nome, tel: d.tel, num: pageNum, total: totalPags
-        }));
-      }
+      // Foto horizontal — full width
+      pages.push(pgFotoFull({
+        label:getLabel(f1.ordem),foto:f1.src,legenda:f1.legenda,
+        corretor:d.nome,tel:d.tel,num:pageNum,total:totalPags
+      }));
       i++;
     }
     pageNum++;
   }
 
-  // Encerramento com última foto (não capa)
-  const fotoEnc = galeria.length > 0 ? galeria[galeria.length-1].src : capa.src;
-  pages.push(pgEncerramento({ tel: d.tel, creci: d.creci, foto: fotoEnc }));
-
+  // Encerramento sem foto
+  pages.push(pgEncerramento({nome:d.nome,tel:d.tel,creci:d.creci}));
   return pages;
 }
 
-// ─── GERAR PDF ────────────────────────────────────────────
+// ─── RENDERIZAÇÃO ─────────────────────────────────────────
 
-async function renderPagina(html, scale=3){
-  return new Promise((resolve, reject)=>{
-    // Cria iframe oculto para renderização isolada e fiel ao CSS
-    const iframe = document.createElement('iframe');
+async function renderPagina(html, scale=2.5){
+  return new Promise((resolve,reject)=>{
+    const iframe=document.createElement('iframe');
     iframe.style.cssText='position:fixed;left:-9999px;top:0;width:794px;height:1123px;border:none;visibility:hidden;';
     document.body.appendChild(iframe);
 
-    iframe.onload = async ()=>{
+    iframe.onload=async()=>{
       try{
-        const iDoc = iframe.contentDocument;
-        // Copia todos os estilos da página principal
+        const iDoc=iframe.contentDocument;
         document.querySelectorAll('style,link[rel="stylesheet"]').forEach(el=>{
           iDoc.head.appendChild(el.cloneNode(true));
         });
-        // Injeta Google Fonts explicitamente
-        const gf = iDoc.createElement('link');
+        const gf=iDoc.createElement('link');
         gf.rel='stylesheet';
         gf.href='https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap';
         iDoc.head.appendChild(gf);
-
         iDoc.body.innerHTML=html;
         iDoc.body.style.cssText='margin:0;padding:0;background:#2C2017;';
 
-        // Aguarda fontes e imagens
-        await new Promise(r=>setTimeout(r,800));
+        await new Promise(r=>setTimeout(r,900));
 
-        const canvas = await html2canvas(iDoc.body.firstElementChild,{
-          scale: scale,
-          useCORS: true,
-          allowTaint: true,
-          width: 794,
-          height: 1123,
-          backgroundColor: '#2C2017',
-          logging: false,
-          foreignObjectRendering: false,
-          imageTimeout: 10000,
-          onclone: (clonedDoc)=>{
-            // Garante que imagens usem background-image para qualidade máxima
+        const canvas=await html2canvas(iDoc.body.firstElementChild,{
+          scale:scale,
+          useCORS:true,
+          allowTaint:true,
+          width:794,
+          height:1123,
+          backgroundColor:'#2C2017',
+          logging:false,
+          foreignObjectRendering:false,
+          imageTimeout:10000,
+          onclone:(clonedDoc)=>{
             clonedDoc.querySelectorAll('img').forEach(img=>{
-              const p = img.parentElement;
+              const p=img.parentElement;
               if(img.src){
                 p.style.backgroundImage=`url('${img.src}')`;
                 p.style.backgroundSize='cover';
@@ -1666,23 +1699,24 @@ async function renderPagina(html, scale=3){
         });
 
         document.body.removeChild(iframe);
-        resolve(canvas.toDataURL('image/jpeg', 0.95));
+        resolve(canvas.toDataURL('image/jpeg',0.95));
       }catch(e){
         document.body.removeChild(iframe);
         reject(e);
       }
     };
-
     iframe.src='about:blank';
   });
 }
+
+// ─── GERAR PDF ────────────────────────────────────────────
 
 async function gerarPDF(){
   if(!isProUser){showPaywall();return;}
 
   const btn=document.getElementById('pdf-btn');
   btn.disabled=true;
-  btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Gerando PDF...';
+  btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Preparando PDF...';
 
   const corrNome=document.getElementById('corr-nome')?.value||'';
   const corrTel=document.getElementById('corr-tel')?.value||'';
@@ -1692,8 +1726,8 @@ async function gerarPDF(){
   document.querySelectorAll('#cap-list .cap-text').forEach(el=>legendas.push(el.innerText));
 
   const fotosOrdenadas=[fotos[fotoCapaIdx],...fotos.filter((_,i)=>i!==fotoCapaIdx)];
-  const {capa, galeria} = distribuirFotos(fotosOrdenadas, legendas, fotoCapaIdx);
-  const paginas = montarPaginas(capa, galeria, {nome:corrNome, tel:corrTel, creci:corrCreci});
+  const {capa,galeria}=await distribuirFotos(fotosOrdenadas,legendas,fotoCapaIdx);
+  const paginas=montarPaginas(capa,galeria,{nome:corrNome,tel:corrTel,creci:corrCreci});
 
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'px',format:[794,1123]});
@@ -1701,15 +1735,15 @@ async function gerarPDF(){
   try{
     for(let i=0;i<paginas.length;i++){
       btn.innerHTML=`<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Gerando página ${i+1} de ${paginas.length}...`;
-      const imgData = await renderPagina(paginas[i]);
+      const imgData=await renderPagina(paginas[i]);
       if(i>0) doc.addPage([794,1123],'p');
       doc.addImage(imgData,'JPEG',0,0,794,1123);
     }
-
     doc.save(`imoveltext-${(lastBairro||'imovel').replace(/[\s/]/g,'-').toLowerCase()}-${Date.now()}.pdf`);
   }catch(err){
     console.error('Erro PDF:',err);
-    alert('Erro ao gerar PDF: '+err.message+'.\nTente novamente.');
+    alert('Erro ao gerar PDF. Tente novamente.');
+    alert('Erro ao gerar PDF. Tente novamente.');
   }
 
   btn.disabled=false;
