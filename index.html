@@ -364,26 +364,26 @@ section{position:relative;z-index:1}
 /* Metade esquerda: texto | Metade direita: foto */
 .pf-l1{flex-direction:row;}
 .pf-l1-left{width:42%;background:#2C2017;display:flex;flex-direction:column;padding:36px 36px;flex-shrink:0;}
-.pf-brand{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,213,183,.35);margin-bottom:4px;}
+.pf-brand{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,213,183,.6);margin-bottom:5px;}
 .pf-l1-tag{font-size:10px;color:rgba(232,213,183,.5);letter-spacing:.08em;margin-bottom:16px;}
-.pf-l1-titulo{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#E8D5B7;line-height:1.1;margin-bottom:20px;flex:1;word-spacing:2px;letter-spacing:-.01em;}
+.pf-l1-titulo{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:#E8D5B7;line-height:1.1;margin-bottom:20px;flex:1;letter-spacing:normal;word-spacing:normal;}
 .pf-l1-ficha{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:16px;}
 .pf-l1-item{padding:8px 0;border-top:1px solid rgba(232,213,183,.18);}
 .pf-l1-item:nth-child(5),.pf-l1-item:nth-child(6){border-bottom:1px solid rgba(232,213,183,.18);}
-.pf-l1-label{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,213,183,.4);display:block;margin-bottom:3px;}
-.pf-l1-val{font-size:15px;font-weight:700;color:#E8D5B7;display:block;line-height:1.2;}
+.pf-l1-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(232,213,183,.75);display:block;margin-bottom:4px;}
+.pf-l1-val{font-size:18px;font-weight:700;color:#E8D5B7;display:block;line-height:1.2;}
 .pf-l1-val.dest{color:#C8A96A;}
 .pf-l1-footer{border-top:1px solid rgba(232,213,183,.18);padding-top:12px;margin-top:auto;}
-.pf-l1-nome{font-size:12px;font-weight:600;color:#E8D5B7;}
-.pf-l1-info{font-size:10px;color:rgba(232,213,183,.4);margin-top:2px;}
+.pf-l1-nome{font-size:14px;font-weight:600;color:#E8D5B7;}
+.pf-l1-info{font-size:12px;color:rgba(232,213,183,.65);margin-top:3px;}
 .pf-l1-right{flex:1;overflow:hidden;}
-.pf-l1-foto{width:100%;height:100%;object-fit:cover;display:block;}
+.pf-l1-foto{width:100%;height:100%;object-fit:contain;display:block;}
 
 /* ══ L1H — CAPA HORIZONTAL (foto paisagem) ══ */
 /* Foto ocupa 55% da largura | Texto à direita */
 .pf-l1h{flex-direction:row;}
 .pf-l1h-foto-wrap{width:58%;position:relative;overflow:hidden;flex-shrink:0;}
-.pf-l1h-foto{width:100%;height:100%;object-fit:cover;display:block;}
+.pf-l1h-foto{width:100%;height:100%;object-fit:contain;display:block;}
 .pf-l1h-overlay{position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,rgba(44,32,23,.95) 100%);}
 .pf-l1h-right{flex:1;background:#2C2017;display:flex;flex-direction:column;padding:36px 32px;}
 .pf-l1h-brand{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,213,183,.35);margin-bottom:4px;}
@@ -392,35 +392,35 @@ section{position:relative;z-index:1}
 .pf-l1h-ficha{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:16px;}
 .pf-l1h-item{padding:7px 0;border-top:1px solid rgba(232,213,183,.18);}
 .pf-l1h-item:nth-child(5),.pf-l1h-item:nth-child(6){border-bottom:1px solid rgba(232,213,183,.18);}
-.pf-l1h-label{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,213,183,.4);display:block;margin-bottom:2px;}
-.pf-l1h-val{font-size:14px;font-weight:700;color:#E8D5B7;display:block;}
+.pf-l1h-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(232,213,183,.8);display:block;margin-bottom:4px;}
+.pf-l1h-val{font-size:17px;font-weight:700;color:#E8D5B7;display:block;}
 .pf-l1h-val.dest{color:#C8A96A;}
 .pf-l1h-footer{border-top:1px solid rgba(232,213,183,.18);padding-top:12px;margin-top:auto;}
-.pf-l1h-nome{font-size:12px;font-weight:600;color:#E8D5B7;}
-.pf-l1h-info{font-size:10px;color:rgba(232,213,183,.4);margin-top:2px;}
+.pf-l1h-nome{font-size:14px;font-weight:600;color:#E8D5B7;}
+.pf-l1h-info{font-size:12px;color:rgba(232,213,183,.65);margin-top:3px;}
 
 /* ══ L2 — TEXTO ESQUERDO + FOTO DIREITA (foto vertical) ══ */
 .pf-l2{flex-direction:row;}
 .pf-l2-left{width:36%;background:#2C2017;display:flex;flex-direction:column;padding:36px 32px;flex-shrink:0;}
-.pf-l2-num{font-size:10px;font-weight:600;letter-spacing:.12em;color:rgba(232,213,183,.35);margin-bottom:14px;}
+.pf-l2-num{font-size:12px;font-weight:600;letter-spacing:.1em;color:rgba(232,213,183,.5);margin-bottom:14px;}
 .pf-l2-titulo{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#E8D5B7;line-height:1.1;margin-bottom:16px;}
-.pf-l2-desc{font-size:13px;line-height:1.75;color:rgba(232,213,183,.7);font-weight:300;flex:1;}
+.pf-l2-desc{font-size:17px;font-family:'Cormorant Garamond',serif;font-style:italic;line-height:1.8;color:rgba(232,213,183,.92);font-weight:500;flex:1;}
 .pf-l2-footer{border-top:1px solid rgba(232,213,183,.15);padding-top:12px;margin-top:auto;}
-.pf-l2-nome{font-size:11px;font-weight:600;color:rgba(232,213,183,.6);}
-.pf-l2-info{font-size:9px;color:rgba(232,213,183,.35);margin-top:2px;}
+.pf-l2-nome{font-size:13px;font-weight:600;color:rgba(232,213,183,.8);}
+.pf-l2-info{font-size:11px;color:rgba(232,213,183,.55);margin-top:3px;}
 .pf-l2-right{flex:1;overflow:hidden;}
-.pf-l2-foto{width:100%;height:100%;object-fit:cover;display:block;}
+.pf-l2-foto{width:100%;height:100%;object-fit:contain;display:block;background:#1a1208;}
 
 /* ══ L3 — FOTO FULL-WIDTH + HEADER + FOOTER (foto horizontal) ══ */
 .pf-l3{flex-direction:column;}
 .pf-l3-header{background:#2C2017;padding:18px 40px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;}
 .pf-l3-titulo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#E8D5B7;}
-.pf-l3-num{font-size:10px;color:rgba(232,213,183,.4);letter-spacing:.1em;}
+.pf-l3-num{font-size:12px;color:rgba(232,213,183,.6);letter-spacing:.08em;}
 .pf-l3-foto-wrap{flex:1;overflow:hidden;}
-.pf-l3-foto{width:100%;height:100%;object-fit:cover;display:block;}
+.pf-l3-foto{width:100%;height:100%;object-fit:contain;display:block;background:#1a1208;}
 .pf-l3-footer{background:#2C2017;padding:14px 40px 16px;flex-shrink:0;}
-.pf-l3-desc{font-size:13px;line-height:1.65;color:rgba(232,213,183,.7);font-weight:300;}
-.pf-l3-corretor{font-size:10px;color:rgba(232,213,183,.4);margin-top:8px;}
+.pf-l3-desc{font-size:17px;font-family:'Cormorant Garamond',serif;font-style:italic;line-height:1.75;color:rgba(232,213,183,.92);font-weight:500;}
+.pf-l3-corretor{font-size:13px;color:rgba(232,213,183,.7);margin-top:8px;}
 
 /* ══ L4 — 2 FOTOS LADO A LADO (ambas horizontais) ══ */
 .pf-l4{flex-direction:column;}
@@ -429,20 +429,20 @@ section{position:relative;z-index:1}
 .pf-l4-num{font-size:10px;color:rgba(232,213,183,.4);}
 .pf-l4-fotos{display:flex;flex:1;gap:3px;background:#1a1208;}
 .pf-l4-foto-wrap{flex:1;overflow:hidden;}
-.pf-l4-foto{width:100%;height:100%;object-fit:cover;display:block;}
+.pf-l4-foto{width:100%;height:100%;object-fit:contain;display:block;}
 .pf-l4-footer{background:#2C2017;padding:10px 40px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center;}
-.pf-l4-corretor{font-size:10px;color:rgba(232,213,183,.4);}
-.pf-l4-leg{font-size:11px;color:rgba(232,213,183,.55);max-width:480px;}
+.pf-l4-corretor{font-size:12px;color:rgba(232,213,183,.55);}
+.pf-l4-leg{font-size:16px;font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(232,213,183,.88);max-width:480px;font-weight:500;}
 
 /* ══ L5 — 2 FOTOS VERTICAIS COM TEXTO ══ */
 /* Foto menor + legenda abaixo de cada uma */
 .pf-l5{flex-direction:row;}
 .pf-l5-col{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .pf-l5-foto-wrap{flex:1;overflow:hidden;position:relative;}
-.pf-l5-foto{width:100%;height:100%;object-fit:cover;display:block;}
+.pf-l5-foto{width:100%;height:100%;object-fit:contain;display:block;}
 .pf-l5-bottom{background:#2C2017;padding:14px 20px;flex-shrink:0;}
 .pf-l5-label{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#E8D5B7;margin-bottom:6px;}
-.pf-l5-desc{font-size:12px;line-height:1.6;color:rgba(232,213,183,.65);font-weight:300;}
+.pf-l5-desc{font-size:16px;font-family:'Cormorant Garamond',serif;font-style:italic;line-height:1.7;color:rgba(232,213,183,.9);font-weight:500;}
 .pf-l5-header{position:absolute;top:0;left:0;right:0;background:rgba(44,32,23,.7);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;z-index:2;}
 .pf-l5-num{font-size:10px;color:rgba(232,213,183,.5);letter-spacing:.08em;}
 .pf-l5-footer{position:absolute;bottom:0;left:0;right:0;background:rgba(44,32,23,.6);padding:8px 20px;font-size:10px;color:rgba(232,213,183,.4);z-index:2;}
@@ -457,7 +457,95 @@ section{position:relative;z-index:1}
 .pf-l6-icon svg{width:16px;height:16px;stroke:#E8D5B7;fill:none;stroke-width:1.5;}
 .pf-l6-text{font-size:14px;color:#E8D5B7;}
 .pf-l6-divider{width:60px;height:2px;background:#C8A96A;margin-bottom:20px;}
-.pf-l6-rodape{font-size:10px;color:rgba(232,213,183,.25);letter-spacing:.1em;}
+.pf-l6-rodape{font-size:11px;color:rgba(232,213,183,.35);letter-spacing:.1em;}
+/* ══════════════════════════════════════════
+   TEMA BEGE — CLARO MINIMALISTA
+   Baseado no portfólio bege Ana Morais
+   Paleta: bege #C9B99A, branco #F7F4EF,
+   texto #2D2D2D, accent terracota #9B6B4B
+══════════════════════════════════════════ */
+
+/* BASE BEGE */
+.pf-b{width:1123px;height:794px;overflow:hidden;display:flex;font-family:'DM Sans',sans-serif;background:#F7F4EF;position:relative;}
+.pf-b *{box-sizing:border-box;}
+
+/* PG1 BEGE — CAPA: foto esquerda + bege direita */
+.pfb-capa{flex-direction:row;}
+.pfb-capa-foto{width:46%;overflow:hidden;flex-shrink:0;}
+.pfb-capa-foto img{width:100%;height:100%;object-fit:contain;display:block;background:#e0d8cc;}
+.pfb-capa-foto-ph{width:100%;height:100%;background:#e0d8cc;}
+.pfb-capa-right{flex:1;background:#C9B99A;display:flex;flex-direction:column;padding:44px 40px;}
+.pfb-capa-brand{font-size:10px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:6px;}
+.pfb-capa-sub{font-size:11px;color:rgba(255,255,255,.5);font-style:italic;margin-bottom:auto;}
+.pfb-capa-titulo{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:28px;word-spacing:2px;}
+.pfb-capa-ficha{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:28px;}
+.pfb-capa-item{padding:9px 0;border-top:1px solid rgba(255,255,255,.25);}
+.pfb-capa-item:nth-child(5),.pfb-capa-item:nth-child(6){border-bottom:1px solid rgba(255,255,255,.25);}
+.pfb-capa-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);display:block;margin-bottom:3px;}
+.pfb-capa-val{font-size:16px;font-weight:700;color:#fff;display:block;}
+.pfb-capa-val.dest{color:#F7F4EF;}
+.pfb-capa-footer{border-top:1px solid rgba(255,255,255,.25);padding-top:14px;}
+.pfb-capa-nome{font-size:13px;font-weight:600;color:#fff;}
+.pfb-capa-info{font-size:11px;color:rgba(255,255,255,.6);margin-top:3px;}
+.pfb-capa-num{font-size:10px;color:rgba(255,255,255,.35);margin-top:6px;}
+
+/* PG5/7 BEGE — GRID SEM LEGENDA: 1 grande esq + 2 empilhadas dir */
+.pfb-grid3{flex-direction:row;background:#F7F4EF;gap:3px;}
+.pfb-grid3-grande{flex:1.2;overflow:hidden;}
+.pfb-grid3-grande img{width:100%;height:100%;object-fit:contain;display:block;background:#e8e2d8;}
+.pfb-grid3-grande-ph{width:100%;height:100%;background:#e8e2d8;}
+.pfb-grid3-col{flex:0.8;display:flex;flex-direction:column;gap:3px;}
+.pfb-grid3-pequena{flex:1;overflow:hidden;}
+.pfb-grid3-pequena img{width:100%;height:100%;object-fit:contain;display:block;background:#e8e2d8;}
+.pfb-grid3-pequena-ph{width:100%;height:100%;background:#e8e2d8;}
+/* Header flutuante para pg5/7 */
+.pfb-grid3-header{position:absolute;top:0;left:0;right:0;background:rgba(247,244,239,.92);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;z-index:2;border-bottom:1px solid #e0d8cc;}
+.pfb-grid3-titulo{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#2D2D2D;}
+.pfb-grid3-num{font-size:10px;color:#9B6B4B;letter-spacing:.08em;}
+.pfb-grid3-footer{position:absolute;bottom:0;left:0;right:0;background:rgba(247,244,239,.88);padding:8px 24px;font-size:10px;color:#9B6B4B;z-index:2;}
+
+/* PG4 BEGE — TEXTO ESQ + 2 FOTOS EMPILHADAS DIR */
+.pfb-txt2{flex-direction:row;}
+.pfb-txt2-left{width:36%;background:#F7F4EF;display:flex;flex-direction:column;padding:44px 36px;flex-shrink:0;border-right:1px solid #e0d8cc;}
+.pfb-txt2-num{font-size:10px;font-weight:600;letter-spacing:.12em;color:#9B6B4B;margin-bottom:12px;text-transform:uppercase;}
+.pfb-txt2-titulo{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#2D2D2D;line-height:1.1;margin-bottom:16px;}
+.pfb-txt2-desc{font-size:14px;line-height:1.8;color:#5a5248;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;flex:1;}
+.pfb-txt2-footer{border-top:1px solid #e0d8cc;padding-top:12px;margin-top:auto;}
+.pfb-txt2-nome{font-size:12px;font-weight:600;color:#2D2D2D;}
+.pfb-txt2-info{font-size:10px;color:#9B6B4B;margin-top:3px;}
+.pfb-txt2-right{flex:1;display:flex;flex-direction:column;gap:3px;background:#e0d8cc;}
+.pfb-txt2-foto{flex:1;overflow:hidden;}
+.pfb-txt2-foto img{width:100%;height:100%;object-fit:contain;display:block;background:#e8e2d8;}
+.pfb-txt2-foto-ph{width:100%;height:100%;background:#e8e2d8;}
+
+/* PG10 BEGE — TEXTO ESQ + GRID 2x2 DIR */
+.pfb-txt4{flex-direction:row;}
+.pfb-txt4-left{width:28%;background:#F7F4EF;display:flex;flex-direction:column;padding:44px 32px;flex-shrink:0;border-right:1px solid #e0d8cc;}
+.pfb-txt4-num{font-size:10px;font-weight:600;letter-spacing:.12em;color:#9B6B4B;margin-bottom:12px;text-transform:uppercase;}
+.pfb-txt4-titulo{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#2D2D2D;line-height:1.1;margin-bottom:14px;}
+.pfb-txt4-desc{font-size:13px;line-height:1.75;color:#5a5248;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;flex:1;}
+.pfb-txt4-footer{border-top:1px solid #e0d8cc;padding-top:10px;margin-top:auto;}
+.pfb-txt4-nome{font-size:11px;font-weight:600;color:#2D2D2D;}
+.pfb-txt4-info{font-size:9px;color:#9B6B4B;margin-top:2px;}
+.pfb-txt4-right{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px;background:#e0d8cc;}
+.pfb-txt4-foto{overflow:hidden;}
+.pfb-txt4-foto img{width:100%;height:100%;object-fit:contain;display:block;background:#e8e2d8;}
+.pfb-txt4-foto-ph{width:100%;height:100%;background:#e8e2d8;}
+
+/* PG12 BEGE — ENCERRAMENTO: bege esq + foto dir */
+.pfb-enc{flex-direction:row;}
+.pfb-enc-left{width:44%;background:#C9B99A;display:flex;flex-direction:column;justify-content:center;padding:48px 44px;}
+.pfb-enc-titulo{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:#fff;margin-bottom:36px;line-height:1.05;}
+.pfb-enc-itens{display:flex;flex-direction:column;gap:16px;margin-bottom:32px;}
+.pfb-enc-item{display:flex;align-items:center;gap:12px;}
+.pfb-enc-icon{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pfb-enc-icon svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:1.5;}
+.pfb-enc-text{font-size:14px;color:#fff;font-weight:400;}
+.pfb-enc-divider{width:48px;height:2px;background:rgba(255,255,255,.4);margin-bottom:16px;}
+.pfb-enc-rodape{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;}
+.pfb-enc-right{flex:1;overflow:hidden;}
+.pfb-enc-right img{width:100%;height:100%;object-fit:contain;display:block;background:#e0d8cc;}
+.pfb-enc-right-ph{width:100%;height:100%;background:#e0d8cc;}
 
   .how-grid,.features-grid,.preview-grid,.why-grid,.pdf-inner,.gen-body,.corretor-grid{grid-template-columns:1fr}
   .frow.c2,.frow.c3{grid-template-columns:1fr}
@@ -532,7 +620,7 @@ section{position:relative;z-index:1}
       <div class="how-card reveal d1">
         <div class="how-num">1</div>
         <h3 class="how-title">Envie as fotos e dados</h3>
-        <p class="how-desc">Até 10 fotos analisadas pela IA, tipo, localização, preço e os detalhes que você já tem. Pronto — não precisa escrever nada.</p>
+        <p class="how-desc">Até 15 fotos analisadas pela IA, tipo, localização, preço e os detalhes que você já tem. Pronto — não precisa escrever nada.</p>
       </div>
       <div class="how-card reveal d2">
         <div class="how-num">2</div>
@@ -559,7 +647,7 @@ section{position:relative;z-index:1}
         <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
         <div>
           <h3 class="feat-title">Análise de fotos com IA</h3>
-          <p class="feat-desc">Envie até 10 fotos analisadas pela IA, que identifica automaticamente os ambientes — sala, cozinha, varanda — enriquecendo o anúncio com detalhes reais.</p>
+          <p class="feat-desc">Envie até 15 fotos analisadas pela IA, que identifica automaticamente os ambientes — sala, cozinha, varanda — enriquecendo o anúncio com detalhes reais.</p>
         </div>
       </div>
       <div class="feat-card reveal d2">
@@ -785,13 +873,13 @@ section{position:relative;z-index:1}
           <div class="gcard">
             <div class="gcard-header">
               <div class="gcard-step">1</div>
-              <div><div class="gcard-title">Fotos do imóvel</div><div class="gcard-sub">Até 10 fotos — a IA analisa cada ambiente</div></div>
+              <div><div class="gcard-title">Fotos do imóvel</div><div class="gcard-sub">Até 15 fotos — a IA analisa cada ambiente</div></div>
             </div>
             <div class="upload-zone" id="drop-zone">
               <input type="file" id="foto-input" accept="image/*" multiple onchange="handleFiles(this.files)"/>
               <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
               <p><strong>Clique para enviar</strong> ou arraste aqui</p>
-              <small>JPG, PNG — máx. 10 fotos</small>
+              <small>JPG, PNG — máx. 15 fotos</small>
             </div>
             <div class="thumbs" id="thumbs"></div>
           </div>
@@ -949,6 +1037,18 @@ section{position:relative;z-index:1}
             <div style="font-size:12px;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               Opcional — gere o PDF profissional se precisar apresentar este imóvel
+            </div>
+            <!-- SELETOR DE TEMA -->
+            <div style="margin-bottom:14px;">
+              <div style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Estilo do PDF</div>
+              <div style="display:flex;gap:8px;">
+                <button onclick="selecionarTema('escuro')" id="tema-escuro" class="tema-btn tema-ativo" style="flex:1;padding:8px 0;border-radius:8px;border:2px solid var(--g);background:rgba(29,158,117,.1);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;">
+                  🌑 Escuro Elegante
+                </button>
+                <button onclick="selecionarTema('bege')" id="tema-bege" class="tema-btn" style="flex:1;padding:8px 0;border-radius:8px;border:2px solid var(--border);background:transparent;color:var(--text);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;">
+                  ☀️ Claro Minimalista
+                </button>
+              </div>
             </div>
             <button class="pdf-gen-btn" id="pdf-btn" onclick="gerarPDF()">
               <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
@@ -1140,7 +1240,7 @@ function selectTom(btn){document.querySelectorAll('[data-tom]').forEach(b=>b.cla
 function scrollToGen(){document.getElementById('gerador').scrollIntoView({behavior:'smooth'});}
 
 function handleFiles(files){
-  const rest=10-fotos.length;
+  const rest=15-fotos.length;
   Array.from(files).slice(0,rest).forEach(f=>{
     const r=new FileReader();
     r.onload=e=>{fotos.push({src:e.target.result});renderThumbs();};
@@ -1245,30 +1345,38 @@ REGRAS:
 
 FORMATO POR PLATAFORMA:
 ZAP/OLX: objetivo, sem emojis, diferencial na 1ª frase, storytelling, dados técnicos, localização, CTA. Máx 280 palavras.
-Instagram: estrutura OBRIGATÓRIA em 3 blocos separados por linha em branco:
+Instagram: estrutura OBRIGATÓRIA em 4 blocos separados por linha em branco:
 BLOCO 1 — GANCHO (até 125 caracteres): frase aspiracional ou pergunta que PARA O SCROLL antes do "ver mais". Use cenário vivencial. Ex: "Já imaginou acordar todo dia com vista pro mar e ainda estar a 5 min de tudo?" NÃO comece com dados técnicos.
-BLOCO 2 — CORPO (4 a 6 linhas): descrição dos ambientes e sensações baseada nas fotos + diferenciais principais + dados em formato compacto (3 quartos · 1 suíte · 100m² · 2 vagas). 2-3 emojis distribuídos no texto. 🌟
-BLOCO 3 — CTA (1 linha): convida para DM com palavra-chave. Ex: "Manda 'QUERO' na DM que envio todos os detalhes 📩"
-Total: 120-150 palavras.
+BLOCO 2 — CORPO (3 a 5 linhas): descrição dos ambientes e sensações baseada nas fotos + diferenciais principais. 2-3 emojis distribuídos. 🌟
+BLOCO 3 — CHECKLIST DE DADOS: lista compacta com TODOS os dados informados (inclua TODOS que existirem, não omita nenhum):
+🏠 [tipo] · [quartos] quartos[, X suítes se informado] · [área]m²
+📍 [bairro]
+💰 R$ [preço]
+[Se vagas nas obs: 🚗 X vaga(s)]
+[Se condomínio nas obs: 🏢 Cond. R$ X]
+[Se IPTU nas obs: 📋 IPTU R$ X]
+[Outros diferenciais das obs: ✨ detalhe]
+BLOCO 4 — CTA (1 linha): convida para DM. Ex: "Manda 'QUERO' na DM que envio todos os detalhes 📩"
+Total: 150-180 palavras.
 WhatsApp: mensagem direta de corretor, diferencial + dados compactos + pergunta. Termina com "Segue também o material completo do imóvel em anexo." Máx 90 palavras, máx 1 emoji.
 Site: narrativa longa SEO, abertura emocional, referências locais, dados contextualizados, CTA. Máx 400 palavras.
 
-SCORE — verifique item a item nos DADOS DO IMÓVEL e some os pontos:
-Bairro informado +10 | Cidade/estado +5 | Referências próximas (escola/shopping/metrô) nas obs +10
-Preço +10 | Área m² +8 | Quartos +8 | Vagas nas obs +6 | Condomínio/IPTU nas obs +8
-Tipo +5 | Finalidade +5
-Fotos: 3+ fotos +10 | 5+ fotos +5 | Ambientes variados +10
-IMPORTANTE: se o dado aparece nos DADOS acima com valor real, ele FOI informado — some os pontos. Não invente critérios extras.
+SCORE — calcule somando os pontos AGORA, item por item. Substitua CALCULE_AQUI pelo número resultante:
+Bairro informado? +10 | Cidade/estado? +5 | Referências próximas nas obs? +10
+Preço informado? +10 | Área m²? +8 | Quartos? +8 | Vagas nas obs? +6 | Condomínio/IPTU nas obs? +8
+Tipo especificado? +5 | Finalidade? +5
+Fotos: 3+? +10 | 5+? +5 adicional | Ambientes variados? +10
+ATENÇÃO: calcule o valor REAL somando os pontos dos itens presentes. NÃO use valores fixos como 72 ou 85. Se todos os dados foram informados E há 5+ fotos variadas, o score deve ser próximo de 100.
 
 DICAS: 3 itens baseados SOMENTE no que está faltando (itens que não somaram pontos). Nunca mencione como falta algo que já foi informado.
 
 Responda SOMENTE em JSON puro sem markdown:
-{"titulo":"tipo+quartos+bairro+diferencial em até 80 chars","corpo":"texto para ${plataforma}","score":72,"dicas":["falta 1","falta 2","falta 3"],"hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],"tipo":["#tag1","#tag2","#tag3","#tag4"],"perfil":["#tag1","#tag2","#tag3","#tag4"]},"legendas":["legenda foto 1","legenda foto 2"]}
+{"titulo":"tipo+quartos+bairro+diferencial em até 80 chars","corpo":"texto para ${plataforma}","score":CALCULE_AQUI,"dicas":["falta 1","falta 2","falta 3"],"hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],"tipo":["#tag1","#tag2","#tag3","#tag4"],"perfil":["#tag1","#tag2","#tag3","#tag4"]},"legendas":["legenda foto 1","legenda foto 2"]}
 
 LEGENDAS: exatamente ${fotos.length} legenda${fotos.length>1?'s':''} na ordem das fotos. 2-3 frases por legenda: iluminação, cores, amplitude, móveis, estilo. Sem bairro/cidade. Sem especular materiais.`;
 
   const partsAnuncio=[];
-  fotos.slice(0,10).forEach(f=>partsAnuncio.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));
+  fotos.slice(0,15).forEach(f=>partsAnuncio.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));
   partsAnuncio.push({text:promptPrincipal});
 
   let corpoTexto='';
@@ -1372,7 +1480,7 @@ LEGENDAS: exatamente ${fotos.length} legenda${fotos.length>1?'s':''} na ordem da
     fotoCapaIdx=0;
     const capaSel=document.getElementById('capa-selector');
     const capaThumbs=document.getElementById('capa-thumbs');
-    capaThumbs.innerHTML=fotos.slice(0,10).map((f,i)=>`
+    capaThumbs.innerHTML=fotos.slice(0,15).map((f,i)=>`
       <div class="capa-thumb-item${i===0?' selected':''}" onclick="selecionarCapa(${i})" id="capa-thumb-${i}">
         <img src="${f.src}" alt="Foto ${i+1}"/>
         <div class="capa-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -1389,7 +1497,174 @@ LEGENDAS: exatamente ${fotos.length} legenda${fotos.length>1?'s':''} na ordem da
   console.log('🟢 [FIM] geração completa com sucesso');
 }
 
-// ─── PDF COM HTML2CANVAS ────────────────────────────────
+let temaPDF='escuro'; // 'escuro' ou 'bege'
+
+function selecionarTema(tema){
+  temaPDF=tema;
+  document.querySelectorAll('.tema-btn').forEach(b=>{
+    b.style.borderColor='var(--border)';
+    b.style.background='transparent';
+  });
+  const btn=document.getElementById('tema-'+tema);
+  btn.style.borderColor='var(--g)';
+  btn.style.background='rgba(29,158,117,.1)';
+}
+
+// ─── TEMPLATES TEMA BEGE ─────────────────────────────────
+
+function imgB(src,cls){
+  if(!src) return `<div class="${cls}-ph"></div>`;
+  return `<img src="${src}" crossorigin="anonymous" style="width:100%;height:100%;object-fit:contain;display:block;background:#e8e2d8;"/>`;
+}
+
+function pgBegeCapa(d){
+  const mes=new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'}).toUpperCase();
+  return `<div class="pf-b pfb-capa">
+    <div class="pfb-capa-foto">${imgB(d.foto,'pfb-capa-foto')}</div>
+    <div class="pfb-capa-right">
+      <div class="pfb-capa-brand">ImóvelText &middot; ${mes}</div>
+      <div class="pfb-capa-titulo">${d.titulo||'Proposta Imobiliária'}</div>
+      <div class="pfb-capa-ficha">
+        <div class="pfb-capa-item"><span class="pfb-capa-label">Local</span><span class="pfb-capa-val">${d.bairro||'—'}</span></div>
+        <div class="pfb-capa-item"><span class="pfb-capa-label">Preço</span><span class="pfb-capa-val dest">${d.preco?'R$&nbsp;'+d.preco:'—'}</span></div>
+        <div class="pfb-capa-item"><span class="pfb-capa-label">Área</span><span class="pfb-capa-val">${d.area?d.area+'m²':'—'}</span></div>
+        <div class="pfb-capa-item"><span class="pfb-capa-label">Quartos</span><span class="pfb-capa-val">${d.quartos||'—'}</span></div>
+        <div class="pfb-capa-item"><span class="pfb-capa-label">Suítes</span><span class="pfb-capa-val">${d.suites||'—'}</span></div>
+        <div class="pfb-capa-item"><span class="pfb-capa-label">Tipo</span><span class="pfb-capa-val">${d.tipo||'—'}</span></div>
+      </div>
+      <div class="pfb-capa-footer">
+        <div class="pfb-capa-nome">${d.corretor||''}</div>
+        <div class="pfb-capa-info">${[d.tel,d.creci?'CRECI&nbsp;'+d.creci:''].filter(Boolean).join(' &middot; ')}</div>
+        <div class="pfb-capa-num">1 / ${d.total}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function pgBegeGrid3(d){ // pg5/7 — 1 grande + 2 empilhadas, sem legenda
+  return `<div class="pf-b pfb-grid3" style="position:relative;">
+    <div class="pfb-grid3-header">
+      <span class="pfb-grid3-titulo">${d.label||''}</span>
+      <span class="pfb-grid3-num">${d.num} / ${d.total}</span>
+    </div>
+    <div class="pfb-grid3-grande" style="margin-top:40px;">${imgB(d.foto1,'pfb-grid3-grande')}</div>
+    <div class="pfb-grid3-col" style="margin-top:40px;">
+      <div class="pfb-grid3-pequena">${imgB(d.foto2,'pfb-grid3-pequena')}</div>
+      <div class="pfb-grid3-pequena">${imgB(d.foto3,'pfb-grid3-pequena')}</div>
+    </div>
+    <div class="pfb-grid3-footer">${d.corretor||''} ${d.tel?'&middot; '+d.tel:''}</div>
+  </div>`;
+}
+
+function pgBegeTxt2(d){ // pg4 — texto + 2 fotos empilhadas
+  return `<div class="pf-b pfb-txt2">
+    <div class="pfb-txt2-left">
+      <div class="pfb-txt2-num">${d.num} / ${d.total}</div>
+      <div class="pfb-txt2-titulo">${d.label||''}</div>
+      <div class="pfb-txt2-desc">${d.legenda||''}</div>
+      <div class="pfb-txt2-footer">
+        <div class="pfb-txt2-nome">${d.corretor||''}</div>
+        <div class="pfb-txt2-info">${d.tel||''}</div>
+      </div>
+    </div>
+    <div class="pfb-txt2-right">
+      <div class="pfb-txt2-foto">${imgB(d.foto1,'pfb-txt2-foto')}</div>
+      <div class="pfb-txt2-foto">${imgB(d.foto2,'pfb-txt2-foto')}</div>
+    </div>
+  </div>`;
+}
+
+function pgBegeTxt4(d){ // pg10 — texto + grid 2x2
+  return `<div class="pf-b pfb-txt4">
+    <div class="pfb-txt4-left">
+      <div class="pfb-txt4-num">${d.num} / ${d.total}</div>
+      <div class="pfb-txt4-titulo">${d.label||''}</div>
+      <div class="pfb-txt4-desc">${d.legenda||''}</div>
+      <div class="pfb-txt4-footer">
+        <div class="pfb-txt4-nome">${d.corretor||''}</div>
+        <div class="pfb-txt4-info">${d.tel||''}</div>
+      </div>
+    </div>
+    <div class="pfb-txt4-right">
+      <div class="pfb-txt4-foto">${imgB(d.foto1,'pfb-txt4-foto')}</div>
+      <div class="pfb-txt4-foto">${imgB(d.foto2,'pfb-txt4-foto')}</div>
+      <div class="pfb-txt4-foto">${imgB(d.foto3,'pfb-txt4-foto')}</div>
+      <div class="pfb-txt4-foto">${imgB(d.foto4,'pfb-txt4-foto')}</div>
+    </div>
+  </div>`;
+}
+
+function pgBegeEnc(d){
+  const fotoSrc=d.foto;
+  return `<div class="pf-b pfb-enc">
+    <div class="pfb-enc-left">
+      <div class="pfb-enc-titulo">Entre em<br>contato</div>
+      <div class="pfb-enc-itens">
+        ${d.nome?`<div class="pfb-enc-item"><div class="pfb-enc-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="pfb-enc-text">${d.nome}</div></div>`:''}
+        ${d.tel?`<div class="pfb-enc-item"><div class="pfb-enc-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.09 5.18 2 2 0 015.09 3h3a2 2 0 012 1.72c.12.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L9.09 10a16 16 0 006.91 6.91l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0122 16.92z"/></svg></div><div class="pfb-enc-text">${d.tel}</div></div>`:''}
+        ${d.creci?`<div class="pfb-enc-item"><div class="pfb-enc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="pfb-enc-text">CRECI ${d.creci}</div></div>`:''}
+      </div>
+      <div class="pfb-enc-divider"></div>
+      <div class="pfb-enc-rodape">Gerado por ImóvelText</div>
+    </div>
+    <div class="pfb-enc-right">${fotoSrc?`<img src="${fotoSrc}" crossorigin="anonymous" style="width:100%;height:100%;object-fit:contain;display:block;background:#e0d8cc;"/>`:'<div class="pfb-enc-right-ph"></div>'}</div>
+  </div>`;
+}
+
+// ─── MONTA PÁGINAS BEGE ───────────────────────────────────
+
+function montarPaginasBege(capa, galeria, d){
+  const pages=[];
+  const labels=['Fachada','Área de Lazer','Sala de Estar','Cozinha','Quarto','Escritório','Detalhe','Detalhe','Banheiro'];
+  function getLabel(o){return labels[Math.min(o,8)]||'Detalhe';}
+
+  // Calcula total
+  let total=2; // capa + enc
+  let i=0;
+  const n=galeria.length;
+  while(i<n){
+    if(i+2<n) {total++;i+=3;} // grid3 consome 3
+    else if(i+3<n) {total++;i+=4;} // txt4 consome 4
+    else if(i+1<n) {total++;i+=2;} // txt2 consome 2
+    else {total++;i++;} // txt2 com 1 foto
+  }
+
+  // Capa
+  pages.push(pgBegeCapa({...d,titulo:lastTitulo,bairro:lastBairro,preco:lastPreco,area:lastArea,quartos:lastQuartos,suites:lastSuites,tipo:lastTipo,foto:capa.src,total}));
+
+  i=0;let pageNum=2;
+  while(i<n){
+    const f1=galeria[i], f2=galeria[i+1], f3=galeria[i+2], f4=galeria[i+3];
+    const label=getLabel(f1.ordem);
+
+    // Se tem 4 fotos disponíveis → txt4 (pg10)
+    if(f4){
+      pages.push(pgBegeTxt4({label,legenda:f1.legenda,foto1:f1.src,foto2:f2.src,foto3:f3.src,foto4:f4.src,corretor:d.nome,tel:d.tel,num:pageNum,total}));
+      i+=4;
+    }
+    // Se tem 3 fotos → grid3 sem legenda (pg5/7)
+    else if(f3){
+      pages.push(pgBegeGrid3({label,foto1:f1.src,foto2:f2.src,foto3:f3.src,corretor:d.nome,tel:d.tel,num:pageNum,total}));
+      i+=3;
+    }
+    // Se tem 2 fotos → txt2 (pg4)
+    else if(f2){
+      pages.push(pgBegeTxt2({label,legenda:f1.legenda,foto1:f1.src,foto2:f2.src,corretor:d.nome,tel:d.tel,num:pageNum,total}));
+      i+=2;
+    }
+    // 1 foto restante → txt2 com só 1 foto
+    else{
+      pages.push(pgBegeTxt2({label,legenda:f1.legenda,foto1:f1.src,foto2:null,corretor:d.nome,tel:d.tel,num:pageNum,total}));
+      i++;
+    }
+    pageNum++;
+  }
+
+  // Encerramento com última foto da galeria ou capa
+  const fotoEnc=galeria.length>0?galeria[galeria.length-1].src:capa.src;
+  pages.push(pgBegeEnc({...d,foto:fotoEnc}));
+  return pages;
+}
 
 // Detecta proporção da foto
 function propFoto(src){
@@ -1565,7 +1840,7 @@ function pgEncerramento(d){
       ${d.creci?`<div class="pf-l6-item"><div class="pf-l6-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="pf-l6-text">CRECI ${d.creci}</div></div>`:''}
     </div>
     <div class="pf-l6-divider"></div>
-    <div class="pf-l6-rodape">GERADO POR IMÓVELTEXT &middot; MARKETING IMOBILIÁRIO COM IA</div>
+    <div class="pf-l6-rodape">GERADO POR IMÓVELTEXT &middot; MARKETING IMOBILIÁRIO</div>
   </div>`;
 }
 
@@ -1591,40 +1866,24 @@ function montarPaginas(capa, galeria, d){
   const labels=['Fachada','Área de Lazer','Sala de Estar','Cozinha','Quarto','Escritório','Detalhe','Detalhe','Banheiro'];
   function getLabel(o){return labels[Math.min(o,8)]||'Detalhe';}
 
-  // Calcula total de páginas
-  let total=2; // capa + encerramento
-  let i=0;
-  while(i<n){
-    const f1=galeria[i], f2=galeria[i+1];
-    if(f2&&((f1.prop==='v'&&f2.prop==='v')||(f1.prop==='h'&&f2.prop==='h'))){total++;i+=2;}
-    else{total++;i++;}
-  }
+  const total=n+2; // capa + 1 por foto + encerramento
 
-  // Capa
+  // Capa — escolhe layout pela proporção da foto
   const capaData={...d,titulo:lastTitulo,bairro:lastBairro,preco:lastPreco,area:lastArea,quartos:lastQuartos,suites:lastSuites,tipo:lastTipo,foto:capa.src};
   pages.push(capa.prop==='v'?pgCapaV(capaData):pgCapaH(capaData));
 
-  let pageNum=2;
-  i=0;
-  while(i<n){
-    const f1=galeria[i], f2=galeria[i+1];
-    const pairProp = f2&&f1.prop===f2.prop;
-
-    if(pairProp&&f1.prop==='v'){
-      pages.push(pg2FotasV({label:getLabel(f1.ordem),foto1:f1.src,foto2:f2.src,leg1:f1.legenda,leg2:f2.legenda,corretor:d.nome,tel:d.tel,num:pageNum,total}));
-      i+=2;
-    } else if(pairProp&&f1.prop==='h'){
-      pages.push(pg2FotasH({label:getLabel(f1.ordem),foto1:f1.src,foto2:f2.src,leg1:f1.legenda,leg2:f2.legenda,corretor:d.nome,tel:d.tel,num:pageNum,total}));
-      i+=2;
-    } else if(f1.prop==='v'){
-      pages.push(pgTextoFoto({label:getLabel(f1.ordem),foto:f1.src,legenda:f1.legenda,corretor:d.nome,tel:d.tel,num:pageNum,total}));
-      i++;
+  // Uma página por foto — layout baseado na proporção
+  galeria.forEach((f,i)=>{
+    const pageNum=i+2;
+    const label=getLabel(f.ordem);
+    if(f.prop==='v'){
+      // Foto vertical — texto à esquerda + foto à direita
+      pages.push(pgTextoFoto({label,foto:f.src,legenda:f.legenda,corretor:d.nome,tel:d.tel,num:pageNum,total}));
     } else {
-      pages.push(pgFotoFull({label:getLabel(f1.ordem),foto:f1.src,legenda:f1.legenda,corretor:d.nome,tel:d.tel,num:pageNum,total}));
-      i++;
+      // Foto horizontal — header + foto full + legenda embaixo
+      pages.push(pgFotoFull({label,foto:f.src,legenda:f.legenda,corretor:d.nome,tel:d.tel,num:pageNum,total}));
     }
-    pageNum++;
-  }
+  });
 
   pages.push(pgEncerramento(d));
   return pages;
@@ -1633,46 +1892,56 @@ function montarPaginas(capa, galeria, d){
 // ─── RENDERIZAÇÃO ─────────────────────────────────────────
 
 async function renderPagina(html, scale=2.5){
-  return new Promise((resolve,reject)=>{
-    const iframe=document.createElement('iframe');
-    iframe.style.cssText='position:fixed;left:-9999px;top:0;width:1123px;height:794px;border:none;visibility:hidden;';
-    document.body.appendChild(iframe);
-    iframe.onload=async()=>{
-      try{
-        const iDoc=iframe.contentDocument;
-        document.querySelectorAll('style,link[rel="stylesheet"]').forEach(el=>{
-          iDoc.head.appendChild(el.cloneNode(true));
+  return new Promise(async(resolve,reject)=>{
+    try{
+      const template=document.getElementById('pdf-template');
+      template.style.cssText='position:fixed;left:-9999px;top:0;width:1123px;height:794px;z-index:-1;pointer-events:none;overflow:hidden;';
+      template.innerHTML=html;
+
+      // Aguarda fontes e imagens carregarem
+      await new Promise(r=>{
+        const imgs=template.querySelectorAll('img');
+        if(imgs.length===0){setTimeout(r,600);return;}
+        let loaded=0;
+        const done=()=>{loaded++;if(loaded>=imgs.length)r();};
+        imgs.forEach(img=>{
+          if(img.complete) done();
+          else{img.onload=done;img.onerror=done;}
         });
-        const gf=iDoc.createElement('link');
-        gf.rel='stylesheet';
-        gf.href='https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap';
-        iDoc.head.appendChild(gf);
-        iDoc.body.innerHTML=html;
-        iDoc.body.style.cssText='margin:0;padding:0;background:#2C2017;';
-        await new Promise(r=>setTimeout(r,900));
-        const canvas=await html2canvas(iDoc.body.firstElementChild,{
-          scale:scale,useCORS:true,allowTaint:true,
-          width:1123,height:794,
-          backgroundColor:'#2C2017',logging:false,
-          foreignObjectRendering:false,imageTimeout:10000,
-          onclone:(clonedDoc)=>{
-            clonedDoc.querySelectorAll('img').forEach(img=>{
-              const p=img.parentElement;
-              if(img.src){
-                p.style.backgroundImage=`url('${img.src}')`;
-                p.style.backgroundSize='cover';
-                p.style.backgroundPosition='center center';
-                p.style.backgroundRepeat='no-repeat';
-              }
-              img.style.opacity='0';
-            });
-          }
-        });
-        document.body.removeChild(iframe);
-        resolve(canvas.toDataURL('image/jpeg',0.95));
-      }catch(e){document.body.removeChild(iframe);reject(e);}
-    };
-    iframe.src='about:blank';
+        setTimeout(r,5000);
+      });
+      await new Promise(r=>setTimeout(r,400));
+
+      const canvas=await html2canvas(template.firstElementChild,{
+        scale:scale,
+        useCORS:true,
+        allowTaint:true,
+        width:1123,
+        height:794,
+        backgroundColor:temaPDF==='bege'?'#F7F4EF':'#2C2017',
+        logging:false,
+        foreignObjectRendering:false,
+        imageTimeout:10000,
+        onclone:(clonedDoc)=>{
+          clonedDoc.querySelectorAll('img').forEach(img=>{
+            const p=img.parentElement;
+            if(img.src&&img.src!=='about:blank'){
+              p.style.backgroundImage=`url('${img.src}')`;
+              p.style.backgroundSize='cover';
+              p.style.backgroundPosition='center center';
+              p.style.backgroundRepeat='no-repeat';
+            }
+            img.style.opacity='0';
+          });
+        }
+      });
+
+      template.innerHTML='';
+      resolve(canvas.toDataURL('image/jpeg',0.95));
+    }catch(e){
+      document.getElementById('pdf-template').innerHTML='';
+      reject(e);
+    }
   });
 }
 
@@ -1680,9 +1949,21 @@ async function renderPagina(html, scale=2.5){
 
 async function gerarPDF(){
   if(!isProUser){showPaywall();return;}
+
+  // Bloqueia se não há fotos
+  if(fotos.length===0){
+    alert('Adicione pelo menos 1 foto antes de gerar o PDF.');
+    return;
+  }
+
   const btn=document.getElementById('pdf-btn');
   btn.disabled=true;
   btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Preparando PDF...';
+
+  const resetBtn=()=>{
+    btn.disabled=false;
+    btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg> Gerar PDF profissional';
+  };
 
   const corrNome=document.getElementById('corr-nome')?.value||'';
   const corrTel=document.getElementById('corr-tel')?.value||'';
@@ -1693,7 +1974,10 @@ async function gerarPDF(){
 
   const fotosOrdenadas=[fotos[fotoCapaIdx],...fotos.filter((_,i)=>i!==fotoCapaIdx)];
   const {capa,galeria}=await distribuirFotos(fotosOrdenadas,legendas,fotoCapaIdx);
-  const paginas=montarPaginas(capa,galeria,{nome:corrNome,tel:corrTel,creci:corrCreci});
+  const corrData={nome:corrNome,tel:corrTel,creci:corrCreci};
+  const paginas=temaPDF==='bege'
+    ? montarPaginasBege(capa,galeria,corrData)
+    : montarPaginas(capa,galeria,corrData);
 
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'landscape',unit:'px',format:[1123,794]});
@@ -1711,8 +1995,7 @@ async function gerarPDF(){
     alert('Erro ao gerar PDF. Tente novamente.');
   }
 
-  btn.disabled=false;
-  btn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg> Gerar PDF profissional';
+  resetBtn();
 }
 
 // ─── UTILS ─────────────────────────────────────────────
