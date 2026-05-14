@@ -355,153 +355,60 @@ section{position:relative;z-index:1}
 #pdf-template{position:fixed;left:-9999px;top:0;z-index:-1;pointer-events:none}
 .pdf-page{
   width:794px;height:1123px;position:relative;overflow:hidden;
-  background:#faf9f7;font-family:'Playfair Display',serif;
+  background:#ffffff;font-family:'Playfair Display',serif;
   display:flex;flex-direction:column;
 }
 
-/* ══ PÁGINA 1 — CAPA ══ */
-.pdf-capa-foto{
-  width:100%;height:520px;object-fit:cover;display:block;flex-shrink:0;
-}
-.pdf-capa-foto-placeholder{
-  width:100%;height:520px;background:#d0ccc6;flex-shrink:0;
-}
-.pdf-capa-body{
-  flex:1;display:flex;flex-direction:column;
-  padding:36px 48px 0;background:#faf9f7;
-}
-.pdf-capa-meta{
-  display:flex;justify-content:space-between;align-items:flex-start;
-  margin-bottom:20px;
-}
-.pdf-capa-brand{
-  font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a;
-}
-.pdf-capa-data{
-  font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a;
-}
-.pdf-capa-titulo{
-  font-size:34px;font-weight:700;line-height:1.1;
-  letter-spacing:-.02em;color:#1a1a1a;
-  margin-bottom:16px;
-}
-.pdf-capa-linha{
-  width:40px;height:2px;background:#1D9E75;margin-bottom:20px;flex-shrink:0;
-}
-.pdf-capa-ficha{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:0;margin-bottom:0;
-}
-.pdf-capa-ficha-item{
-  padding:12px 0;border-top:1px solid #e0dbd4;
-}
-.pdf-capa-ficha-item:nth-child(4),
-.pdf-capa-ficha-item:nth-child(5),
-.pdf-capa-ficha-item:nth-child(6){
-  border-bottom:1px solid #e0dbd4;
-}
-.pdf-capa-ficha-label{
-  font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;
-  letter-spacing:.12em;text-transform:uppercase;color:#9a9a9a;
-  display:block;margin-bottom:4px;
-}
-.pdf-capa-ficha-val{
-  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
-  color:#1a1a1a;display:block;
-}
+/* ══ CAPA ══ */
+.pdf-capa-foto-wrap{position:relative;flex-shrink:0;}
+.pdf-capa-foto{width:100%;height:560px;object-fit:cover;display:block;}
+.pdf-capa-foto-placeholder{width:100%;height:560px;background:#d0ccc6;}
+.pdf-capa-overlay{position:absolute;bottom:0;left:0;right:0;height:220px;background:linear-gradient(to top,rgba(0,0,0,0.75),transparent);}
+.pdf-capa-titulo-wrap{position:absolute;bottom:0;left:0;right:0;padding:0 40px 28px;z-index:2;}
+.pdf-capa-badge{display:inline-block;background:#1D9E75;color:#fff;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:4px 12px;margin-bottom:10px;}
+.pdf-capa-titulo{font-size:26px;font-weight:700;line-height:1.15;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.4);}
+.pdf-capa-body{flex:1;display:flex;flex-direction:column;padding:20px 40px 0;background:#fff;}
+.pdf-capa-meta{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid #e8e4e0;margin-bottom:16px;}
+.pdf-capa-brand{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#1D9E75;}
+.pdf-capa-data{font-family:'DM Sans',sans-serif;font-size:10px;color:#9a9a9a;}
+.pdf-capa-ficha{display:grid;grid-template-columns:repeat(3,1fr);gap:0;}
+.pdf-capa-ficha-item{padding:10px 12px;border-left:2px solid #f0ede8;}
+.pdf-capa-ficha-item:first-child{border-left:none;}
+.pdf-capa-ficha-label{font-family:'DM Sans',sans-serif;font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9a9a9a;display:block;margin-bottom:3px;}
+.pdf-capa-ficha-val{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;color:#1a1a1a;display:block;}
 .pdf-capa-ficha-val.verde{color:#1D9E75;}
-.pdf-capa-footer{
-  margin-top:auto;padding:20px 0 28px;
-  border-top:1px solid #e0dbd4;
-  display:flex;justify-content:space-between;align-items:center;
-}
-.pdf-capa-corretor-nome{
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#1a1a1a;
-}
-.pdf-capa-corretor-info{
-  font-family:'DM Sans',sans-serif;font-size:11px;color:#6a6a6a;margin-top:2px;
-}
-.pdf-capa-badge{
-  background:#1D9E75;color:#fff;
-  font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;
-  padding:5px 12px;
-}
+.pdf-capa-footer{margin-top:auto;padding:14px 0 20px;border-top:1px solid #e8e4e0;display:flex;justify-content:space-between;align-items:center;}
+.pdf-capa-corretor-nome{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#1a1a1a;}
+.pdf-capa-corretor-info{font-family:'DM Sans',sans-serif;font-size:11px;color:#6a6a6a;margin-top:2px;}
+.pdf-capa-page-num{font-family:'DM Sans',sans-serif;font-size:10px;color:#c0bbb5;}
 
 /* ══ PÁGINAS FOTO ══ */
-.pdf-foto-page{
-  width:794px;height:1123px;background:#1a1a1a;
-  display:flex;flex-direction:column;overflow:hidden;
-  font-family:'Playfair Display',serif;
-}
-.pdf-foto-img{
-  width:100%;height:680px;object-fit:cover;display:block;flex-shrink:0;
-}
-.pdf-foto-img-placeholder{
-  width:100%;height:680px;background:#2a2a2a;flex-shrink:0;
-}
-.pdf-foto-bottom{
-  flex:1;padding:32px 48px;display:flex;flex-direction:column;justify-content:space-between;
-}
-.pdf-foto-legenda{
-  font-size:22px;font-style:italic;font-weight:400;
-  color:#f0ede8;line-height:1.55;
-}
-.pdf-foto-footer{
-  display:flex;justify-content:space-between;align-items:flex-end;
-  border-top:1px solid rgba(255,255,255,0.12);padding-top:16px;
-}
-.pdf-foto-corretor{
-  font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,0.5);
-}
-.pdf-foto-num{
-  font-family:'DM Sans',sans-serif;font-size:11px;
-  color:rgba(255,255,255,0.3);letter-spacing:.08em;
-}
+.pdf-foto-page{width:794px;height:1123px;background:#fff;display:flex;flex-direction:column;overflow:hidden;font-family:'Playfair Display',serif;}
+.pdf-foto-topo{height:4px;background:#1D9E75;flex-shrink:0;}
+.pdf-foto-header{padding:14px 40px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0ede8;flex-shrink:0;}
+.pdf-foto-header-titulo{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#b0aba5;max-width:500px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pdf-foto-header-num{font-family:'DM Sans',sans-serif;font-size:10px;color:#1D9E75;font-weight:600;}
+.pdf-foto-img{width:100%;height:640px;object-fit:cover;display:block;flex-shrink:0;}
+.pdf-foto-img-placeholder{width:100%;height:640px;background:#e8e4e0;flex-shrink:0;}
+.pdf-foto-bottom{flex:1;padding:24px 40px;display:flex;flex-direction:column;justify-content:space-between;background:#fff;}
+.pdf-foto-legenda-wrap{display:flex;gap:14px;align-items:flex-start;}
+.pdf-foto-legenda-linha{width:3px;background:#1D9E75;flex-shrink:0;align-self:stretch;min-height:40px;}
+.pdf-foto-legenda{font-size:17px;font-style:italic;font-weight:400;color:#2a2a2a;line-height:1.65;}
+.pdf-foto-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #f0ede8;padding-top:12px;}
+.pdf-foto-corretor-nome{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#1a1a1a;}
+.pdf-foto-corretor-info{font-family:'DM Sans',sans-serif;font-size:10px;color:#9a9a9a;margin-top:1px;}
 
 /* ══ PÁGINA DESCRIÇÃO ══ */
-.pdf-desc-page{
-  width:794px;height:1123px;background:#faf9f7;
-  display:flex;flex-direction:column;overflow:hidden;
-  font-family:'Playfair Display',serif;
-}
-.pdf-desc-foto{
-  width:100%;height:440px;object-fit:cover;display:block;flex-shrink:0;
-}
-.pdf-desc-foto-placeholder{
-  width:100%;height:440px;background:#d0ccc6;flex-shrink:0;
-}
-.pdf-desc-body{
-  flex:1;padding:36px 48px;display:flex;flex-direction:column;
-}
-.pdf-desc-label{
-  font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a;
-  margin-bottom:16px;display:flex;align-items:center;gap:10px;
-}
-.pdf-desc-label::after{
-  content:'';flex:1;height:1px;background:#e0dbd4;
-}
-.pdf-desc-texto{
-  font-family:'DM Sans',sans-serif;font-size:13px;
-  line-height:1.85;color:#3a3a3a;font-weight:400;
-  flex:1;
-}
-.pdf-desc-footer{
-  border-top:1px solid #e0dbd4;padding-top:16px;
-  display:flex;justify-content:space-between;align-items:center;
-}
-.pdf-desc-corretor-nome{
-  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#1a1a1a;
-}
-.pdf-desc-corretor-info{
-  font-family:'DM Sans',sans-serif;font-size:10px;color:#6a6a6a;margin-top:2px;
-}
-.pdf-desc-num{
-  font-family:'DM Sans',sans-serif;font-size:11px;color:#9a9a9a;
-}
+.pdf-desc-page{width:794px;height:1123px;background:#1a1a1a;display:flex;flex-direction:column;overflow:hidden;font-family:'Playfair Display',serif;}
+.pdf-desc-foto{width:100%;height:420px;object-fit:cover;display:block;flex-shrink:0;opacity:.85;}
+.pdf-desc-foto-placeholder{width:100%;height:420px;background:#2a2a2a;flex-shrink:0;}
+.pdf-desc-body{flex:1;padding:32px 40px;display:flex;flex-direction:column;background:#1a1a1a;}
+.pdf-desc-label{font-family:'DM Sans',sans-serif;font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#1D9E75;margin-bottom:12px;}
+.pdf-desc-texto{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.9;color:rgba(255,255,255,.82);font-weight:300;flex:1;}
+.pdf-desc-footer{border-top:1px solid rgba(255,255,255,.1);padding-top:14px;display:flex;justify-content:space-between;align-items:center;}
+.pdf-desc-corretor-nome{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,.8);}
+.pdf-desc-corretor-info{font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;}
+.pdf-desc-num{font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,.25);}
 
   .how-grid,.features-grid,.preview-grid,.why-grid,.pdf-inner,.gen-body,.corretor-grid{grid-template-columns:1fr}
   .frow.c2,.frow.c3{grid-template-columns:1fr}
@@ -1269,72 +1176,61 @@ async function gerar(){
   const dadosBase=`Tipo: ${tipo} | Finalidade: ${finalidade} | Local: ${bairro} | Preço: ${preco} | Quartos: ${quartos} | Suítes: ${suites} | Área: ${area}m² | Obs: ${obs||'nenhuma'}`;
 
   const fotoInfo=fotos.length>0
-    ?`Foram enviadas ${fotos.length} foto(s) do imóvel. ANALISE CADA IMAGEM COM ATENÇÃO MÁXIMA antes de escrever o anúncio. Para cada foto, observe e anote mentalmente:
-- Qual ambiente é esse? (sala, cozinha, quarto, banheiro, varanda, área gourmet, piscina, garagem, etc.)
-- Qual é o estado de conservação e acabamento? (novo, reformado, alto padrão, simples, etc.)
-- Quais materiais e revestimentos estão visíveis? (porcelanato, madeira, granito, mármore, pastilha, etc.)
-- Como está a iluminação natural? (janelas grandes, claraboia, muito iluminado, etc.)
-- Há algum mobiliário, equipamento ou detalhe marcante? (armários planejados, bancada, banheira, churrasqueira, vista, etc.)
-- Qual é a dimensão aparente dos ambientes? (amplo, compacto, pé-direito alto, etc.)
-USE ESSAS OBSERVAÇÕES DIRETAMENTE NO TEXTO DO ANÚNCIO. Mencione ambientes específicos que você viu. Descreva detalhes reais das fotos. O comprador deve sentir que você está descrevendo o imóvel que ele vai visitar, não um imóvel genérico.`
-    :'Nenhuma foto enviada. Use apenas os dados textuais para criar um anúncio convincente.';
+    ?`Foram enviadas ${fotos.length} foto(s) do imóvel. ANALISE CADA IMAGEM com atenção antes de escrever. Observe: ambiente (sala, cozinha, quarto, banheiro, varanda, piscina etc.), iluminação natural, presença de janelas grandes, amplitude dos espaços, cores predominantes, móveis planejados ou soltos, integração entre ambientes. USE essas observações no texto — o comprador deve sentir que você descreveu o imóvel real, não um genérico.`
+    :'Nenhuma foto enviada. Use apenas os dados textuais.';
 
-  const promptPrincipal=`Você é especialista em copywriting imobiliário brasileiro com 20 anos de experiência vendendo imóveis de alto giro.
+  const promptPrincipal=`Você é especialista em copywriting imobiliário brasileiro com 20 anos de experiência.
 
 ${fotoInfo}
 
-DADOS DO IMÓVEL (prioridade máxima — nunca contradiga esses dados):
+DADOS DO IMÓVEL:
 ${dadosBase}
 
 PLATAFORMA: ${plataforma}
 TOM: ${tomDesc(tomAnuncio)}
 
 REGRAS ABSOLUTAS:
-- NUNCA use asteriscos, markdown ou qualquer formatação especial
-- NUNCA use frases genéricas como "não perca essa oportunidade", "imóvel dos sonhos", "venha conferir", "oportunidade única"
-- NUNCA descreva a ordem ou sequência dos ambientes ("ao entrar", "logo na entrada", "ao fundo") a menos que o corretor tenha explicitado isso nas observações
+- NUNCA use asteriscos, markdown ou formatação especial
+- NUNCA use frases como "não perca essa oportunidade", "imóvel dos sonhos", "venha conferir", "oportunidade única"
+- NUNCA descreva sequência de ambientes ("ao entrar", "logo na entrada") sem que o corretor tenha informado isso
 - NUNCA invente informações que não estão nos dados nem nas fotos
-- Use a preposição correta para o bairro — "na Pituba", "no Itaigara", "na Barra", "em Moema" etc.
-- Integre as observações visuais das fotos naturalmente no texto — não liste, narre
+- NUNCA especule materiais (mármore, granito, porcelanato) ou características não confirmáveis (borda infinita, piso aquecido)
+- Use preposição correta para o bairro: "na Pituba", "no Itaigara", "na Barra"
+- Integre observações das fotos naturalmente no texto — não liste, narre
 
-FORMATO OBRIGATÓRIO POR PLATAFORMA — siga rigorosamente:
+FORMATO E EXEMPLO POR PLATAFORMA:
 
-ZAP/OLX: texto corrido e objetivo. Primeira frase destaca o principal diferencial. Dados técnicos integrados naturalmente. Termina com chamada para ação direta ("Agende sua visita", "Entre em contato"). Máx 280 palavras. SEM emojis.
+ZAP/OLX — texto corrido, objetivo, sem emojis. Estrutura: (1) primeira frase destaca o diferencial principal do imóvel. (2) parágrafo de storytelling curto fazendo o comprador se imaginar vivendo lá. (3) dados técnicos contextualizados como benefícios. (4) referências de localização próximas. (5) CTA direto. Máx 280 palavras.
+EXEMPLO ZAP/OLX: "Apartamento de 100m² com vista definitiva para o mar na Pituba, Salvador. 3 quartos, 1 suíte, 2 vagas cobertas. R$ 850 mil. Imagine acordar todos os dias com a brisa do mar e a orla iluminada pela manhã. A sala integrada com varanda cria um ambiente amplo e luminoso. Condomínio completo com piscina, academia e portaria 24h. A dois quarteirões do Shopping da Bahia, próximo a escolas e restaurantes. Agende sua visita."
 
-Instagram: formato completamente diferente — começa com frase de impacto curta que prende antes do "ver mais" (máx 15 palavras na primeira linha). Usa 2 a 3 emojis estratégicos para dar ritmo. Tom aspiracional e emocional. Texto fluido como um post real de Instagram. Máx 80 palavras.
+Instagram — estrutura rígida em 3 partes: (1) GANCHO: primeira linha até 125 caracteres que pare o scroll — cenário aspiracional, pergunta provocadora ou benefício concreto surpreendente. (2) CORPO: 2-3 linhas com diferenciais principais, tom emocional e aspiracional, 2-3 emojis estratégicos. (3) CTA: convida para DM ou comentário com palavra-chave. Máx 120 palavras total.
+EXEMPLO Instagram: "Sua manhã começa com café na varanda e vista pro mar. Todo dia. ☀️\n\n3 quartos · suíte master · 12º andar · vista definitiva\nPituba, Salvador — o endereço que combina com quem quer mais.\n\nQuer ver o tour completo? Manda 'VISTA' na DM 📩"
 
-WhatsApp: escreva como uma mensagem real de corretor para cliente — informal, direto, pessoal. Como se estivesse digitando agora. Pode usar 1 emoji no máximo. Sem parágrafos longos. Máx 90 palavras.
+WhatsApp — mensagem como corretor enviando para cliente. Tom direto e pessoal. Estrutura: (1) diferencial principal em 1 frase marcante. (2) dados essenciais compactos em 1 linha. (3) pergunta que abre conversa e força resposta. Termina com: "Segue também o material completo do imóvel em anexo." Máx 90 palavras. No máximo 1 emoji.
+EXEMPLO WhatsApp: "Separei um apartamento na Pituba com vista definitiva pro mar que acho que vai te interessar.\n\n3 quartos · 1 suíte · 100m² · 2 vagas cobertas · R$ 850 mil\n\nPosso te mandar o tour completo agora?\n\nSegue também o material completo do imóvel em anexo."
 
-Site: texto rico em detalhes, percorre os ambientes com narrativa envolvente. Tom mais formal. Otimizado para SEO com palavras-chave naturais. Máx 380 palavras.
+Site — texto longo, narrativo, otimizado para SEO. Estrutura: (1) abertura emocional que vende o estilo de vida. (2) storytelling com referências locais reais como palavras-chave (nomes de ruas, shoppings, escolas, parques). (3) detalhes técnicos contextualizados como benefícios. (4) lazer e infraestrutura do condomínio. (5) CTA com menção a financiamento se aplicável. Máx 400 palavras.
+EXEMPLO Site: "Imagine acordar todos os dias com a brisa do mar e a orla iluminada pela manhã, tudo isso a partir do 12º andar na Pituba. A dois quarteirões do Shopping da Bahia e próximo à Avenida Tancredo Neves, este apartamento de 100m² foi pensado para quem não aceita compromissos com qualidade de vida. São 3 quartos, sendo 1 suíte, sala integrada com varanda, cozinha planejada e 2 vagas cobertas. Condomínio com piscina, academia e portaria 24h. Agende sua visita."
 
-Responda SOMENTE em JSON puro sem markdown, sem explicações, com EXATAMENTE esta estrutura:
+SCORE — calcule somando os pontos abaixo com base nos dados REALMENTE fornecidos:
+LOCALIZAÇÃO (25pts): bairro informado +10, cidade informada +5, referências próximas mencionadas +10
+DADOS TÉCNICOS (40pts): preço +10, área m² +8, quartos +8, vagas +6, condomínio/IPTU +8
+FOTOS (25pts): 3+ fotos +10, 5+ fotos +5 adicional, ambientes variados (sala+quarto+banheiro+cozinha) +10
+INFORMAÇÕES ADICIONAIS (10pts): tipo de imóvel +5, finalidade venda/aluguel +5
+NÃO desconte por dados que foram informados. NÃO adicione pontos por dados não fornecidos.
+
+Responda SOMENTE em JSON puro sem markdown:
 {
-  "titulo": "título em até 80 caracteres, específico para este imóvel",
-  "corpo": "corpo do anúncio no formato correto para ${plataforma}",
+  "titulo": "título até 80 caracteres — tipo + quartos + bairro + diferencial",
+  "corpo": "texto no formato correto para ${plataforma}",
   "score": 72,
-  "dicas": ["o que falta ou poderia melhorar 1", "ponto de melhoria 2", "ponto de melhoria 3"],
-  "hashtags": {"local": ["#tag1", "#tag2", "#tag3", "#tag4"], "tipo": ["#tag1", "#tag2", "#tag3", "#tag4"], "perfil": ["#tag1", "#tag2", "#tag3", "#tag4"]},
-  "legendas": ["legenda foto 1", "legenda foto 2", "legenda foto 3"]
+  "dicas": ["o que falta especificamente 1", "melhoria específica 2", "melhoria específica 3"],
+  "hashtags": {"local": ["#tag1","#tag2","#tag3","#tag4"], "tipo": ["#tag1","#tag2","#tag3","#tag4"], "perfil": ["#tag1","#tag2","#tag3","#tag4"]},
+  "legendas": ["legenda foto 1","legenda foto 2"]
 }
 
-REGRAS PARA O SCORE:
-- Avalie de 0 a 100 com critério real — não seja generoso
-- ATENÇÃO: os dados do imóvel já foram informados acima — NÃO diga que faltou algo que já foi informado
-- Desconte pontos apenas por informações que REALMENTE não foram fornecidas
-- Score 90+ só se tiver fotos + todos os dados + descrição rica e detalhada
-- Score típico sem fotos: 45-65. Com fotos e dados completos: 70-85
-
-REGRAS PARA AS DICAS:
-- Aponte especificamente o que FALTA ou poderia MELHORAR — não elogie o que já está bom
-
-REGRAS PARA AS LEGENDAS — CRÍTICO:
-- Escreva EXATAMENTE ${fotos.length} legenda${fotos.length>1?'s':''}, uma para cada foto na ordem exata em que foram enviadas
-- A legenda 1 descreve a foto 1, a legenda 2 descreve a foto 2, e assim por diante — NUNCA troque a ordem
-- Escreva 3 a 4 frases por legenda descrevendo: iluminação, janelas, ventilação aparente, cores predominantes, móveis planejados ou soltos, amplitude, estilo decorativo, integração entre ambientes
-- NUNCA especule sobre materiais (mármore, granito, madeira, porcelanato, inox etc.)
-- NUNCA especule sobre características não confirmáveis (borda infinita, piso aquecido etc.)
-- Cada legenda deve ser única — não repita descrições entre fotos
-- Nunca mencione bairro ou cidade`;
+DICAS: aponte só o que REALMENTE falta — não comente o que já foi informado.
+LEGENDAS: exatamente ${fotos.length} legenda${fotos.length>1?'s':''} na ordem das fotos. Cada legenda: 3-4 frases descrevendo iluminação, cores, amplitude, móveis, estilo decorativo. Sem mencionar bairro ou cidade. Sem especular materiais.`;
 
   const partsAnuncio=[];
   fotos.slice(0,10).forEach(f=>partsAnuncio.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));
@@ -1467,14 +1363,19 @@ function criarPaginaHTML(tipo, dados){
 
   if(tipo==='capa') return `
     <div class="pdf-page">
-      ${fotoSrc?`<img class="pdf-capa-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-capa-foto-placeholder"></div>`}
+      <div class="pdf-capa-foto-wrap">
+        ${fotoSrc?`<img class="pdf-capa-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-capa-foto-placeholder"></div>`}
+        <div class="pdf-capa-overlay"></div>
+        <div class="pdf-capa-titulo-wrap">
+          <div class="pdf-capa-badge">${tipoimovel}</div>
+          <div class="pdf-capa-titulo">${titulo||'Proposta Imobiliária'}</div>
+        </div>
+      </div>
       <div class="pdf-capa-body">
         <div class="pdf-capa-meta">
           <span class="pdf-capa-brand">ImóvelText</span>
           <span class="pdf-capa-data">${mes}</span>
         </div>
-        <div class="pdf-capa-titulo">${titulo||'Proposta Imobiliária'}</div>
-        <div class="pdf-capa-linha"></div>
         <div class="pdf-capa-ficha">
           <div class="pdf-capa-ficha-item">
             <span class="pdf-capa-ficha-label">Local</span>
@@ -1506,34 +1407,45 @@ function criarPaginaHTML(tipo, dados){
             <div class="pdf-capa-corretor-nome">${corretor||''}</div>
             <div class="pdf-capa-corretor-info">${[tel,creci?'CRECI '+creci:''].filter(Boolean).join('  ·  ')}</div>
           </div>
-          <div class="pdf-capa-badge">${tipoimovel}</div>
+          <span class="pdf-capa-page-num">1 / ${totalPages}</span>
         </div>
       </div>
     </div>`;
 
   if(tipo==='galeria') return `
     <div class="pdf-foto-page">
+      <div class="pdf-foto-topo"></div>
+      <div class="pdf-foto-header">
+        <span class="pdf-foto-header-titulo">${titulo||''}</span>
+        <span class="pdf-foto-header-num">${pageNum} / ${totalPages}</span>
+      </div>
       ${fotoSrc?`<img class="pdf-foto-img" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-foto-img-placeholder"></div>`}
       <div class="pdf-foto-bottom">
-        <div class="pdf-foto-legenda">${legenda||''}</div>
+        <div class="pdf-foto-legenda-wrap">
+          <div class="pdf-foto-legenda-linha"></div>
+          <div class="pdf-foto-legenda">${legenda||''}</div>
+        </div>
         <div class="pdf-foto-footer">
-          <div class="pdf-foto-corretor">${corretor||''} ${tel?'· '+tel:''}</div>
-          <div class="pdf-foto-num">${pageNum} / ${totalPages}</div>
+          <div>
+            <div class="pdf-foto-corretor-nome">${corretor||''}</div>
+            <div class="pdf-foto-corretor-info">${[tel,creci?'CRECI '+creci:''].filter(Boolean).join('  ·  ')}</div>
+          </div>
         </div>
       </div>
     </div>`;
 
   if(tipo==='descricao') return `
-    <div class="pdf-foto-page">
-      ${fotoSrc?`<img class="pdf-foto-img" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-foto-img-placeholder"></div>`}
-      <div class="pdf-foto-bottom">
-        <div class="pdf-foto-legenda" style="font-style:normal;font-size:17px;line-height:1.8;font-weight:300">${corpo||''}</div>
-        <div class="pdf-foto-footer">
+    <div class="pdf-desc-page">
+      ${fotoSrc?`<img class="pdf-desc-foto" src="${fotoSrc}" crossorigin="anonymous"/>`:`<div class="pdf-desc-foto-placeholder"></div>`}
+      <div class="pdf-desc-body">
+        <div class="pdf-desc-label">Descrição do Imóvel</div>
+        <div class="pdf-desc-texto">${corpo||''}</div>
+        <div class="pdf-desc-footer">
           <div>
-            <div class="pdf-foto-corretor" style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.7)">${corretor||''}</div>
-            <div class="pdf-foto-corretor" style="margin-top:2px">${[tel,creci?'CRECI '+creci:''].filter(Boolean).join('  ·  ')}</div>
+            <div class="pdf-desc-corretor-nome">${corretor||''}</div>
+            <div class="pdf-desc-corretor-info">${[tel,creci?'CRECI '+creci:''].filter(Boolean).join('  ·  ')}</div>
           </div>
-          <div class="pdf-foto-num">${pageNum} / ${totalPages}</div>
+          <div class="pdf-desc-num">${pageNum} / ${totalPages}</div>
         </div>
       </div>
     </div>`;
