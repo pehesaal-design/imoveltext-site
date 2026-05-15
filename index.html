@@ -255,18 +255,13 @@ section{position:relative;z-index:1}
 .titulo-header{background:rgba(29,158,117,0.08)}
 .titulo-body{padding:1rem 1.25rem;font-size:16px;font-weight:700;color:var(--text);line-height:1.35}
 
-/* SCORE */
-.score-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
-.score-head{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);background:rgba(29,158,117,0.04)}
-.score-badge{font-size:18px;font-weight:700}
-.score-body-inner{padding:1.25rem}
-.score-bar-bg{width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-bottom:1rem}
-.score-bar-fill{height:100%;border-radius:3px;transition:width .8s ease}
-.score-bar-fill.alto{background:linear-gradient(90deg,var(--g),var(--g-mid))}
-.score-bar-fill.medio{background:linear-gradient(90deg,#d97706,#fbbf24)}
-.score-bar-fill.baixo{background:linear-gradient(90deg,#dc2626,#f87171)}
-.score-tips{display:flex;flex-direction:column;gap:8px}
-.score-tip{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2);line-height:1.5}
+/* SUGESTÕES */
+.sugest-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.sugest-head{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);background:rgba(29,158,117,0.04)}
+.sugest-body-inner{padding:1.25rem}
+.sugest-list{display:flex;flex-direction:column;gap:8px}
+.sugest-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2);line-height:1.5}
+.sugest-icon{font-size:13px;flex-shrink:0;margin-top:1px}
 
 /* HASHTAGS */
 .hash-body-inner{padding:1.25rem;display:flex;flex-direction:column;gap:12px}
@@ -509,7 +504,7 @@ section{position:relative;z-index:1}
 .pfb-txt2-left{width:36%;background:#F7F4EF;display:flex;flex-direction:column;padding:44px 36px;flex-shrink:0;border-right:1px solid #e0d8cc;}
 .pfb-txt2-num{font-size:10px;font-weight:600;letter-spacing:.12em;color:#9B6B4B;margin-bottom:12px;text-transform:uppercase;}
 .pfb-txt2-titulo{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#2D2D2D;line-height:1.1;margin-bottom:16px;}
-.pfb-txt2-desc{font-size:14px;line-height:1.8;color:#5a5248;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;flex:1;}
+.pfb-txt2-desc{font-size:15px;line-height:1.8;color:#5a5248;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;flex:1;}
 .pfb-txt2-footer{border-top:1px solid #e0d8cc;padding-top:12px;margin-top:auto;}
 .pfb-txt2-nome{font-size:12px;font-weight:600;color:#2D2D2D;}
 .pfb-txt2-info{font-size:10px;color:#9B6B4B;margin-top:3px;}
@@ -630,7 +625,7 @@ section{position:relative;z-index:1}
       <div class="how-card reveal d3">
         <div class="how-num">3</div>
         <h3 class="how-title">Receba seu pacote de marketing</h3>
-        <p class="how-desc">Anúncio pronto, score de qualidade, hashtags por bloco, legendas por foto e PDF profissional para enviar ao cliente. Tudo em segundos.</p>
+        <p class="how-desc">Anúncio pronto, sugestões de melhoria, hashtags por bloco, legendas por foto e PDF profissional para enviar ao cliente. Tudo em segundos.</p>
       </div>
     </div>
   </div>
@@ -660,8 +655,8 @@ section{position:relative;z-index:1}
       <div class="feat-card reveal d1">
         <div class="feat-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
         <div>
-          <h3 class="feat-title">Score do anúncio</h3>
-          <p class="feat-desc">Nota de 0 a 100 com dicas específicas para melhorar — "adicione o número de vagas", "mencione a vista" — não conselhos genéricos.</p>
+          <h3 class="feat-title">Sugestões inteligentes</h3>
+          <p class="feat-desc">Após gerar o anúncio, a IA aponta o que está faltando — valor do condomínio, posição solar, detalhes de lazer. Sugestões contextuais, sem repetir o que já foi informado.</p>
         </div>
       </div>
       <div class="feat-card reveal d2">
@@ -993,15 +988,13 @@ section{position:relative;z-index:1}
         <!-- Card oculto mantido por compatibilidade -->
         <div id="result-card" style="display:none"></div>
 
-        <!-- Score -->
-        <div class="score-card" id="score-card" style="display:none">
-          <div class="score-head">
-            <span class="res-label">Score do anúncio</span>
-            <div class="score-badge" id="score-badge"></div>
+        <!-- Sugestões -->
+        <div class="sugest-card" id="score-card" style="display:none">
+          <div class="sugest-head">
+            <span class="res-label">💡 O que você pode adicionar</span>
           </div>
-          <div class="score-body-inner">
-            <div class="score-bar-bg"><div class="score-bar-fill" id="score-bar" style="width:0%"></div></div>
-            <div class="score-tips" id="score-tips"></div>
+          <div class="sugest-body-inner">
+            <div class="sugest-list" id="score-tips"></div>
           </div>
         </div>
 
@@ -1081,7 +1074,7 @@ section{position:relative;z-index:1}
     <p>Entre com sua conta Google para receber o resultado — é grátis e leva 5 segundos.</p>
     <div class="modal-list">
       <div class="modal-list-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Título + corpo separados para copiar</div>
-      <div class="modal-list-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Score com dicas de melhoria específicas</div>
+      <div class="modal-list-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sugestões do que adicionar para melhorar</div>
       <div class="modal-list-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Hashtags por bloco (local, tipo, perfil)</div>
       <div class="modal-list-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Legendas individuais para cada foto</div>
     </div>
@@ -1328,59 +1321,108 @@ async function gerar(){
     ?`Foram enviadas ${fotos.length} foto(s) do imóvel. ANALISE CADA IMAGEM com atenção antes de escrever. Observe: ambiente (sala, cozinha, quarto, banheiro, varanda, piscina etc.), iluminação natural, presença de janelas grandes, amplitude dos espaços, cores predominantes, móveis planejados ou soltos, integração entre ambientes. USE essas observações no texto — o comprador deve sentir que você descreveu o imóvel real, não um genérico.`
     :'Nenhuma foto enviada. Use apenas os dados textuais.';
 
-  const promptPrincipal=`Especialista em copywriting imobiliário brasileiro. ${fotos.length>0?`Analise as ${fotos.length} foto(s) — observe ambiente, iluminação, cores, amplitude, móveis. Use essas observações no texto.`:'Use apenas os dados textuais.'}
+  const promptPrincipal=`Você é um especialista em copywriting imobiliário brasileiro. ${fotos.length>0?`Analise as ${fotos.length} foto(s) com atenção — observe ambiente, iluminação natural, cores, amplitude, móveis, integração dos espaços. Use apenas o que realmente é visível nas fotos.`:'Use apenas os dados textuais fornecidos.'}
 
 DADOS DO IMÓVEL:
 ${dadosBase}
 
-PLATAFORMA: ${plataforma} | TOM: ${tomDesc(tomAnuncio)}
+PLATAFORMA: ${plataforma}
+TOM: ${tomDesc(tomAnuncio)}
+FINALIDADE: ${finalidade}
 
-REGRAS:
-- Sem asteriscos, markdown ou formatação especial
-- Sem frases clichê ("não perca", "imóvel dos sonhos", "oportunidade única")
-- Sem sequência de ambientes ("ao entrar") sem o corretor ter informado
-- Sem inventar dados que não estão nos dados nem nas fotos
-- Sem especular materiais (mármore, granito) ou características não confirmáveis
-- Preposição correta: "na Pituba", "no Itaigara", "na Barra"
+━━━ REGRAS ABSOLUTAS ━━━
+- NUNCA invente dados — use apenas o que foi informado
+- NUNCA especule materiais (mármore, granito) ou características não confirmáveis nas fotos
+- NUNCA use frases clichê: "descubra a harmonia", "onde conforto encontra sofisticação", "experiência única", "exclusividade incomparável", "oportunidade imperdível", "imóvel dos sonhos"
+- NUNCA use asteriscos, markdown ou formatação especial no texto
+- Preposição correta: "na Pituba", "no Itaigara", "na Barra", "em Moema"
+- Se finalidade for Aluguel: use linguagem de locação (praticidade, mobilidade, conforto), EVITE linguagem de investimento/patrimônio/valorização
+- Se finalidade for Venda: pode usar linguagem de aquisição, patrimônio, valorização
+- Títulos: naturais e fluidos. Ex: "Apartamento com vista mar e 3 quartos na Barra", não "Apartamento 3 quartos Barra vista mar"
 
-FORMATO POR PLATAFORMA:
-ZAP/OLX: objetivo, sem emojis, diferencial na 1ª frase, storytelling, dados técnicos, localização, CTA. Máx 280 palavras.
-Instagram: estrutura OBRIGATÓRIA em 4 blocos separados por linha em branco:
-BLOCO 1 — GANCHO (até 125 caracteres): frase aspiracional ou pergunta que PARA O SCROLL antes do "ver mais". Use cenário vivencial. Ex: "Já imaginou acordar todo dia com vista pro mar e ainda estar a 5 min de tudo?" NÃO comece com dados técnicos.
-BLOCO 2 — CORPO (3 a 5 linhas): descrição dos ambientes e sensações baseada nas fotos + diferenciais principais. 2-3 emojis distribuídos. 🌟
-BLOCO 3 — CHECKLIST DE DADOS: lista compacta com TODOS os dados informados (inclua TODOS que existirem, não omita nenhum):
-🏠 [tipo] · [quartos] quartos[, X suítes se informado] · [área]m²
+━━━ FORMATO POR PLATAFORMA ━━━
+
+${plataforma==='ZAP/OLX'?`OLX — estilo direto, profissional, escaneável, sem emojis decorativos.
+Estrutura:
+1. Parágrafo de abertura (2-3 frases): descreva o imóvel com naturalidade e o diferencial principal
+2. Parágrafo de detalhes (2-3 frases): ambientes, infraestrutura, localização — só o que foi informado
+3. Lista de dados técnicos (sem bullet decorativo, use hífen ou sem símbolo):
+   - Localização: [bairro]
+   - Área: [m²]
+   - Quartos: [n] | Suítes: [n] (apenas se informado)
+   - Vagas: [n] (apenas se informado nas obs)
+   - Condomínio: R$ [valor] (apenas se informado)
+   - IPTU: R$ [valor] (apenas se informado)
+   - Infraestrutura: [itens informados] (apenas se informado)
+4. Encerramento curto: "Entre em contato para mais informações ou para agendar uma visita."
+Máx 280 palavras. Sem emojis. Tom profissional e humano.`:''}
+
+${plataforma==='Instagram'?`Instagram — legenda moderna, escaneável, com apelo visual e emocional moderado.
+Estrutura OBRIGATÓRIA em 4 blocos separados por linha em branco:
+
+BLOCO 1 — GANCHO (até 2 linhas): pergunta ou frase que para o scroll. Ex: "Já imaginou acordar com vista pro mar todo dia? 🌊" NÃO comece com dados técnicos.
+
+BLOCO 2 — CORPO (3-5 linhas): descreva ambientes e sensações com base nas fotos e nos dados. Fluido, moderno. 2-3 emojis distribuídos.
+
+BLOCO 3 — DADOS (lista compacta, apenas os informados):
+🏠 [tipo] · [quartos] quartos[, X suítes] · [área]m²
 📍 [bairro]
 💰 R$ [preço]
-[Se vagas nas obs: 🚗 X vaga(s)]
-[Se condomínio nas obs: 🏢 Cond. R$ X]
-[Se IPTU nas obs: 📋 IPTU R$ X]
+[Se vagas: 🚗 X vaga(s)]
+[Se condomínio: 🏢 Cond. R$ X]
+[Se IPTU: 📋 IPTU R$ X]
 [Outros diferenciais das obs: ✨ detalhe]
-BLOCO 4 — CTA (1 linha): convida para DM. Ex: "Manda 'QUERO' na DM que envio todos os detalhes 📩"
-Total: 150-180 palavras.
-WhatsApp: mensagem direta de corretor, diferencial + dados compactos + pergunta. Termina com "Segue também o material completo do imóvel em anexo." Máx 90 palavras, máx 1 emoji.
-Site: narrativa longa SEO, abertura emocional, referências locais, dados contextualizados, CTA. Máx 400 palavras.
 
-SCORE — calcule somando os pontos AGORA, item por item. Substitua CALCULE_AQUI pelo número resultante:
-Bairro informado? +10 | Cidade/estado? +5 | Referências próximas nas obs? +10
-Preço informado? +10 | Área m²? +8 | Quartos? +8 | Vagas nas obs? +6 | Condomínio/IPTU nas obs? +8
-Tipo especificado? +5 | Finalidade? +5
-Fotos: 3+? +10 | 5+? +5 adicional | Ambientes variados? +10
-ATENÇÃO: calcule o valor REAL somando os pontos dos itens presentes. NÃO use valores fixos como 72 ou 85. Se todos os dados foram informados E há 5+ fotos variadas, o score deve ser próximo de 100.
+BLOCO 4 — CTA (1 linha): convite para DM. Ex: "Manda uma mensagem que te envio mais detalhes 📩"
+Total: 150-200 palavras.`:''}
 
-DICAS: 3 itens baseados SOMENTE no que está faltando (itens que não somaram pontos). Nunca mencione como falta algo que já foi informado.
+${plataforma==='WhatsApp'?`WhatsApp — mensagem direta de corretor real. NÃO é um anúncio. É uma conversa.
+Regras:
+- Curto, natural, leve, humano
+- Parecer mensagem escrita manualmente
+- NÃO inventar nome do cliente
+- NÃO usar listas grandes
+- NÃO usar linguagem corporativa ou tom publicitário
+- NÃO fingir intimidade
+- Máximo 1 emoji
+- Estrutura:
+  1. Abertura leve e natural (sem "Olá, fulano")
+  2. Principais diferenciais em 2-3 frases fluidas
+  3. Localização/praticidade em 1 frase
+  4. Convite leve: "Posso te enviar mais detalhes." ou "Quer que eu te mande o material completo?"
+Máx 90 palavras. Tom de atendimento premium real.
+
+Exemplo de abertura: "Apareceu um [tipo] na [bairro] que vale a pena ver."
+NÃO use: "Olá! Tudo bem?", listas, excesso de emojis, linguagem de anúncio.`:''}
+
+${plataforma==='Site'?`Site — texto SEO completo, narrativa longa, profissional.
+Abertura emocional contextualizada (2-3 frases), referências locais reais, ambientes descritos com base nos dados/fotos, dados contextualizados no texto, CTA final. Máx 400 palavras.`:''}
+
+━━━ SUGESTÕES INTELIGENTES ━━━
+Analise os dados fornecidos e identifique apenas o que está AUSENTE e seria útil para melhorar o anúncio.
+Gere entre 2 e 5 sugestões contextuais. NUNCA sugira algo que já foi informado.
+Exemplos (use apenas os que fazem sentido para o que falta):
+- "Adicione o valor do condomínio"
+- "Informe o número de vagas de garagem"
+- "Descreva a área de lazer do condomínio"
+- "Informe a posição solar do imóvel"
+- "Adicione informações sobre o IPTU"
+- "Mencione se aceita pets"
+- "Informe o andar do apartamento"
+- "Adicione referências próximas (metrô, escolas, shoppings)"
+- "Inclua detalhes sobre reformas recentes"
+
+LEGENDAS: exatamente ${fotos.length} legenda${fotos.length>1?'s':''} na ordem das fotos. Quando uma foto mostrar múltiplos ambientes, faça uma descrição mais ampla e neutra (iluminação, amplitude, integração dos espaços) em vez de focar em um único ambiente. Nunca especule materiais. Sem bairro/cidade. 2-3 frases por legenda.
 
 Responda SOMENTE em JSON puro sem markdown:
-{"titulo":"tipo+quartos+bairro+diferencial em até 80 chars","corpo":"texto para ${plataforma}","score":CALCULE_AQUI,"dicas":["falta 1","falta 2","falta 3"],"hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],"tipo":["#tag1","#tag2","#tag3","#tag4"],"perfil":["#tag1","#tag2","#tag3","#tag4"]},"legendas":["legenda foto 1","legenda foto 2"]}
-
-LEGENDAS: exatamente ${fotos.length} legenda${fotos.length>1?'s':''} na ordem das fotos. 2-3 frases por legenda: iluminação, cores, amplitude, móveis, estilo. Sem bairro/cidade. Sem especular materiais.`;
+{"titulo":"[tipo] com [diferencial] em [bairro] — natural, fluido, até 80 chars","corpo":"texto para ${plataforma}","dicas":["sugestão contextual 1","sugestão 2","sugestão 3"],"hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],"tipo":["#tag1","#tag2","#tag3","#tag4"],"perfil":["#tag1","#tag2","#tag3","#tag4"]},"legendas":["legenda foto 1","legenda foto 2"]}`;
 
   const partsAnuncio=[];
   fotos.slice(0,15).forEach(f=>partsAnuncio.push({inline_data:{mime_type:mime(f.src),data:b64(f.src)}}));
   partsAnuncio.push({text:promptPrincipal});
 
   let corpoTexto='';
-  let parsedPrincipal={titulo:'',corpo:'',score:70,dicas:[],hashtags:{}};
+  let parsedPrincipal={titulo:'',corpo:'',dicas:[],hashtags:{}};
   try{
     console.log('🔵 [4] enviando para Gemini, parts:', partsAnuncio.length);
     const raw=await chamarGemini(partsAnuncio);
@@ -1426,21 +1468,19 @@ LEGENDAS: exatamente ${fotos.length} legenda${fotos.length>1?'s':''} na ordem da
   })();
   updatePDFAccess();
 
-  console.log('🔵 [8] processando score...');
-  // Score
+  console.log('🔵 [8] processando sugestões...');
+  // Sugestões inteligentes (substitui score)
   try{
     const ps=parsedPrincipal;
-    const score=Math.min(100,Math.max(0,parseInt(ps.score)||70));
-    const cls=score>=75?'alto':score>=50?'medio':'baixo';
-    const emoji=score>=75?'🟢':score>=50?'🟡':'🔴';
-    document.getElementById('score-badge').textContent=`${emoji} ${score}/100`;
-    const bar=document.getElementById('score-bar');
-    bar.className=`score-bar-fill ${cls}`;bar.style.width=score+'%';
-    document.getElementById('score-tips').innerHTML=(ps.dicas||[]).slice(0,3).map((d,i)=>`<div class="score-tip"><span>${['⚠️','💡','📝'][i]||'💡'}</span><span>${d}</span></div>`).join('');
+    const dicas=ps.dicas||ps.sugestoes||[];
+    const icons=['💡','📝','📌','🔎','✏️'];
+    document.getElementById('score-tips').innerHTML=dicas.length>0
+      ?dicas.slice(0,5).map((d,i)=>`<div class="sugest-item"><span class="sugest-icon">${icons[i]||'💡'}</span><span>${d}</span></div>`).join('')
+      :'<div style="font-size:12px;color:var(--text3)">Anúncio completo — nenhuma sugestão adicional.</div>';
+    document.getElementById('score-card').style.display=dicas.length>0?'block':'none';
   }catch(e){
-    document.getElementById('score-tips').innerHTML='<div style="font-size:12px;color:var(--text3)">Não foi possível calcular o score.</div>';
+    document.getElementById('score-card').style.display='none';
   }
-  document.getElementById('score-card').style.display='block';
 
   // Hashtags só para Instagram e Site
   const usaHashtags=plataforma==='Instagram'||plataforma==='Site';
