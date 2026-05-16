@@ -146,13 +146,11 @@ export async function renderPagina(html) {
  * @param {Function} [onProgresso] — callback(atual, total) para feedback de progresso
  */
 export async function gerarPDF(tema = 'escuro', onProgresso = null) {
-  const {
-    fotos,
-    hashtagsGeradas: legendas,
-    fotoCapaIdx,
-    lastGeneration: imovel,
-    corrData,
-  } = AppState;
+  const fotos     = AppState.form.fotos;
+const legendas  = AppState.generation.legendasGeradas;
+const fotoCapaIdx = AppState.generation.fotoCapaIdx;
+const imovel    = AppState.lastGeneration;
+const corrData  = AppState.pdf.corrData;
 
   // Validações básicas
   if (!fotos || fotos.length === 0) {
