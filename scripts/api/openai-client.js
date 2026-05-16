@@ -73,8 +73,11 @@ export async function chamarIA(prompt, fotos = []) {
       throw new Error(`Edge Function retornou status ${response.status}`);
     }
 
-    const raw = await response.text();
-    return parseResposta(raw);
+   const data = await response.json();
+const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text
+         || data?.choices?.[0]?.message?.content
+         || JSON.stringify(data);
+return parseResposta(raw);
 
   } catch (err) {
     if (err.name === 'AbortError') {
