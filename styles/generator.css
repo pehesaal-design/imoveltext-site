@@ -1,0 +1,1164 @@
+/**
+ * MÓDULO: Generator — App Principal
+ * RESPONSABILIDADE: Estilos do gerador de anúncios
+ * DEPENDÊNCIAS: tokens.css (variáveis CSS)
+ * IMPACTO: Alterações afetam apenas o app (gerador + resultados)
+ *
+ * SEÇÕES:
+ *   GENERATOR WRAP    → Container principal do gerador
+ *   BANNER            → Status de créditos (free/low/empty/pro)
+ *   FORM CARDS        → Cards de formulário (gcard)
+ *   UPLOAD ZONE       → Drag-and-drop de fotos
+ *   THUMBNAILS        → Grid de fotos enviadas
+ *   TOGGLE BUTTONS    → Tom e plataforma (tog-btn)
+ *   FIELDS            → Inputs, selects, textarea
+ *   GENERATE BUTTON   → Botão principal de geração
+ *   CORRETOR SECTION  → Dados do corretor (exclusivo Pro)
+ *   RESULTS SECTION   → Container dos cards de resultado
+ *   TITULO CARD       → Card do anúncio (título + corpo)
+ *   SCORE CARD        → Score visual + dicas
+ *   HASHTAG CARD      → 3 blocos de hashtags
+ *   CAPTION CARD      → Legendas por foto
+ *   PDF BUTTON        → Botão de geração de PDF
+ *   MODALS            → Signup (OAuth) e Paywall (upgrade)
+ *   RESPONSIVE        → Breakpoints do gerador
+ *
+ * REGRA: Nunca alterar nomes de classe sem atualizar o HTML e JS correspondentes.
+ * REGRA: Não incluir estilos de landing page aqui (estão em layout.css).
+ * REGRA: Não incluir estilos de PDF aqui (estão em styles/pdf/).
+ */
+
+/* ══════════════════════════════════════════════════════
+   GENERATOR WRAP — Container principal
+   ══════════════════════════════════════════════════════ */
+.generator {
+  padding: 5rem 0 8rem;
+}
+
+.gen-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════════════════
+   BANNER — Status dinâmico de créditos
+   Estados controlados por: scripts/ui/ui-sync.js → updateCreditsUI()
+   Classes de estado: .free-b / .low-b / .empty-b / .pro-b
+   ══════════════════════════════════════════════════════ */
+.gen-top {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.gen-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: var(--r);
+  font-size: 13px;
+}
+
+/* Estado: free — visitante ou usuário com créditos disponíveis */
+.gen-banner.free-b {
+  background: rgba(29, 158, 117, 0.06);
+  border: 1px solid var(--border);
+  color: var(--text2);
+}
+.gen-banner.free-b svg {
+  stroke: var(--g);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* Estado: low — créditos baixos (1–2 restantes) */
+.gen-banner.low-b {
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  color: var(--text2);
+}
+.gen-banner.low-b svg {
+  stroke: #f59e0b;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* Estado: empty — créditos zerados */
+.gen-banner.empty-b {
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: var(--text2);
+}
+.gen-banner.empty-b svg {
+  stroke: #ef4444;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* Estado: pro — usuário Pro (anúncios ilimitados) */
+.gen-banner.pro-b {
+  background: rgba(212, 168, 67, 0.06);
+  border: 1px solid rgba(212, 168, 67, 0.2);
+  color: var(--text2);
+}
+.gen-banner.pro-b svg {
+  stroke: var(--gold);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke-width: 2;
+}
+
+.gen-banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.gen-banner-text strong {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 600;
+}
+.gen-banner-text span {
+  font-size: 12px;
+  color: var(--text2);
+}
+
+/* ══════════════════════════════════════════════════════
+   FORM BODY — Grid de 2 colunas
+   ══════════════════════════════════════════════════════ */
+.gen-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.gen-col {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gen-col:first-child {
+  border-right: 1px solid var(--border);
+}
+
+/* ══════════════════════════════════════════════════════
+   GCARD — Cards de formulário
+   ══════════════════════════════════════════════════════ */
+.gcard {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 1.25rem;
+}
+
+.gcard-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+}
+
+.gcard-step {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(29, 158, 117, 0.12);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--g);
+  flex-shrink: 0;
+}
+
+.gcard-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.gcard-sub {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+/* ══════════════════════════════════════════════════════
+   UPLOAD ZONE — Área de drag-and-drop
+   CRÍTICO: input[type=file] deve ter position:absolute e cobrir
+   toda a zona para que o click em qualquer ponto funcione.
+   ══════════════════════════════════════════════════════ */
+.upload-zone {
+  border: 2px dashed var(--border2);
+  border-radius: var(--r);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  background: rgba(29, 158, 117, 0.02);
+}
+
+.upload-zone:hover,
+.upload-zone.drag-over {
+  border-color: var(--g);
+  background: rgba(29, 158, 117, 0.06);
+}
+
+/*
+ * ESTADO COM FOTOS: borda sólida indica zona ativa com conteúdo.
+ * Aplicado via JS quando fotos[] não está vazio.
+ */
+.upload-zone.has-files {
+  border-style: solid;
+  border-color: var(--g);
+}
+
+/* Input file invisível — cobre toda a zona para capturar clicks */
+.upload-zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.upload-zone svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--g);
+  fill: none;
+  stroke-width: 1.75;
+  margin-bottom: 0.75rem;
+}
+
+.upload-zone p {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.upload-zone p strong { color: var(--text); }
+
+.upload-zone small {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+/* ══════════════════════════════════════════════════════
+   THUMBNAILS — Grid de fotos enviadas
+   ══════════════════════════════════════════════════════ */
+.thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 0.75rem;
+}
+
+.thumb {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  flex-shrink: 0;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Botão de remoção individual — não "limpar todas" */
+.thumb-remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.thumb:hover .thumb-remove { opacity: 1; }
+.thumb-remove svg {
+  width: 10px;
+  height: 10px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.5;
+}
+
+/* ══════════════════════════════════════════════════════
+   TOGGLE BUTTONS — Tom e plataforma
+   Grupo mutuamente exclusivo — apenas 1 ativo por vez
+   ══════════════════════════════════════════════════════ */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tog-btn {
+  padding: 8px 16px;
+  border-radius: var(--r);
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tog-btn:hover {
+  border-color: var(--g);
+  color: var(--text);
+}
+
+/* Estado ativo — selecionado */
+.tog-btn.active {
+  background: rgba(29, 158, 117, 0.15);
+  border-color: var(--g);
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Variante Luxo — accent gold quando ativo */
+.tog-btn.luxo.active {
+  background: rgba(212, 168, 67, 0.1);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Variante Investimento */
+.tog-btn.invest.active {
+  background: rgba(29, 158, 117, 0.15);
+  border-color: var(--g);
+  color: var(--text);
+}
+
+/* ══════════════════════════════════════════════════════
+   FIELDS — Inputs, selects e textarea
+   ══════════════════════════════════════════════════════ */
+.frow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.frow:last-child { margin-bottom: 0; }
+
+/* Grades de 2 e 3 colunas */
+.frow.c2 { flex-direction: row; }
+.frow.c3 {
+  flex-direction: row;
+  gap: 8px;
+}
+.frow.c2 .field,
+.frow.c3 .field {
+  flex: 1;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text3);
+}
+
+.field input,
+.field select,
+.field textarea {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--text3);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--g);
+}
+
+.field select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a7a6e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+/* ══════════════════════════════════════════════════════
+   GENERATE BUTTON — Botão principal de geração
+   ══════════════════════════════════════════════════════ */
+.gen-btn-wrap {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.gen-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: var(--r);
+  background: var(--g);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s;
+}
+.gen-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
+}
+.gen-btn:hover {
+  background: var(--g2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--glow);
+}
+.gen-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ══════════════════════════════════════════════════════
+   CORRETOR SECTION — Dados do corretor (exclusivo Pro)
+   Visibilidade controlada por: scripts/ui/ui-sync.js → updatePDFAccess()
+   ══════════════════════════════════════════════════════ */
+.corretor-section {
+  display: none; /* controlado por JS */
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: rgba(212, 168, 67, 0.03);
+}
+
+.corretor-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.corretor-title svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 2;
+}
+
+.corretor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESULTS SECTION — Container dos cards de resultado
+   Visibilidade: display:none → display:block após geração
+   Controlado por: scripts/generator/generator.js
+   ══════════════════════════════════════════════════════ */
+.results-section {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ══════════════════════════════════════════════════════
+   RES-CARD — Card base de resultado
+   ══════════════════════════════════════════════════════ */
+.res-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
+}
+
+.res-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.res-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text2);
+}
+
+.res-body {
+  padding: 1.25rem;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Botão de copiar — padrão reutilizado em 3 cards */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.copy-btn:hover {
+  border-color: var(--g);
+  color: var(--g);
+}
+/* Estado "copiado" — feedback visual temporário (2 segundos via JS) */
+.copy-btn.copied {
+  border-color: var(--g);
+  color: var(--g);
+  background: rgba(29, 158, 117, 0.08);
+}
+
+/* ══════════════════════════════════════════════════════
+   TITULO CARD — Anúncio gerado (título + corpo separados)
+   ══════════════════════════════════════════════════════ */
+.titulo-card {
+  border-color: var(--border2);
+}
+
+.titulo-header {
+  background: rgba(29, 158, 117, 0.06);
+}
+
+.titulo-body {
+  padding: 1rem 1.25rem 0.75rem;
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+/* ══════════════════════════════════════════════════════
+   SCORE CARD — Score visual + barra + dicas
+   ══════════════════════════════════════════════════════ */
+.score-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
+}
+
+.score-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+/* Badge do score — cor dinâmica via JS conforme o valor */
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+/* Verde: score ≥ 75 */
+.score-badge.good {
+  background: rgba(29, 158, 117, 0.12);
+  border: 1px solid rgba(29, 158, 117, 0.3);
+  color: var(--g);
+}
+/* Âmbar: score ≥ 50 */
+.score-badge.mid {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+}
+/* Vermelho: score < 50 */
+.score-badge.low {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.score-body-inner {
+  padding: 1.25rem;
+}
+
+/* Barra de progresso do score */
+.score-bar-bg {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--g), var(--g-mid));
+  transition: width 0.8s ease;
+}
+
+/* Dicas contextuais — apenas sobre o que falta */
+.score-tips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.score-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+.score-tip::before {
+  content: '→';
+  color: var(--g);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ══════════════════════════════════════════════════════
+   HASHTAG CARD — 3 blocos semânticos
+   Exibido apenas para Instagram e Site (via platform-config.showHashtags)
+   ══════════════════════════════════════════════════════ */
+.hash-body-inner {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hash-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hash-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+}
+
+.hash-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hash-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(29, 158, 117, 0.08);
+  border: 1px solid rgba(29, 158, 117, 0.2);
+  color: var(--g-mid);
+  cursor: default;
+}
+
+/* ══════════════════════════════════════════════════════
+   CAPTION CARD — Legendas por foto
+   Thumbnail + texto lado a lado
+   ══════════════════════════════════════════════════════ */
+.cap-list {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.cap-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.cap-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+
+.cap-text {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.65;
+  flex: 1;
+  padding-top: 2px;
+}
+
+/* ══════════════════════════════════════════════════════
+   PDF BUTTON — Geração do PDF profissional
+   Lock overlay para usuários free
+   ══════════════════════════════════════════════════════ */
+
+/* Botões de seleção de tema */
+.tema-btn {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tema-btn.tema-ativo {
+  border: 2px solid var(--g);
+  background: rgba(29, 158, 117, 0.1);
+  color: var(--text);
+}
+
+.tema-btn:not(.tema-ativo) {
+  border: 2px solid var(--border);
+  background: transparent;
+  color: var(--text2);
+}
+
+/* Botão de geração do PDF */
+.pdf-gen-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: var(--r);
+  background: rgba(212, 168, 67, 0.1);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  color: var(--gold);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+.pdf-gen-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 2;
+}
+.pdf-gen-btn:hover:not(:has(.pdf-lock-overlay)) {
+  background: rgba(212, 168, 67, 0.15);
+  transform: translateY(-2px);
+}
+
+/*
+ * LOCK OVERLAY — Bloqueia o botão para usuários free.
+ * Posicionado absolutamente sobre o botão.
+ * Controlado por: scripts/ui/ui-sync.js → updatePDFAccess()
+ */
+.pdf-lock-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 15, 12, 0.88);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pdf-lock-overlay:hover {
+  background: rgba(8, 15, 12, 0.75);
+  color: var(--text);
+}
+.pdf-lock-overlay svg {
+  width: 13px;
+  height: 13px;
+  stroke: var(--text2);
+  fill: none;
+  stroke-width: 2.5;
+}
+
+/* Seletor de foto de capa */
+.capa-thumb-item {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.capa-thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.capa-thumb-item:hover {
+  border-color: var(--gold);
+}
+/* Estado selecionado como capa */
+.capa-thumb-item.selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(212, 168, 67, 0.3);
+}
+
+/* ══════════════════════════════════════════════════════
+   MODALS — Signup (OAuth) e Paywall (upgrade Pro)
+   ══════════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r3);
+  padding: 2.5rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+.modal-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(29, 158, 117, 0.1);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+.modal-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--g);
+  fill: none;
+  stroke-width: 1.75;
+}
+
+.modal h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  line-height: 1.25;
+}
+
+.modal > p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+/* Lista de benefícios no modal de signup */
+.modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 1.75rem;
+  text-align: left;
+}
+
+.modal-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text2);
+}
+.modal-list-item svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--g);
+  fill: none;
+  stroke-width: 2.5;
+  flex-shrink: 0;
+}
+
+/* Botão Google OAuth */
+.google-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: var(--r);
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+  margin-bottom: 1rem;
+}
+.google-btn:hover {
+  background: #f5f5f5;
+  transform: translateY(-1px);
+}
+.google-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+/*
+ * CRÍTICO: texto "Dados preenchidos mantidos" é a garantia visual
+ * do fluxo pendingGeneration — não remover ou alterar.
+ */
+.auth-note {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 0;
+}
+
+/* ── PAYWALL MODAL ── */
+.paywall-price {
+  font-family: 'Fraunces', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 1rem 0 0.25rem;
+}
+.paywall-price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text2);
+}
+
+.paywall-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 1.25rem 0 1.75rem;
+  text-align: left;
+}
+
+.paywall-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text2);
+}
+.paywall-item svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--g);
+  fill: none;
+  stroke-width: 2.5;
+  flex-shrink: 0;
+}
+
+.modal-cta {
+  width: 100%;
+  padding: 13px;
+  border-radius: var(--r);
+  background: var(--g);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 0.75rem;
+}
+.modal-cta:hover {
+  background: var(--g2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--glow);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text3);
+  font-family: 'DM Sans', sans-serif;
+  padding: 6px;
+  transition: color 0.2s;
+}
+.modal-close-btn:hover { color: var(--text2); }
+
+/* ══════════════════════════════════════════════════════
+   LOADING STATE — Indicador durante a geração
+   ══════════════════════════════════════════════════════ */
+.gen-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1.5rem 1.25rem;
+  color: var(--text2);
+  font-size: 13px;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — Gerador
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .gen-body {
+    grid-template-columns: 1fr;
+  }
+
+  .gen-col:first-child {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gen-col {
+    padding: 1.25rem;
+  }
+
+  .corretor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .frow.c2,
+  .frow.c3 {
+    flex-direction: column;
+  }
+
+  .modal {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gen-banner {
+    flex-wrap: wrap;
+  }
+
+  .btn-group {
+    gap: 6px;
+  }
+
+  .tog-btn {
+    font-size: 12px;
+    padding: 7px 12px;
+  }
+
+  .results-section {
+    padding: 1.25rem;
+  }
+}

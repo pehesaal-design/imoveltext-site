@@ -1,0 +1,518 @@
+/**
+ * MÓDULO: PDF Light — Tema Claro Minimalista (Bege)
+ * RESPONSABILIDADE: Estilos completos do tema bege de PDF
+ * DEPENDÊNCIAS: pdf-shared.css (estrutura base)
+ * IMPACTO: Alterações afetam apenas o tema bege
+ *
+ * PALETA (hardcoded — não usar variáveis do tokens.css aqui):
+ *   Fundo principal:  #F7F4EF
+ *   Painel colorido:  #C9B99A
+ *   Texto escuro:     #2D2D2D
+ *   Terracota accent: #9B6B4B
+ *   Separadores:      #e0d8cc
+ *   Placeholder foto: #e8e2d8
+ *
+ * TIPOGRAFIA:
+ *   Títulos:   Playfair Display, serif (mesma do tema escuro)
+ *   Legendas:  Cormorant Garamond, serif, italic (mesma do tema escuro)
+ *   Labels:    DM Sans, uppercase, cor #9B6B4B
+ *   Valores:   DM Sans 700, cor #fff (sobre bege) ou #2D2D2D (sobre claro)
+ *
+ * LAYOUTS DISPONÍVEIS:
+ *   .pfb-capa   → Capa: foto esq 46% + painel bege dir 54%
+ *   .pfb-txt2   → Painel bege esq 36% + 2 fotos empilhadas dir
+ *   .pfb-grid3  → 1 foto grande esq + 2 fotos pequenas coluna dir
+ *   .pfb-txt4   → Painel bege esq 28% + grid 2×2 de fotos
+ *   .pfb-enc    → Encerramento: painel bege esq 44% + foto dir
+ *
+ * CLASSE BASE: .pf-b — aplicada em todos os layouts deste tema
+ *
+ * REGRA: Este arquivo é autossuficiente — não depende de pdf-dark.css.
+ * REGRA: Seletores .pf-b* nunca colidem com .pf* do tema escuro.
+ * REGRA: Fotos sempre com object-fit:contain, fundo #e8e2d8 (letterbox neutro).
+ */
+
+/* ══════════════════════════════════════════════════════
+   BASE DO TEMA BEGE
+   Classe raiz: .pf-b — aplicada em todos os layouts deste tema
+   ══════════════════════════════════════════════════════ */
+.pf-b {
+  font-family: 'DM Sans', sans-serif;
+  background: #F7F4EF;
+  color: #2D2D2D;
+}
+
+/* ══════════════════════════════════════════════════════
+   ELEMENTOS COMPARTILHADOS — Tema bege
+   ══════════════════════════════════════════════════════ */
+
+/* Painel bege colorido — fundo #C9B99A */
+.pfb-panel {
+  background: #C9B99A;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 36px 32px;
+}
+
+/* Painel claro — fundo #F7F4EF com borda direita */
+.pfb-panel-light {
+  background: #F7F4EF;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 36px 32px;
+  border-right: 1px solid #e0d8cc;
+}
+
+/* Container de foto — fundo neutro para letterbox */
+.pfb-foto {
+  background: #e8e2d8;
+  overflow: hidden;
+  position: relative;
+}
+
+.pfb-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Brand tag */
+.pfb-brand {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 24px;
+}
+
+/* Título principal */
+.pfb-titulo {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+/* Título sobre fundo claro */
+.pfb-titulo-dark {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #2D2D2D;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+/* Legenda — Cormorant Garamond italic */
+.pfb-legenda {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: #5a5248;
+  line-height: 1.7;
+  flex: 1;
+}
+
+/* Legenda sobre painel bege */
+.pfb-legenda-bege {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.65;
+  flex: 1;
+}
+
+/* Numeração de página — terracota */
+.pfb-num {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9B6B4B;
+  margin-bottom: 10px;
+}
+
+/* Label de ambiente */
+.pfb-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9B6B4B;
+}
+
+/* Ficha técnica — grid 2 colunas */
+.pfb-ficha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.pfb-ficha-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.pfb-ficha-item:nth-child(even) {
+  border-right: none;
+}
+
+.pfb-ficha-item:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+
+.pfb-ficha-label {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 3px;
+}
+
+.pfb-ficha-valor {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+
+/* Footer do painel bege — dados do corretor */
+.pfb-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pfb-footer-nome {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+.pfb-footer-creci {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.pfb-footer-pag {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 4px;
+}
+
+/* Footer sobre painel claro */
+.pfb-footer-light {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #e0d8cc;
+}
+
+.pfb-footer-light-nome {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2D2D2D;
+}
+
+.pfb-footer-light-creci {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9B6B4B;
+}
+
+/* Header/footer absolutos sobre área de fotos */
+.pfb-abs-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(247, 244, 239, 0.92), transparent);
+  z-index: 2;
+}
+
+.pfb-abs-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 20px;
+  background: rgba(247, 244, 239, 0.9);
+  z-index: 2;
+  border-top: 1px solid #e0d8cc;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT BEGE CAPA (pgBegeCapa)
+   Estrutura: [foto esq 46%] [painel bege dir 54%]
+   Função JS: pgBegeCapa() em scripts/pdf/light/light-pages.js
+   ══════════════════════════════════════════════════════ */
+.pfb-capa {
+  /* herda .pf-b */
+}
+
+.pfb-capa-foto {
+  width: 46%;
+  flex-shrink: 0;
+  background: #e0d8cc;
+}
+
+.pfb-capa-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.pfb-capa-panel {
+  flex: 1;
+  /* usa .pfb-panel */
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT BEGE TXT2 (pgBegeTxt2)
+   Estrutura: [painel claro esq 36% com border-right] [2 fotos empilhadas dir]
+   Função JS: pgBegeTxt2() em scripts/pdf/light/light-pages.js
+   ══════════════════════════════════════════════════════ */
+.pfb-txt2 {
+  /* herda .pf-b */
+}
+
+.pfb-txt2-panel {
+  width: 36%;
+  flex-shrink: 0;
+  /* usa .pfb-panel-light */
+}
+
+.pfb-txt2-fotos {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: #e8e2d8;
+  overflow: hidden;
+}
+
+.pfb-txt2-foto {
+  flex: 1;
+  background: #e8e2d8;
+  overflow: hidden;
+}
+
+.pfb-txt2-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT BEGE GRID3 (pgBegeGrid3)
+   Estrutura: [1 foto grande flex:1.2] [coluna 2 fotos pequenas flex:0.8]
+   Header/footer absolutos sobre o grid
+   Função JS: pgBegeGrid3() em scripts/pdf/light/light-pages.js
+   ══════════════════════════════════════════════════════ */
+.pfb-grid3 {
+  background: #F7F4EF;
+  position: relative;
+}
+
+.pfb-grid3-inner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 3px;
+  background: #e8e2d8;
+}
+
+.pfb-grid3-foto-grande {
+  flex: 1.2;
+  background: #e8e2d8;
+  overflow: hidden;
+}
+
+.pfb-grid3-foto-grande img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.pfb-grid3-col {
+  flex: 0.8;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pfb-grid3-foto-pequena {
+  flex: 1;
+  background: #e8e2d8;
+  overflow: hidden;
+}
+
+.pfb-grid3-foto-pequena img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT BEGE TXT4 (pgBegeTxt4)
+   Estrutura: [painel bege esq 28%] [grid 2×2 de fotos]
+   Função JS: pgBegeTxt4() em scripts/pdf/light/light-pages.js
+   ══════════════════════════════════════════════════════ */
+.pfb-txt4 {
+  /* herda .pf-b */
+}
+
+.pfb-txt4-panel {
+  width: 28%;
+  flex-shrink: 0;
+  /* usa .pfb-panel */
+}
+
+.pfb-txt4-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 3px;
+  background: #e8e2d8;
+}
+
+.pfb-txt4-foto {
+  background: #e8e2d8;
+  overflow: hidden;
+}
+
+.pfb-txt4-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT BEGE ENCERRAMENTO (pgBegeEnc)
+   Estrutura: [painel bege esq 44%] [foto dir]
+   Função JS: pgBegeEnc() em scripts/pdf/light/light-pages.js
+   ══════════════════════════════════════════════════════ */
+.pfb-enc {
+  /* herda .pf-b */
+}
+
+.pfb-enc-panel {
+  width: 44%;
+  flex-shrink: 0;
+  /* usa .pfb-panel */
+  justify-content: center;
+}
+
+.pfb-enc-foto {
+  flex: 1;
+  background: #e0d8cc;
+  overflow: hidden;
+}
+
+.pfb-enc-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Título do encerramento */
+.pfb-enc-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 32px;
+}
+
+/* Itens de contato */
+.pfb-enc-contatos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.pfb-enc-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pfb-enc-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pfb-enc-icon svg {
+  width: 14px;
+  height: 14px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 1.75;
+}
+
+.pfb-enc-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Divisor */
+.pfb-enc-divider {
+  width: 50px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+  margin-bottom: 20px;
+}
+
+/* Rodapé */
+.pfb-enc-rodape {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}

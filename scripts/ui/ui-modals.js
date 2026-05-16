@@ -1,0 +1,118 @@
+/**
+ * MÓDULO: UI Modals — Controle dos Modais
+ * RESPONSABILIDADE: Abrir/fechar modais de signup (OAuth) e paywall (upgrade)
+ * DEPENDÊNCIAS:
+ *   - state.js  (AppState)
+ *   - config.js (STRIPE_LINK)
+ *   - auth/auth.js (loginGoogle)
+ * IMPACTO: Afeta o fluxo de conversão (login + upgrade)
+ *
+ * MODAIS EXISTENTES:
+ *   #signup-modal  → exibido quando não autenticado e tenta gerar
+ *   #paywall-modal → exibido quando créditos = 0 ou tenta PDF sem Pro
+ *
+ * CRÍTICO — TEXTO DO SIGNUP MODAL:
+ *   O parágrafo "Dados preenchidos mantidos. Sem spam, sem cartão."
+ *   é a garantia visual do fluxo pendingGeneration.
+ *   Não alterar — é parte da proposta de valor do fluxo de conversão.
+ *
+ * PADRÃO DE FECHAMENTO:
+ *   Click no overlay externo fecha o modal (UX padrão).
+ *   Click dentro do modal não fecha (stopPropagation via CSS pointer-events).
+ */
+
+import { AppState }  from '../state.js';
+import { STRIPE_LINK } from '../config.js';
+import { loginGoogle } from '../auth/auth.js';
+
+// ── INIT MODAIS ───────────────────────────────────────
+/**
+ * Registra todos os event listeners dos modais.
+ * Chamado por main.js no DOMContentLoaded.
+ */
+export function initModals() {
+  _initSignupModal();
+  _initPaywallModal();
+  _initBotoesAssinar();
+}
+
+// ── SIGNUP MODAL ──────────────────────────────────────
+export function showSignupModal() {
+  const modal = document.getElementById('signup-modal');
+  if (modal) modal.style.display = 'flex';
+}
+
+export function closeSignupModal() {
+  const modal = document.getElementById('signup-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function _initSignupModal() {
+  // Botão de login Google
+  const btnLogin = document.getElementById('btn-login-google');
+  if (btnLogin) {
+    btnLogin.addEventListener('click', loginGoogle);
+  }
+
+  // Click no overlay externo fecha o modal
+  const overlay = document.getElementById('signup-modal');
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeSignupModal();
+    });
+  }
+}
+
+// ── PAYWALL MODAL ─────────────────────────────────────
+export function showPaywall() {
+  const modal = document.getElementById('paywall-modal');
+  if (modal) modal.style.display = 'flex';
+}
+
+export function closePaywall() {
+  const modal = document.getElementById('paywall-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function _initPaywallModal() {
+  // Botão "Agora não" — fecha o modal
+  const btnFechar = document.getElementById('btn-fechar-paywall');
+  if (btnFechar) {
+    btnFechar.addEventListener('click', closePaywall);
+  }
+
+  // Botão de assinar dentro do paywall
+  const btnAssinar = document.getElementById('btn-assinar-paywall');
+  if (btnAssinar) {
+    btnAssinar.addEventListener('click', () => assinar());
+  }
+
+  // Click no overlay externo fecha o modal
+  const overlay = document.getElementById('paywall-modal');
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closePaywall();
+    });
+  }
+}
+
+// ── BOTÕES DE ASSINAR (landing page) ─────────────────
+/**
+ * Redireciona para o checkout do Stripe.
+ * Usado pelo botão da seção de planos e pelo paywall modal.
+ */
+export function assinar() {
+  if (STRIPE_LINK === 'STRIPE_PENDENTE') {
+    console.warn('[modals] STRIPE_LINK não configurado — substituir em config.js');
+    return;
+  }
+  window.open(STRIPE_LINK, '_blank');
+}
+
+function _initBotoesAssinar() {
+  // Botão de assinar na seção de planos
+  const btnPlanos = document.getElementById('btn-assinar-planos');
+  if (btnPlanos) {
+    btnPlanos.addEventListener('click', assinar);
+  }
+}

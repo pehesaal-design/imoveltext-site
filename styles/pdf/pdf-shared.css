@@ -1,0 +1,165 @@
+/**
+ * MÓDULO: PDF Shared — Base Estrutural Compartilhada
+ * RESPONSABILIDADE: Estilos estruturais comuns aos dois temas de PDF
+ * DEPENDÊNCIAS: tokens.css (variáveis CSS globais)
+ * IMPACTO: Alterações afetam AMBOS os temas (escuro e bege)
+ *
+ * REGRA: Este arquivo contém APENAS estrutura — dimensões, display, overflow.
+ * REGRA: Nunca adicionar cores, backgrounds ou tipografia aqui.
+ *        Cores pertencem a pdf-dark.css ou pdf-light.css exclusivamente.
+ * REGRA: Os dois temas nunca se importam mutuamente — isolamento total.
+ *
+ * DIMENSÕES CRÍTICAS:
+ *   Página: 1123 × 794px landscape — NÃO alterar.
+ *   Estas dimensões definem o tamanho do canvas do html2canvas
+ *   e o formato do jsPDF. Qualquer mudança quebra o PDF gerado.
+ *
+ * RENDERIZAÇÃO OFFSCREEN:
+ *   O elemento #pdf-template usa position:fixed; left:-9999px.
+ *   NÃO usar display:none — html2canvas não captura elementos ocultos.
+ *   Definido em tokens.css para garantir que esteja sempre presente.
+ *
+ * FONTES USADAS NOS TEMPLATES:
+ *   Playfair Display  → títulos e labels principais
+ *   Cormorant Garamond → legendas e descrições (itálico)
+ *   DM Sans           → dados técnicos, labels, rodapés
+ *   Carregadas via Google Fonts no index.html — devem estar disponíveis
+ *   antes do html2canvas capturar (garantido pelo delay de 400ms).
+ */
+
+/* ══════════════════════════════════════════════════════
+   PÁGINA BASE — Estrutura comum a todos os layouts
+   Ambos os temas herdam desta base via suas classes raiz:
+     Tema escuro: .pf   (pdf-dark.css)
+     Tema bege:   .pf-b (pdf-light.css)
+   ══════════════════════════════════════════════════════ */
+
+/*
+ * Dimensões exatas do template de PDF.
+ * CRÍTICO: width e height devem bater com os parâmetros do html2canvas:
+ *   html2canvas(el, { width: 1123, height: 794 })
+ * e com o jsPDF em modo landscape:
+ *   new jsPDF({ orientation: 'landscape', unit: 'px', format: [1123, 794] })
+ */
+.pf,
+.pf-b {
+  width: 1123px;
+  height: 794px;
+  overflow: hidden;
+  display: flex;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* ══════════════════════════════════════════════════════
+   UTILITÁRIOS ESTRUTURAIS — Compartilhados por ambos os temas
+   Apenas propriedades de layout — sem cor, sem tipografia
+   ══════════════════════════════════════════════════════ */
+
+/* Painel: bloco flex-column com flex sizing */
+.pdf-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Foto: container para imagens — sempre com object-fit:contain
+ * CRÍTICO: object-fit:contain garante que nenhuma foto seja cortada.
+ * O background-color de cada tema define a cor do "letterbox"
+ * quando a proporção da foto não preenche o container.
+ */
+.pdf-img-wrap {
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.pdf-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/*
+ * HACK ONCLONE — Context para entender o background-image:
+ * Durante a renderização, renderPagina() usa o callback onclone do html2canvas.
+ * Nesse callback, cada <img> tem sua opacidade zerada e o elemento pai
+ * recebe background-image com a src da imagem.
+ * Por isso os containers de foto precisam de background-size/position definidos
+ * nos temas — para que o hack funcione corretamente.
+ * Ver: scripts/pdf/pdf-core.js → renderPagina() → onclone
+ */
+
+/* Flex grow — ocupa espaço disponível */
+.pdf-flex-1  { flex: 1; overflow: hidden; }
+.pdf-flex-12 { flex: 1.2; overflow: hidden; }
+.pdf-flex-08 { flex: 0.8; overflow: hidden; }
+
+/* Gap padrão entre fotos lado a lado */
+.pdf-gap { gap: 3px; }
+
+/* Posicionamento absoluto para headers/footers sobre fotos */
+.pdf-abs-header,
+.pdf-abs-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+.pdf-abs-header { top: 0; }
+.pdf-abs-footer  { bottom: 0; }
+
+/* Overlay escuro sobre fotos — para texto legível sobre imagem */
+.pdf-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Elemento decorativo circular — usado no tema escuro */
+.pdf-circ {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Divisor vertical entre colunas */
+.pdf-divider {
+  width: 3px;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESET PARA TEMPLATES DE PDF
+   Garante comportamento previsível dentro dos templates,
+   independente de estilos globais do body/html.
+   ══════════════════════════════════════════════════════ */
+.pf *,
+.pf-b * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Imagens dentro dos templates — base reset */
+.pf img,
+.pf-b img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Textos dentro dos templates — sem quebra indesejada */
+.pf p,
+.pf-b p,
+.pf span,
+.pf-b span {
+  line-height: inherit;
+}

@@ -1,0 +1,688 @@
+/**
+ * MÓDULO: PDF Dark — Tema Escuro Elegante
+ * RESPONSABILIDADE: Estilos completos do tema escuro de PDF
+ * DEPENDÊNCIAS: pdf-shared.css (estrutura base)
+ * IMPACTO: Alterações afetam apenas o tema escuro
+ *
+ * PALETA (hardcoded — não usar variáveis do tokens.css aqui):
+ *   Fundo painel:    #2C2017
+ *   Fundo foto:      #1a1208
+ *   Texto primário:  #E8D5B7
+ *   Texto secundário: rgba(232,213,183,0.65) a .92
+ *   Separadores:     rgba(232,213,183,0.15)
+ *   Gold accent:     #C8A96A
+ *
+ * TIPOGRAFIA:
+ *   Títulos:   Playfair Display, serif, 700
+ *   Legendas:  Cormorant Garamond, serif, italic, 500
+ *   Labels:    DM Sans, uppercase, letter-spacing
+ *
+ * LAYOUTS DISPONÍVEIS:
+ *   .pf-l1v  → Capa com foto vertical (painel esq 36% + foto dir 64%)
+ *   .pf-l1h  → Capa com foto horizontal (foto full + painel dir 38%)
+ *   .pf-l2   → Texto esquerdo + foto vertical direita
+ *   .pf-l3   → Foto horizontal full-width com header e footer
+ *   .pf-l4   → 2 fotos horizontais lado a lado
+ *   .pf-l5   → 2 fotos verticais lado a lado com legenda
+ *   .pf-l6   → Encerramento com dados do corretor
+ *
+ * REGRA: Este arquivo é autossuficiente — não depende de pdf-light.css.
+ * REGRA: Não remover layouts L4/L5 sem confirmar que não são usados em
+ *        dark-layout.js — verificar antes de qualquer limpeza.
+ */
+
+/* ══════════════════════════════════════════════════════
+   BASE DO TEMA ESCURO
+   Classe raiz: .pf — aplicada em todos os layouts deste tema
+   ══════════════════════════════════════════════════════ */
+.pf {
+  font-family: 'DM Sans', sans-serif;
+  background: #2C2017;
+  color: #E8D5B7;
+}
+
+/* ══════════════════════════════════════════════════════
+   ELEMENTOS COMPARTILHADOS — Tema escuro
+   ══════════════════════════════════════════════════════ */
+
+/* Painel lateral — fundo escuro padrão do tema */
+.pf-panel {
+  background: #2C2017;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 36px 32px;
+  z-index: 1;
+}
+
+/* Container de foto — fundo escuro para letterbox */
+.pf-foto {
+  background: #1a1208;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.pf-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Círculos decorativos — identidade do tema escuro
+ * Posicionados absolutamente em cada layout via classes específicas.
+ * background e border definidos aqui; posição definida por layout.
+ */
+.pf-circ {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(232, 213, 183, 0.04);
+  border: 1px solid rgba(232, 213, 183, 0.06);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Brand tag — "ImóvelText · MÊS ANO" */
+.pf-brand {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(232, 213, 183, 0.45);
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Badge de tipo do imóvel */
+.pf-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #C8A96A;
+  border: 1px solid rgba(200, 169, 106, 0.35);
+  padding: 3px 10px;
+  border-radius: 3px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Título principal — Playfair Display */
+.pf-titulo {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #E8D5B7;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Ficha técnica — grid de itens do imóvel */
+.pf-ficha {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.pf-ficha-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(232, 213, 183, 0.1);
+}
+
+.pf-ficha-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.pf-ficha-label {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(232, 213, 183, 0.5);
+}
+
+.pf-ficha-valor {
+  font-size: 13px;
+  font-weight: 600;
+  color: #E8D5B7;
+  line-height: 1.3;
+}
+
+/* Destaque de preço */
+.pf-ficha-valor.dest {
+  color: #C8A96A;
+  font-size: 15px;
+}
+
+/* Numeração de página */
+.pf-num {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(232, 213, 183, 0.4);
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Label de ambiente (sala, cozinha, varanda...) */
+.pf-label-ambiente {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #E8D5B7;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Legenda descritiva — Cormorant Garamond italic */
+.pf-legenda {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  color: rgba(232, 213, 183, 0.82);
+  line-height: 1.65;
+  position: relative;
+  z-index: 1;
+}
+
+/* Footer do painel — dados do corretor */
+.pf-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+  z-index: 1;
+  padding-top: 16px;
+  border-top: 1px solid rgba(232, 213, 183, 0.12);
+  margin-top: auto;
+}
+
+.pf-footer-nome {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(232, 213, 183, 0.9);
+  letter-spacing: 0.04em;
+}
+
+.pf-footer-creci {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(232, 213, 183, 0.4);
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT L1V — Capa com Foto Vertical
+   Estrutura: [painel esq 36%] [foto dir 64%]
+   Função JS: pgCapaV() em scripts/pdf/dark/dark-pages.js
+   ══════════════════════════════════════════════════════ */
+.pf-l1v {
+  /* herda .pf — display:flex, width:1123px, height:794px */
+}
+
+.pf-l1v-panel {
+  width: 36%;
+  flex-shrink: 0;
+}
+
+.pf-l1v-foto {
+  flex: 1;
+  background: #1a1208;
+}
+
+.pf-l1v-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Círculos decorativos — posições específicas do L1V */
+.pf-l1v .pf-circ-1 {
+  width: 300px;
+  height: 300px;
+  bottom: -80px;
+  right: -80px;
+}
+
+.pf-l1v .pf-circ-2 {
+  width: 160px;
+  height: 160px;
+  top: 40px;
+  left: -60px;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT L1H — Capa com Foto Horizontal
+   Estrutura: [foto full com overlay] [painel dir 38%]
+   Função JS: pgCapaH() em scripts/pdf/dark/dark-pages.js
+   ══════════════════════════════════════════════════════ */
+.pf-l1h {
+  /* herda .pf */
+}
+
+.pf-l1h-foto-ph {
+  flex: 1;
+  background: #1a1208;
+  position: relative;
+  overflow: hidden;
+}
+
+.pf-l1h-foto-ph img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Overlay gradiente — permite leitura de texto sobre a foto */
+.pf-l1h-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent 40%,
+    rgba(44, 32, 23, 0.85) 80%,
+    #2C2017 100%
+  );
+  z-index: 1;
+}
+
+.pf-l1h-panel {
+  width: 38%;
+  flex-shrink: 0;
+  background: #2C2017;
+}
+
+/* Círculos decorativos — posições específicas do L1H */
+.pf-l1h .pf-circ-1 {
+  width: 280px;
+  height: 280px;
+  bottom: -60px;
+  left: -60px;
+}
+
+.pf-l1h .pf-circ-2 {
+  width: 120px;
+  height: 120px;
+  top: 30px;
+  right: 20px;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT L2 — Texto Esquerdo + Foto Vertical Direita
+   Estrutura: [painel esq 36%] [foto vertical dir 64%]
+   Função JS: pgTextoFoto() em scripts/pdf/dark/dark-pages.js
+   ══════════════════════════════════════════════════════ */
+.pf-l2 {
+  /* herda .pf */
+}
+
+.pf-l2-panel {
+  width: 36%;
+  flex-shrink: 0;
+}
+
+/* Legenda com flex:1 — ocupa todo o espaço disponível entre num e footer */
+.pf-l2-panel .pf-legenda {
+  flex: 1;
+  font-size: 17px;
+}
+
+.pf-l2-panel .pf-label-ambiente {
+  font-size: 26px;
+}
+
+.pf-l2-foto {
+  flex: 1;
+  background: #1a1208;
+}
+
+.pf-l2-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Círculos decorativos — L2 */
+.pf-l2 .pf-circ-1 {
+  width: 200px;
+  height: 200px;
+  bottom: -50px;
+  right: -50px;
+}
+
+.pf-l2 .pf-circ-2 {
+  width: 100px;
+  height: 100px;
+  top: 20px;
+  left: -30px;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT L3 — Foto Horizontal Full-Width
+   Estrutura: [header] [foto full flex:1] [footer]
+   Função JS: pgFotoFull() em scripts/pdf/dark/dark-pages.js
+   ══════════════════════════════════════════════════════ */
+.pf-l3 {
+  flex-direction: column;
+}
+
+.pf-l3-header {
+  background: #2C2017;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(232, 213, 183, 0.1);
+}
+
+.pf-l3-header .pf-label-ambiente {
+  font-size: 22px;
+  margin-bottom: 0;
+}
+
+.pf-l3-foto {
+  flex: 1;
+  background: #1a1208;
+  overflow: hidden;
+}
+
+.pf-l3-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.pf-l3-footer {
+  background: #2C2017;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  border-top: 1px solid rgba(232, 213, 183, 0.1);
+}
+
+.pf-l3-footer .pf-legenda {
+  font-size: 17px;
+  flex: 1;
+}
+
+.pf-l3-footer .pf-footer-nome {
+  text-align: right;
+  white-space: nowrap;
+  margin-left: 24px;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT L4 — 2 Fotos Horizontais Lado a Lado
+   Estrutura: [header] [foto1 | foto2 gap:3px] [footer]
+   Função JS: pg2FotasH() em scripts/pdf/dark/dark-pages.js
+   ⚠️ VERIFICAR: Layout definido mas uso em montarPaginas() não confirmado
+   ══════════════════════════════════════════════════════ */
+.pf-l4 {
+  flex-direction: column;
+}
+
+.pf-l4-header {
+  background: #2C2017;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(232, 213, 183, 0.1);
+}
+
+.pf-l4-fotos {
+  flex: 1;
+  display: flex;
+  gap: 3px;
+  background: #1a1208;
+  overflow: hidden;
+}
+
+.pf-l4-foto {
+  flex: 1;
+  background: #1a1208;
+  overflow: hidden;
+}
+
+.pf-l4-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.pf-l4-footer {
+  background: #2C2017;
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  border-top: 1px solid rgba(232, 213, 183, 0.1);
+}
+
+.pf-l4-footer .pf-legenda {
+  font-size: 13px;
+  flex: 1;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT L5 — 2 Fotos Verticais Lado a Lado
+   Estrutura: [col1 foto+legenda] [divisor 3px] [col2 foto+legenda]
+   Função JS: pg2FotasV() em scripts/pdf/dark/dark-pages.js
+   ⚠️ VERIFICAR: Mesmo status que L4 — confirmar uso real
+   ══════════════════════════════════════════════════════ */
+.pf-l5 {
+  /* herda .pf — display:flex */
+}
+
+.pf-l5-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: #1a1208;
+}
+
+.pf-l5-foto {
+  flex: 1;
+  overflow: hidden;
+}
+
+.pf-l5-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.pf-l5-legenda-bar {
+  background: #2C2017;
+  padding: 12px 20px;
+  flex-shrink: 0;
+  border-top: 1px solid rgba(232, 213, 183, 0.1);
+}
+
+.pf-l5-legenda-bar .pf-legenda {
+  font-size: 13px;
+}
+
+/* Header absoluto sobre a coluna (num + label) */
+.pf-l5-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, rgba(44, 32, 23, 0.9), transparent);
+  padding: 14px 20px;
+  z-index: 2;
+}
+
+/* Footer absoluto sobre a coluna (corretor) */
+.pf-l5-footer-abs {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(44, 32, 23, 0.9), transparent);
+  padding: 14px 20px;
+  z-index: 2;
+}
+
+/* Divisor vertical entre colunas */
+.pf-l5-div {
+  width: 3px;
+  background: #2C2017;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT L6 — Encerramento
+   Estrutura: [centralizado, fundo #2C2017, dados do corretor]
+   Função JS: pgEncerramento() em scripts/pdf/dark/dark-pages.js
+   ══════════════════════════════════════════════════════ */
+.pf-l6 {
+  background: #2C2017;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+}
+
+/* Logo ImóvelText — baixa opacidade como watermark */
+.pf-l6-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(232, 213, 183, 0.2);
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Título "Entre em contato" */
+.pf-l6-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: #E8D5B7;
+  line-height: 1.1;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Itens de contato — ícone em círculo + texto */
+.pf-l6-contatos {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.pf-l6-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.pf-l6-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 213, 183, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pf-l6-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: rgba(232, 213, 183, 0.7);
+  fill: none;
+  stroke-width: 1.75;
+}
+
+.pf-l6-text {
+  font-size: 15px;
+  color: rgba(232, 213, 183, 0.9);
+  font-weight: 500;
+  text-align: left;
+}
+
+/* Divisor dourado */
+.pf-l6-divider {
+  width: 60px;
+  height: 2px;
+  background: #C8A96A;
+  margin: 0 auto 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Rodapé gerado por */
+.pf-l6-rodape {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(232, 213, 183, 0.25);
+  position: relative;
+  z-index: 1;
+}
+
+/* Círculos decorativos — posições específicas do L6 */
+.pf-l6 .pf-circ-1 {
+  width: 400px;
+  height: 400px;
+  bottom: -150px;
+  right: -100px;
+}
+
+.pf-l6 .pf-circ-2 {
+  width: 200px;
+  height: 200px;
+  top: -60px;
+  left: -60px;
+}
+
+.pf-l6 .pf-circ-3 {
+  width: 120px;
+  height: 120px;
+  top: 40px;
+  right: 120px;
+}
