@@ -23,7 +23,7 @@
  */
 
 import { AppState }        from '../../state.js';
-import { renderCapaThumbs } from '../../../form/upload-manager.js';
+import { renderCapaThumbs } from '../../form/upload-manager.js';
 
 /**
  * Renderiza o card de legendas por foto.

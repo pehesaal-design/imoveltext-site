@@ -21,7 +21,7 @@
  *   separados por espaço — pronto para colar no post do Instagram.
  */
 
-import { copiar }   from '../../utils/clipboard.js';
+import { copiar }   from '../../../utils/clipboard.js';
 import { AppState } from '../../state.js';
 
 // Plataformas que exibem hashtags

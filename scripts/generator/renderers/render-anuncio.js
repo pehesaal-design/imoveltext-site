@@ -20,7 +20,7 @@
  *   Ambos chamam este renderer — a função é idempotente.
  */
 
-import { copiar } from '../../utils/clipboard.js';
+import { copiar } from '../../../utils/clipboard.js';
 
 /**
  * Renderiza o título e o corpo do anúncio no card de resultado.
