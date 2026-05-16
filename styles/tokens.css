@@ -1,0 +1,236 @@
+/**
+ * MÓDULO: Design Tokens — ImóvelText
+ * RESPONSABILIDADE: Variáveis CSS globais, reset, tipografia base e texturas de fundo
+ * DEPENDÊNCIAS: Nenhuma (arquivo raiz do sistema de design)
+ * IMPACTO: Alterações aqui afetam TODO o sistema visualmente
+ */
+
+/* ── RESET ────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── CUSTOM PROPERTIES ────────────────────────────────── */
+:root {
+  --g:        #1D9E75;
+  --g2:       #0F6E56;
+  --g3:       #15785A;
+  --glow:     rgba(29, 158, 117, 0.18);
+  --g-light:  #E1F5EE;
+  --g-mid:    #5DCAA5;
+
+  --bg:   #080f0c;
+  --bg2:  #0d1a14;
+  --bg3:  #111f18;
+
+  --surface:  rgba(29, 158, 117, 0.06);
+  --surface2: rgba(29, 158, 117, 0.10);
+
+  --border:  rgba(29, 158, 117, 0.14);
+  --border2: rgba(29, 158, 117, 0.22);
+
+  --text:  #f0f4f2;
+  --text2: #9ab5aa;
+  --text3: #5a7a6e;
+
+  --gold:       #d4a843;
+  --gold-light: #fdf3e3;
+
+  --r:  14px;
+  --r2: 20px;
+  --r3: 28px;
+
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* ── BASE HTML/BODY ───────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── TEXTURA DE FUNDO ─────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% -10%, rgba(29, 158, 117, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at -10% 80%,  rgba(29, 158, 117, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.025;
+  background-image:
+    linear-gradient(rgba(29, 158, 117, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 158, 117, 0.5) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* ── SCROLL ANIMATIONS ────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+.reveal-l {
+  opacity: 0;
+  transform: translateX(-28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-l.in { opacity: 1; transform: translateX(0); }
+
+.reveal-r {
+  opacity: 0;
+  transform: translateX(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-r.in { opacity: 1; transform: translateX(0); }
+
+.d1 { transition-delay: 0.1s; }
+.d2 { transition-delay: 0.2s; }
+.d3 { transition-delay: 0.3s; }
+.d4 { transition-delay: 0.4s; }
+
+/* ── ANIMAÇÕES GLOBAIS ────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1;  box-shadow: 0 0 0 0 var(--glow); }
+  50%       { opacity: 0.7; box-shadow: 0 0 0 6px transparent; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.2; }
+  50%       { opacity: 1; }
+}
+
+/* ── LAYOUT BASE ──────────────────────────────────────── */
+section {
+  position: relative;
+  z-index: 1;
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ── TIPOGRAFIA DE SEÇÃO ──────────────────────────────── */
+.section-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--g);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+.section-sub {
+  font-size: 1rem;
+  color: var(--text2);
+  line-height: 1.65;
+  max-width: 560px;
+}
+
+/* ── BOTÕES GLOBAIS ───────────────────────────────────── */
+.btn-primary {
+  padding: 13px 28px;
+  border-radius: var(--r);
+  background: var(--g);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover {
+  background: var(--g2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--glow);
+}
+
+.btn-ghost {
+  padding: 13px 28px;
+  border-radius: var(--r);
+  background: transparent;
+  color: var(--text2);
+  font-size: 15px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  border: 1px solid var(--border2);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-ghost:hover {
+  border-color: var(--g-mid);
+  color: var(--text);
+}
+
+/* ── LOADING DOTS ─────────────────────────────────────── */
+.loading-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1.25rem;
+  color: var(--text2);
+  font-size: 13px;
+}
+.dots { display: flex; gap: 4px; }
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--g);
+  animation: blink 1.2s ease-in-out infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* ── PDF TEMPLATE (OFFSCREEN) ─────────────────────────── */
+#pdf-template {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  z-index: -1;
+  pointer-events: none;
+}
