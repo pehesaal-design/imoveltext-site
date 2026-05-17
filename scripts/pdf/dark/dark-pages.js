@@ -31,6 +31,23 @@
 import { imgTag, getLabel } from '../pdf-utils.js';
 
 /**
+ * Formata preço para exibição: adiciona "R$" e separador de milhar.
+ * Strings já com "R$" passam sem alteração. Strings não numéricas (ex: "Consultar") passam sem prefixo.
+ */
+function formatarPreco(valor) {
+  if (valor === undefined || valor === null || valor === '') return '—';
+  const s = String(valor).trim();
+  if (!s) return '—';
+  if (s.includes('R$')) return s;
+  if (/^[\d.,]+$/.test(s)) {
+    const numero = parseFloat(s.replace(/\./g, '').replace(',', '.'));
+    if (!isNaN(numero)) return 'R$ ' + Math.round(numero).toLocaleString('pt-BR');
+    return 'R$ ' + s;
+  }
+  return s;
+}
+
+/**
  * Círculo decorativo — identidade visual do tema escuro.
  * Posicionado absolutamente com tamanho e coordenadas variáveis por layout.
  * @param {number} top  — posição top em px (use negativo para fora da borda)
@@ -47,8 +64,8 @@ function circ(top, left, size) {
  */
 function fichaHtml({ bairro, preco, area, quartos, suites, tipo }) {
   const itens = [
-    { label: 'Local',    valor: bairro   || '—' },
-    { label: 'Preço',    valor: preco    || '—', dest: true },
+    { label: 'Local',    valor: bairro              || '—' },
+    { label: 'Preço',    valor: formatarPreco(preco),  dest: true },
     { label: 'Área',     valor: area     ? area + ' m²' : '—' },
     { label: 'Quartos',  valor: quartos  || '—' },
     { label: 'Suítes',   valor: suites   || '—' },
@@ -154,7 +171,7 @@ export function pgTextoFoto({ label, legenda, src, corretor, num, total }) {
 
     <div class="pf-num">${num || '1'} / ${total || '1'}</div>
     <div class="pf-label-ambiente" style="font-size:26px">${label || ''}</div>
-    <div class="pf-legenda" style="font-size:17px;flex:1">${legenda || ''}</div>
+    <div class="pf-legenda" style="font-size:20px;flex:1">${legenda || ''}</div>
 
     ${footerHtml(corretor || {})}
   </div>
@@ -224,7 +241,7 @@ export function pg2FotasH({ label, legenda, src1, src2, corretor, num, total }) 
 
   <!-- Footer -->
   <div class="pf-l4-footer">
-    <div class="pf-legenda" style="font-size:13px;flex:1">${legenda || ''}</div>
+    <div class="pf-legenda" style="font-size:14px;flex:1">${legenda || ''}</div>
     <div class="pf-footer-nome">${corretor?.nome || ''}</div>
   </div>
 
@@ -250,7 +267,7 @@ export function pg2FotasV({ label, leg1, leg2, src1, src2, corretor, num, total 
       <img src="${src1 || ''}" style="width:100%;height:100%;object-fit:contain;display:block;" alt=""/>
     </div>
     <div class="pf-l5-legenda-bar">
-      <div class="pf-legenda" style="font-size:13px">${leg1 || ''}</div>
+      <div class="pf-legenda" style="font-size:14px">${leg1 || ''}</div>
     </div>
   </div>
 
@@ -263,7 +280,7 @@ export function pg2FotasV({ label, leg1, leg2, src1, src2, corretor, num, total 
       <img src="${src2 || ''}" style="width:100%;height:100%;object-fit:contain;display:block;" alt=""/>
     </div>
     <div class="pf-l5-legenda-bar">
-      <div class="pf-legenda" style="font-size:13px">${leg2 || ''}</div>
+      <div class="pf-legenda" style="font-size:14px">${leg2 || ''}</div>
     </div>
     <div class="pf-l5-footer-abs">
       <div class="pf-footer-nome">${corretor?.nome || ''}</div>
