@@ -19,9 +19,11 @@ export const SUPABASE_URL  = 'https://ynahunwezjbnbvyjxvfz.supabase.co';
 export const SUPABASE_KEY  = 'sb_publishable_GDsLQZy_Zsdhr3icE7PByQ_smjPROkn';
 
 // URL de redirect após o OAuth do Google.
-// Em dev: 'http://localhost:5500' ou equivalente.
-// Em prod: URL do domínio real.
-export const REDIRECT_URL  = window.location.origin;
+// Deve ser idêntica à Site URL configurada no Supabase Authentication > URL Configuration.
+// Em dev local, substituir temporariamente por window.location.origin.
+export const REDIRECT_URL  = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? window.location.origin
+  : 'https://pehesaal-design.github.io/imoveltext-site';
 
 // ── STRIPE ────────────────────────────────────────────
 // TODO: substituir por URL real do checkout Stripe antes de produção

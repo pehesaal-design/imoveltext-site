@@ -59,11 +59,16 @@ import { renderizarScore }     from './renderers/render-score.js';
 import { renderizarHashtags }  from './renderers/render-hashtags.js';
 import { renderizarLegendas }  from './renderers/render-legendas.js';
 
+// Guarda contra re-entrada: impede chamadas concorrentes a gerar()
+let _gerando = false;
+
 /**
  * Função principal de geração — chamada pelo botão "Gerar" e pelo
  * fluxo automático pós-login (pendingGeneration).
  */
 export async function gerar() {
+  if (_gerando) return;
+
   const { auth, form, generation } = AppState;
 
   // ── 1. VERIFICAR AUTH ─────────────────────────────
@@ -87,6 +92,7 @@ export async function gerar() {
   AppState.pdf.corrData = corrData;
 
   // ── 4. PREPARAR UI ────────────────────────────────
+  _gerando = true;
   setLoadingBtn(true);
 
   const resultsSection = document.getElementById('results-section');
@@ -146,6 +152,7 @@ export async function gerar() {
   } catch (err) {
     _exibirErro(err.message || 'Erro ao gerar o anúncio. Tente novamente.');
   } finally {
+    _gerando = false;
     setLoadingBtn(false);
   }
 }

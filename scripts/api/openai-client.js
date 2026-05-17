@@ -48,14 +48,15 @@ import { getSupabase }   from '../auth/auth.js';
  */
 export async function chamarIA(prompt, fotos = []) {
   const controller = new AbortController();
-  const timeout    = setTimeout(() => controller.abort(), 30_000);
-
-  // Token de sessão do Supabase para autenticar na Edge Function
-  const sb = getSupabase();
-  const { data: { session } } = await sb.auth.getSession();
-  const token = session?.access_token || '';
+  const timeout    = setTimeout(() => controller.abort(), 60_000);
 
   try {
+    // Token de sessão do Supabase para autenticar na Edge Function
+    // Mantido dentro do try para garantir clearTimeout mesmo que getSession trave
+    const sb = getSupabase();
+    const { data: { session } } = await sb.auth.getSession();
+    const token = session?.access_token || '';
+
     const response = await fetch(EDGE_FUNCTION, {
       method:  'POST',
       signal:  controller.signal,
@@ -65,7 +66,7 @@ export async function chamarIA(prompt, fotos = []) {
       },
       body: JSON.stringify({
         prompt,
-        fotos: fotos.map(f => f.src), // envia apenas o base64
+        fotos: fotos.map(f => f.src),
       }),
     });
 
@@ -73,12 +74,12 @@ export async function chamarIA(prompt, fotos = []) {
       throw new Error(`Edge Function retornou status ${response.status}`);
     }
 
-   const raw = await response.text();
-return parseResposta(raw);
+    const raw = await response.text();
+    return parseResposta(raw);
 
   } catch (err) {
     if (err.name === 'AbortError') {
-      throw new Error('A geração demorou mais de 30 segundos. Tente novamente.');
+      throw new Error('A geração demorou mais de 60 segundos. Tente novamente.');
     }
     throw err;
   } finally {
