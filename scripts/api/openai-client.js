@@ -51,10 +51,20 @@ export async function chamarIA(prompt, fotos = []) {
   const timeout    = setTimeout(() => controller.abort(), 60_000);
 
   try {
-    // Token de sessão do Supabase para autenticar na Edge Function
-    // Mantido dentro do try para garantir clearTimeout mesmo que getSession trave
     const sb = getSupabase();
-    const { data: { session } } = await sb.auth.getSession();
+
+    // getSession pode travar indefinidamente quando o Supabase tenta renovar
+    // o JWT via rede instável — o AbortController (fetch) não cobre esta chamada.
+    // Promise.race com timeout próprio garante que o catch/finally sempre executa.
+    const { data: { session } } = await Promise.race([
+      sb.auth.getSession(),
+      new Promise((_, reject) =>
+        setTimeout(
+          () => reject(new Error('Sessão não respondeu. Recarregue a página e tente novamente.')),
+          10_000
+        )
+      ),
+    ]);
     const token = session?.access_token || '';
 
     const response = await fetch(EDGE_FUNCTION, {
