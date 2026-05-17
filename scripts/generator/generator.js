@@ -87,14 +87,14 @@ export async function gerar() {
   AppState.pdf.corrData = corrData;
 
   // ── 4. PREPARAR UI ────────────────────────────────
-  resetGenerationState();
-  _ocultarResultados();
   setLoadingBtn(true);
 
   const resultsSection = document.getElementById('results-section');
   if (resultsSection) resultsSection.style.display = 'block';
 
   try {
+     resetGenerationState();
+  _ocultarResultados();
     // ── 5. MONTAR PROMPT ───────────────────────────
     const nFotos = form.fotos.length;
     const prompt = buildPrompt(dados, dados.plataforma, dados.tom, nFotos);
