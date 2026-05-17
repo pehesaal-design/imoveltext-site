@@ -38,6 +38,16 @@ import {
 import { coletarDadosForm } from '../form/form-manager.js';
 import { sincronizarUI } from '../ui/ui-sync.js';
 
+// Envolve uma promise com timeout. Limpa o timer quando a promise original
+// vence, evitando timer leaks e unhandled rejections.
+function _withTimeout(promise, ms, message) {
+  let id;
+  const timer = new Promise((_, reject) => {
+    id = setTimeout(() => reject(new Error(message)), ms);
+  });
+  return Promise.race([promise, timer]).finally(() => clearTimeout(id));
+}
+
 // ── CLIENTE SUPABASE ──────────────────────────────────
 // Inicializado uma única vez — reutilizado por todos os módulos via getSupabase()
 let _supabase = null;
@@ -65,26 +75,41 @@ export function getSupabase() {
 export async function init(onReady = null) {
   const sb = getSupabase();
 
-  // Verificar sessão atual
-  const { data: { session } } = await sb.auth.getSession();
+  // getSession() pode travar indefinidamente se o Supabase tenta renovar
+  // o JWT via rede instável. Com timeout, init() sempre completa — seja com
+  // sessão válida, sem sessão, ou com erro tratado.
+  // O try/catch garante que onReady e onAuthStateChange sempre executam,
+  // mantendo o botão Gerar funcional mesmo com falha de rede na inicialização.
+  try {
+    const { data: { session } } = await _withTimeout(
+      sb.auth.getSession(),
+      10_000,
+      'Não foi possível verificar a sessão. Verifique sua conexão.'
+    );
 
-  if (session?.user) {
-    await loadUser(session.user);
+    if (session?.user) {
+      await loadUser(session.user);
 
-    // Verificar pendingGeneration — retorno do OAuth com form salvo
-    const formSalvo = restoreFormFromSession();
-    if (formSalvo?.pending) {
-      _restaurarFormulario(formSalvo);
-      AppState.generation.pendingGeneration = true;
+      // Verificar pendingGeneration — retorno do OAuth com form salvo
+      const formSalvo = restoreFormFromSession();
+      if (formSalvo?.pending) {
+        _restaurarFormulario(formSalvo);
+        AppState.generation.pendingGeneration = true;
+      }
+
+      if (onReady) onReady({ user: session.user, isPending: AppState.generation.pendingGeneration });
+    } else {
+      _atualizarNavGuestState();
+      if (onReady) onReady({ user: null, isPending: false });
     }
-
-    if (onReady) onReady({ user: session.user, isPending: AppState.generation.pendingGeneration });
-  } else {
+  } catch (err) {
+    console.error('[auth] Falha na inicialização de sessão:', err.message);
     _atualizarNavGuestState();
     if (onReady) onReady({ user: null, isPending: false });
   }
 
   // Listener para mudanças de auth (ex: logout em outra aba)
+  // Registrado fora do try: deve funcionar mesmo se a sessão inicial falhou
   sb.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session?.user) {
       await loadUser(session.user);

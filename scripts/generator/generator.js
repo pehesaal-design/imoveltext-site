@@ -95,10 +95,10 @@ export async function gerar() {
   _gerando = true;
   setLoadingBtn(true);
 
-  const resultsSection = document.getElementById('results-section');
-  if (resultsSection) resultsSection.style.display = 'block';
-
   try {
+    const resultsSection = document.getElementById('results-section');
+    if (resultsSection) resultsSection.style.display = 'block';
+
     resetGenerationState();
     _ocultarResultados();
     // ── 5. MONTAR PROMPT ───────────────────────────

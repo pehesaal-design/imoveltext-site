@@ -38,6 +38,16 @@
 import { EDGE_FUNCTION } from '../config.js';
 import { getSupabase }   from '../auth/auth.js';
 
+// Envolve uma promise com timeout. Limpa o timer quando a promise original
+// vence, evitando timer leaks e unhandled rejections.
+function _withTimeout(promise, ms, message) {
+  let id;
+  const timer = new Promise((_, reject) => {
+    id = setTimeout(() => reject(new Error(message)), ms);
+  });
+  return Promise.race([promise, timer]).finally(() => clearTimeout(id));
+}
+
 /**
  * Envia prompt e fotos para a Edge Function e retorna a resposta da IA.
  *
@@ -53,18 +63,14 @@ export async function chamarIA(prompt, fotos = []) {
   try {
     const sb = getSupabase();
 
-    // getSession pode travar indefinidamente quando o Supabase tenta renovar
-    // o JWT via rede instável — o AbortController (fetch) não cobre esta chamada.
-    // Promise.race com timeout próprio garante que o catch/finally sempre executa.
-    const { data: { session } } = await Promise.race([
+    // getSession pode travar se o Supabase renova o JWT em rede instável.
+    // _withTimeout garante que o catch/finally sempre executa e limpa o timer
+    // quando getSession vence a corrida (evita leak e unhandled rejection).
+    const { data: { session } } = await _withTimeout(
       sb.auth.getSession(),
-      new Promise((_, reject) =>
-        setTimeout(
-          () => reject(new Error('Sessão não respondeu. Recarregue a página e tente novamente.')),
-          10_000
-        )
-      ),
-    ]);
+      10_000,
+      'Sessão não respondeu. Recarregue a página e tente novamente.'
+    );
     const token = session?.access_token || '';
 
     const response = await fetch(EDGE_FUNCTION, {
