@@ -28,12 +28,37 @@
    ══════════════════════════════════════════════════════ */
 
 /**
+ * Formata um valor de preço para exibição no PDF.
+ * - Já contém "R$"          → retorna como está
+ * - Numérico (com . ou ,)   → formata como R$ 800.000
+ * - Vazio / undefined       → retorna '—'
+ */
+function formatarPreco(valor) {
+  if (valor === undefined || valor === null || valor === '') return '—';
+  const s = String(valor).trim();
+  if (!s) return '—';
+  if (s.includes('R$')) return s;
+
+  // Valor com apenas dígitos, pontos e vírgulas: normalizar e formatar
+  if (/^[\d.,]+$/.test(s)) {
+    const numero = parseFloat(s.replace(/\./g, '').replace(',', '.'));
+    if (!isNaN(numero)) {
+      return 'R$ ' + Math.round(numero).toLocaleString('pt-BR');
+    }
+    return 'R$ ' + s;
+  }
+
+  // String não numérica (ex: "Consultar"): retornar sem prefixo
+  return s;
+}
+
+/**
  * Ficha técnica do tema bege — grid 2 colunas sobre fundo bege.
  */
 function fichaBegeHtml({ bairro, preco, area, quartos, suites, tipo }) {
   const itens = [
-    { label: 'Local',    valor: bairro   || '—' },
-    { label: 'Preço',    valor: preco    || '—' },
+    { label: 'Local',    valor: bairro          || '—' },
+    { label: 'Preço',    valor: formatarPreco(preco) },
     { label: 'Área',     valor: area     ? area + ' m²' : '—' },
     { label: 'Quartos',  valor: quartos  || '—' },
     { label: 'Suítes',   valor: suites   || '—' },
