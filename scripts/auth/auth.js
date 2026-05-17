@@ -36,6 +36,7 @@ import {
   restoreFormFromSession,
 } from '../state.js';
 import { coletarDadosForm } from '../form/form-manager.js';
+import { sincronizarUI } from '../ui/ui-sync.js';
 
 // ── CLIENTE SUPABASE ──────────────────────────────────
 // Inicializado uma única vez — reutilizado por todos os módulos via getSupabase()
@@ -126,7 +127,6 @@ export async function loadUser(user) {
   _atualizarNavUserState(user);
 
   // Sincronizar banner, PDF access, etc.
-  const { sincronizarUI } = await import('../ui/ui-sync.js');
   sincronizarUI();
 }
 
@@ -190,7 +190,6 @@ export async function decrementarCredito() {
     });
 
   // Resincronizar UI com novo valor de créditos
-  const { sincronizarUI } = await import('../ui/ui-sync.js');
   sincronizarUI();
 }
 

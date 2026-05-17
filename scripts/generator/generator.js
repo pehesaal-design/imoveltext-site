@@ -93,8 +93,8 @@ export async function gerar() {
   if (resultsSection) resultsSection.style.display = 'block';
 
   try {
-     resetGenerationState();
-  _ocultarResultados();
+    resetGenerationState();
+    _ocultarResultados();
     // ── 5. MONTAR PROMPT ───────────────────────────
     const nFotos = form.fotos.length;
     const prompt = buildPrompt(dados, dados.plataforma, dados.tom, nFotos);
