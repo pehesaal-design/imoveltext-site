@@ -11,25 +11,29 @@
  */
 
 export const SUGESTOES_INSTRUCTION = `SUGESTÕES DE MELHORIA:
-Analise os dados informados acima e verifique se falta alguma informação
-relevante que melhoraria significativamente o anúncio.
+Verifique os dados informados acima e identifique informações ausentes
+que tornariam o anúncio mais completo e convincente para o comprador.
 
-REGRAS OBRIGATÓRIAS:
-- Retorne no máximo 3 sugestões
-- Sugira APENAS informações que estão completamente ausentes nos dados
-- Se um item estiver nas Observações do corretor, está informado — NÃO sugira
-- Se um campo estiver preenchido, está informado — NÃO sugira
-- Se não faltar nada relevante, retorne array vazio []
-- Sugestões devem ser curtas e acionáveis
+REGRA PRINCIPAL: Sempre tente retornar pelo menos 1 sugestão útil,
+a menos que o anúncio já contenha absolutamente todas as informações abaixo.
 
-Informações que valem sugerir se ausentes:
-- Número de vagas de garagem (se não mencionado em nenhum campo)
-- Valor do condomínio (se não mencionado em nenhum campo)
-- Valor do IPTU (se não mencionado em nenhum campo)
-- Andar do imóvel, se apartamento (se não mencionado)
-- Se tem área de lazer no condomínio (se não mencionado)
-- Se o imóvel é mobiliado (se não mencionado)
-- Vista ou orientação solar (se não mencionado)
+Verifique cada item da lista abaixo — se não foi mencionado em NENHUM campo
+(nem no formulário, nem nas Observações), inclua como sugestão:
 
-NÃO sugira campos que já estão no formulário (tipo, bairro, preço,
-quartos, suítes, área) — esses já são obrigatórios e visíveis para o corretor.`;
+CHECKLIST — inclua na sugestão se ausente:
+□ Vagas de garagem
+□ Valor do condomínio
+□ Valor do IPTU
+□ Andar do imóvel (se apartamento)
+□ Área de lazer no condomínio (piscina, academia, salão de festas, etc.)
+□ Se o imóvel é mobiliado, semimobiliado ou vazio
+□ Vista (mar, cidade, área verde, etc.)
+
+ATENÇÃO — NÃO sugira se já informado:
+- Se as Observações do corretor mencionam o item, está informado
+- Se o campo do formulário está preenchido, está informado
+- Nunca sugira tipo, bairro, preço, quartos, suítes ou área
+
+Formato das sugestões: frases curtas e diretas.
+Exemplo: "Informar o número de vagas de garagem."
+Máximo 3 sugestões.`;
