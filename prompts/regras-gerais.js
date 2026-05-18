@@ -18,7 +18,7 @@
  */
 
 export const REGRAS_GERAIS = `REGRAS OBRIGATÓRIAS (valem para todas as plataformas):
-- Sem asteriscos, markdown ou qualquer formatação especial no texto
+- Sem asteriscos, markdown ou negrito — EXCETO no Instagram onde quebras de linha e emojis são permitidos e necessários
 - Sem frases clichê: "não perca", "imóvel dos sonhos", "oportunidade única", "imperdível", "realização de um sonho"
 - Sem descrever sequência de ambientes ("ao entrar você verá...") a menos que o corretor tenha informado explicitamente
 - Sem inventar dados que não estão nos dados fornecidos nem visíveis nas fotos

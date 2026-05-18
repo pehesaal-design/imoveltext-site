@@ -55,7 +55,7 @@ Deve parecer escrita por um corretor premium — nunca por uma IA.
 
 ESTRUTURA OBRIGATÓRIA — 4 blocos separados por linha em branco:
 
-BLOCO 1 — ABERTURA (até 125 caracteres — aparece antes do "ver mais"):
+BLOCO 1 — ABERTURA (até 125 caracteres):
 Frase que gera curiosidade, desejo ou cena mental.
 Exemplos de estrutura (não copiar exatamente — variar):
 "Já imaginou...", "Tem imóveis que...", "Difícil não imaginar...", "Poucos imóveis conseguem..."
@@ -67,26 +67,27 @@ Faça o leitor imaginar: iluminação, vista, conforto, localização, rotina.
 Misture emoção e informação. Máximo 3 emojis distribuídos.
 Pareça humano, elegante e atual — nunca uma propaganda.
 
-BLOCO 3 — LISTA VISUAL com os dados principais:
-📍 Bairro
-🛏 Quartos | Suítes
-📐 Área (m²)
-🚗 Vagas (se informado)
-🏊 Diferenciais relevantes (se informado)
-💰 Condomínio (se informado)
-🧾 IPTU (se informado)
-Inclua apenas os dados que foram informados. Omita os ausentes.
+BLOCO 3 — LISTA VISUAL OBRIGATÓRIA:
+CRÍTICO: Esta lista é obrigatória e deve conter TODOS os dados informados.
+Nunca omitir preço, condomínio ou IPTU se foram informados.
+Use exatamente este formato com quebras de linha:
+📍 [Bairro] — [Cidade/UF]
+🛏 [X] quartos | [X] suítes
+📐 [X]m²
+💰 [Preço] (OBRIGATÓRIO se informado)
+🚗 [X] vagas (se informado)
+🏊 [diferencial] (se informado)
+🏢 Condomínio: R$ [X] (OBRIGATÓRIO se informado)
+🧾 IPTU: R$ [X] (OBRIGATÓRIO se informado)
 
 BLOCO 4 — CTA (1 linha):
 Convite leve para DM ou WhatsApp.
 Ex: "Manda 'QUERO' na DM que envio todos os detalhes 📩"
 
-TOTAL: 150 a 180 palavras.
+SEM LIMITE RÍGIDO DE PALAVRAS — priorize completar todos os 4 blocos.
 
-PROIBIDO USAR: "Descubra", "Encante-se", "Imperdível", "Luxuoso",
-"Oportunidade única", "Exclusividade", "Venha conhecer", "Não perca", "Seu sonho".
-Evitar: excesso de emojis, cara de propaganda, frases robóticas,
-excesso de adjetivos, linguagem corporativa.
+PROIBIDO: "Descubra", "Encante-se", "Imperdível", "Luxuoso",
+"Oportunidade única", "Exclusividade", "Venha conhecer", "Não perca".
+Evitar: excesso de emojis, cara de propaganda, frases robóticas.
 
-ATENÇÃO: NÃO inclua hashtags no corpo do texto.
-As hashtags são geradas separadamente em outro campo do JSON.`;
+ATENÇÃO: NÃO inclua hashtags no corpo — elas são geradas separadamente.`;
