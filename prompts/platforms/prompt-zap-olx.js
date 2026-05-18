@@ -28,44 +28,40 @@
 
 export const PROMPT_ZAP_OLX = `PLATAFORMA: ZAP / OLX (portal imobiliário)
 
-OBJETIVO: Anúncio direto, profissional e escaneável.
-O leitor quer leitura rápida, objetiva e confiável — não uma propaganda emocional.
-Deve parecer escrito por um corretor real, nunca por uma IA.
+OBJETIVO: Descrição completa, profissional e humana para portal imobiliário.
+O comprador já está em modo de busca ativa — quer confirmar se vale a pena
+entrar em contato. O texto deve transmitir credibilidade e despertar interesse.
 
-ESTRUTURA OBRIGATÓRIA:
+IMPORTANTE: Os dados técnicos básicos (quartos, área, preço) já ficam nos
+campos próprios do portal. A descrição deve ir além disso — mostrar o imóvel
+de forma viva, destacar diferenciais e contextualizar a localização.
 
-1. ABERTURA (1 a 2 frases):
-Apresente o imóvel de forma direta e humana, destacando o principal diferencial.
-NÃO comece com dados técnicos como quartos ou metragem.
-NÃO use linguagem emocional exagerada.
+ESTRUTURA OBRIGATÓRIA — texto corrido em parágrafos curtos:
 
-2. DESCRIÇÃO (2 a 3 parágrafos curtos):
-Descreva os ambientes, diferenciais e localização de forma objetiva.
-Integre os dados naturalmente no texto.
-Mencione infraestrutura do condomínio se informada.
-Mencione proximidades relevantes se informadas.
+PARÁGRAFO 1 — ABERTURA (2 a 3 frases):
+Apresente o imóvel destacando o principal diferencial logo de cara.
+Contextualize: bairro, tipo, algo que chame atenção.
+NÃO comece com "Este imóvel possui..." ou dados técnicos secos.
+NÃO use linguagem corporativa: "sofisticado", "deslumbrante", "alto padrão".
 
-3. FICHA TÉCNICA (lista simples, sem emojis):
-Mostre apenas os dados que foram informados. Omita os ausentes.
-Formato:
-Localização: bairro — cidade/UF
-Área: Xm²
-Quartos: X
-Suítes: X (se informado)
-Vagas: X (se informado)
-Condomínio: R$ X (se informado)
-IPTU: R$ X (se informado)
+PARÁGRAFO 2 — AMBIENTES E DIFERENCIAIS (3 a 4 frases):
+Descreva os principais ambientes de forma objetiva e humana.
+Integre naturalmente os dados relevantes: metragem, quartos, suítes, vagas.
+Mencione acabamentos ou diferenciais apenas se informados pelo corretor.
+Mencione se é mobiliado, reformado ou tem algo especial nas observações.
 
-4. INFRAESTRUTURA (lista simples, se informada):
-Liste os itens do condomínio ou diferenciais do imóvel.
+PARÁGRAFO 3 — CONDOMÍNIO E LOCALIZAÇÃO (2 a 3 frases):
+Se houver infraestrutura de condomínio, mencione de forma fluida.
+Contextualize a localização: proximidades, facilidades, o que o bairro oferece.
+Se condomínio e IPTU foram informados, integre naturalmente neste parágrafo.
 
-5. CTA (1 linha):
-Convite direto e profissional para contato ou visita.
-Ex: "Entre em contato para mais informações ou agendar uma visita."
+PARÁGRAFO 4 — CTA (1 frase):
+Direto e profissional.
+Ex: "Entre em contato para mais informações ou para agendar uma visita."
 
 ESTILO:
-- Sem emojis decorativos
-- Sem markdown
-- Sem floreios ou exageros emocionais
+- Texto corrido, sem listas, sem bullets, sem emojis
+- Parágrafos curtos e escaneáveis
 - Linguagem direta, humana e profissional
-- Máximo 300 palavras`;
+- Dados integrados no texto — não em lista separada
+- SEM LIMITE RÍGIDO DE PALAVRAS — priorize completar todos os parágrafos`;
