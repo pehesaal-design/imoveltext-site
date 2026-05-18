@@ -89,6 +89,7 @@ export async function init(onReady = null) {
 
     if (session?.user) {
       await loadUser(session.user);
+      AppState.auth.accessToken = session.access_token || '';
 
       // Verificar pendingGeneration — retorno do OAuth com form salvo
       const formSalvo = restoreFormFromSession();
@@ -113,6 +114,10 @@ export async function init(onReady = null) {
   sb.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session?.user) {
       await loadUser(session.user);
+      AppState.auth.accessToken = session.access_token || '';
+    } else if (event === 'TOKEN_REFRESHED' && session) {
+      // JWT renovado automaticamente pelo Supabase — atualizar cache
+      AppState.auth.accessToken = session.access_token || '';
     } else if (event === 'SIGNED_OUT') {
       _limparEstadoAuth();
       _atualizarNavGuestState();
@@ -260,6 +265,7 @@ function _limparEstadoAuth() {
   AppState.auth.currentUser = null;
   AppState.auth.userCredits = 0;
   AppState.auth.isProUser   = false;
+  AppState.auth.accessToken = '';
 }
 
 /**

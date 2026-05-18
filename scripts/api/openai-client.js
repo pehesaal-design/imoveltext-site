@@ -31,12 +31,13 @@
  *   algo útil mesmo com resposta parcialmente malformada.
  *
  * TIMEOUT:
- *   AbortController com 30 segundos — sem isso requests podem travar
+ *   AbortController com 60 segundos — sem isso requests podem travar
  *   indefinidamente em conexões lentas ou mobile.
  */
 
 import { EDGE_FUNCTION } from '../config.js';
 import { getSupabase }   from '../auth/auth.js';
+import { AppState }      from '../state.js';
 
 // Envolve uma promise com timeout. Limpa o timer quando a promise original
 // vence, evitando timer leaks e unhandled rejections.
@@ -61,17 +62,20 @@ export async function chamarIA(prompt, fotos = []) {
   const timeout    = setTimeout(() => controller.abort(), 60_000);
 
   try {
-    const sb = getSupabase();
+    // Usar token cacheado do AppState — evita getSession() em cada geração,
+    // que pode travar em conexões lentas ou durante renovação do JWT pelo Supabase.
+    let token = AppState.auth.accessToken || '';
 
-    // getSession pode travar se o Supabase renova o JWT em rede instável.
-    // _withTimeout garante que o catch/finally sempre executa e limpa o timer
-    // quando getSession vence a corrida (evita leak e unhandled rejection).
-    const { data: { session } } = await _withTimeout(
-      sb.auth.getSession(),
-      10_000,
-      'Sessão não respondeu. Recarregue a página e tente novamente.'
-    );
-    const token = session?.access_token || '';
+    if (!token) {
+      // Fallback: token não cacheado — chamar getSession() com timeout curto
+      const sb = getSupabase();
+      const { data: { session } } = await _withTimeout(
+        sb.auth.getSession(),
+        8_000,
+        'Sessão não respondeu. Recarregue a página e tente novamente.'
+      );
+      token = session?.access_token || '';
+    }
 
     const response = await fetch(EDGE_FUNCTION, {
       method:  'POST',

@@ -37,9 +37,10 @@ export const AppState = {
   // ── AUTH ───────────────────────────────────────────
   // Controlado por: scripts/auth/auth.js
   auth: {
-    currentUser: null,    // objeto de usuário do Supabase (null = não logado)
-    userCredits: 0,       // créditos restantes (int)
-    isProUser:   false,   // true = anúncios ilimitados + PDF desbloqueado
+    currentUser:  null,   // objeto de usuário do Supabase (null = não logado)
+    userCredits:  0,      // créditos restantes (int)
+    isProUser:    false,  // true = anúncios ilimitados + PDF desbloqueado
+    accessToken:  '',     // token JWT cacheado — evita getSession() em cada geração
   },
 
   // ── FORM ───────────────────────────────────────────
