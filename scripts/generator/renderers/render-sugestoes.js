@@ -28,9 +28,9 @@ export function renderizarSugestoes(sugestoes) {
   }
 
   if (corpo) {
-    corpo.innerHTML = lista
-      .map(s => `<div class="sugestao-item">${s}</div>`)
-      .join('');
+    corpo.innerHTML = `<div class="score-body-inner"><div class="score-tips">${
+      lista.map(s => `<div class="score-tip">${s}</div>`).join('')
+    }</div></div>`;
   }
 
   card.style.display = 'block';
