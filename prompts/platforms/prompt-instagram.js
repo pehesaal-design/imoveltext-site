@@ -48,25 +48,45 @@
  *   - Texto corrido sem os 4 blocos separados
  */
 
-export const PROMPT_INSTAGRAM = `PLATAFORMA: Instagram (feed/stories)
-O texto deve ter EXATAMENTE 4 blocos separados por linha em branco:
+export const PROMPT_INSTAGRAM = `PLATAFORMA: Instagram (feed)
 
-BLOCO 1 — GANCHO (até 125 caracteres — aparece antes do "ver mais"):
-Frase aspiracional ou pergunta vivencial que para o scroll.
-Cenário de uso: "Já imaginou acordar com essa vista todo dia..."
+OBJETIVO: Legenda imobiliária moderna, elegante e postável.
+Deve parecer escrita por um corretor premium — nunca por uma IA.
+
+ESTRUTURA OBRIGATÓRIA — 4 blocos separados por linha em branco:
+
+BLOCO 1 — ABERTURA (até 125 caracteres — aparece antes do "ver mais"):
+Frase que gera curiosidade, desejo ou cena mental.
+Exemplos de estrutura (não copiar exatamente — variar):
+"Já imaginou...", "Tem imóveis que...", "Difícil não imaginar...", "Poucos imóveis conseguem..."
 PROIBIDO começar com dados técnicos como quartos ou metragem.
 
 BLOCO 2 — CORPO (3 a 5 linhas):
-Descrição dos ambientes e sensações baseadas nas fotos e dados.
-Diferenciais principais do imóvel. Máximo 3 emojis distribuídos.
+Integre os diferenciais reais de forma natural.
+Faça o leitor imaginar: iluminação, vista, conforto, localização, rotina.
+Misture emoção e informação. Máximo 3 emojis distribuídos.
+Pareça humano, elegante e atual — nunca uma propaganda.
 
-BLOCO 3 — CHECKLIST DE DADOS (lista com emojis de categoria):
-Inclua TODOS os dados informados, sem omitir nenhum:
-🏠 tipo · quartos · área | 📍 bairro | 💰 preço
-🚗 vagas (se informado) | 🏢 condomínio (se informado) | 📋 IPTU (se informado)
-✨ outros diferenciais das observações do corretor
+BLOCO 3 — LISTA VISUAL com os dados principais:
+📍 Bairro
+🛏 Quartos | Suítes
+📐 Área (m²)
+🚗 Vagas (se informado)
+🏊 Diferenciais relevantes (se informado)
+💰 Condomínio (se informado)
+🧾 IPTU (se informado)
+Inclua apenas os dados que foram informados. Omita os ausentes.
 
 BLOCO 4 — CTA (1 linha):
-Convite para DM. Ex: "Manda 'QUERO' na DM que envio todos os detalhes 📩"
+Convite leve para DM ou WhatsApp.
+Ex: "Manda 'QUERO' na DM que envio todos os detalhes 📩"
 
-Total: 150 a 180 palavras. NÃO inclua hashtags no corpo — elas vão no campo separado.`;
+TOTAL: 150 a 180 palavras.
+
+PROIBIDO USAR: "Descubra", "Encante-se", "Imperdível", "Luxuoso",
+"Oportunidade única", "Exclusividade", "Venha conhecer", "Não perca", "Seu sonho".
+Evitar: excesso de emojis, cara de propaganda, frases robóticas,
+excesso de adjetivos, linguagem corporativa.
+
+ATENÇÃO: NÃO inclua hashtags no corpo do texto.
+As hashtags são geradas separadamente em outro campo do JSON.`;
