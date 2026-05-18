@@ -21,7 +21,7 @@
  *
  * RESPOSTA ESPERADA DA EDGE FUNCTION:
  *   JSON puro com os campos definidos em formato-resposta.js:
- *   { titulo, corpo, score, dicas, hashtags, legendas }
+ *   { titulo, corpo, sugestoes, hashtags, legendas }
  *
  * RESILIÊNCIA — parseResposta():
  *   A IA às vezes retorna texto antes do JSON (ex: "Aqui está o resultado:").
@@ -112,7 +112,7 @@ export async function chamarIA(prompt, fotos = []) {
  *   3. Defaults — retorna objeto com campos vazios para não travar a UI
  *
  * @param {string} raw — resposta bruta da Edge Function (texto)
- * @returns {Object} — { titulo, corpo, score, dicas, hashtags, legendas }
+ * @returns {Object} — { titulo, corpo, sugestoes, hashtags, legendas }
  */
 export function parseResposta(raw) {
   // Tentativa 1: JSON puro
@@ -149,10 +149,9 @@ export function parseResposta(raw) {
 function _aplicarDefaults(obj) {
   const d = _defaults();
   return {
-    titulo:   obj.titulo   || d.titulo,
-    corpo:    obj.corpo    || d.corpo,
-    score:    typeof obj.score === 'number' ? obj.score : d.score,
-    dicas:    Array.isArray(obj.dicas)    ? obj.dicas    : d.dicas,
+    titulo:    obj.titulo   || d.titulo,
+    corpo:     obj.corpo    || d.corpo,
+    sugestoes: Array.isArray(obj.sugestoes) ? obj.sugestoes : d.sugestoes,
     hashtags: {
       local:  Array.isArray(obj.hashtags?.local)  ? obj.hashtags.local  : [],
       tipo:   Array.isArray(obj.hashtags?.tipo)   ? obj.hashtags.tipo   : [],
@@ -165,11 +164,10 @@ function _aplicarDefaults(obj) {
 /** Objeto de defaults — usado quando o parse falha completamente. */
 function _defaults() {
   return {
-    titulo:   '',
-    corpo:    '',
-    score:    0,
-    dicas:    [],
-    hashtags: { local: [], tipo: [], perfil: [] },
-    legendas: [],
+    titulo:    '',
+    corpo:     '',
+    sugestoes: [],
+    hashtags:  { local: [], tipo: [], perfil: [] },
+    legendas:  [],
   };
 }

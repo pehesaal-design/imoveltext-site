@@ -55,7 +55,7 @@ import {
   closeSignupModal,
 } from '../ui/ui-modals.js';
 import { renderizarAnuncio }   from './renderers/render-anuncio.js';
-import { renderizarScore }     from './renderers/render-score.js';
+import { renderizarSugestoes } from './renderers/render-sugestoes.js';
 import { renderizarHashtags }  from './renderers/render-hashtags.js';
 import { renderizarLegendas }  from './renderers/render-legendas.js';
 
@@ -124,8 +124,8 @@ export async function gerar() {
     // Título + corpo primeiro — sensação de resposta rápida
     renderizarAnuncio(resultado.titulo, resultado.corpo);
 
-    // Score
-    renderizarScore(resultado.score, resultado.dicas);
+    // Sugestões de melhoria
+    renderizarSugestoes(resultado.sugestoes);
 
     // Hashtags (condicional por plataforma)
     renderizarHashtags(resultado.hashtags, dados.plataforma);

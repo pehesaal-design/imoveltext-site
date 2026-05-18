@@ -15,7 +15,7 @@
  *   3. Tom do anúncio (Família / Luxo / Investimento)
  *   4. Regras gerais (guardrails universais — todas as plataformas)
  *   5. Regras da plataforma (apenas 1 arquivo carregado por geração)
- *   6. Score + dicas (avaliação separada do copywriting)
+ *   6. Sugestões de melhoria (informações ausentes que melhorariam o anúncio)
  *   7. Instrução de legendas (condicional: só se nFotos > 0)
  *   8. Formato de resposta (schema JSON)
  *
@@ -43,7 +43,7 @@
 import { buildPersona }          from './persona.js';
 import { tomDesc }               from './tons.js';
 import { REGRAS_GERAIS }         from './regras-gerais.js';
-import { SCORE_INSTRUCTION }     from './score.js';
+import { SUGESTOES_INSTRUCTION } from './sugestoes.js';
 import { buildLegendaInstruction } from './legendas.js';
 import { buildFormatoResposta }  from './formato-resposta.js';
 
@@ -66,8 +66,24 @@ const PLATFORM_PROMPTS = {
  * saiba o que o corretor optou por não preencher (diferente de esquecer).
  */
 function buildDadosImovel(dados) {
-  return `DADOS DO IMÓVEL:
-Tipo: ${dados.tipo || 'Não informado'} | Finalidade: ${dados.finalidade || 'Não informado'} | Bairro: ${dados.bairro || 'Não informado'} | Preço: ${dados.preco || 'Não informado'} | Quartos: ${dados.quartos || 'Não informado'} | Suítes: ${dados.suites || 'Não informado'} | Área: ${dados.area ? dados.area + 'm²' : 'Não informado'} | Observações do corretor: ${dados.obs || 'Nenhuma'}`;
+  return `DADOS JÁ INFORMADOS PELO CORRETOR (NÃO solicite novamente nenhum destes):
+- Tipo de imóvel: ${dados.tipo || 'Não informado'}
+- Finalidade: ${dados.finalidade || 'Não informado'}
+- Bairro: ${dados.bairro || 'Não informado'}
+- Preço: ${dados.preco || 'Não informado'}
+- Quartos: ${dados.quartos || 'Não informado'}
+- Suítes: ${dados.suites || 'Não informado'}
+- Área: ${dados.area ? dados.area + ' m²' : 'Não informado'}
+- Observações do corretor: ${dados.obs || 'Nenhuma'}
+
+ATENÇÃO — CAMPO OBSERVAÇÕES:
+O campo "Observações do corretor" acima é texto livre onde o corretor
+descreve características extras do imóvel. Trate cada informação mencionada
+ali como JÁ FORNECIDA. Exemplos do que pode estar nas observações:
+vagas de garagem, valor do condomínio, IPTU, vista, andar, área de lazer,
+mobília, reformas, diferenciais, localização específica.
+Se qualquer um desses itens aparecer nas observações, NÃO os inclua
+nas sugestões — eles já foram informados.`;
 }
 
 /**
@@ -83,7 +99,7 @@ export function buildPrompt(dados, plataforma, tom, nFotos) {
     `TOM: ${tomDesc(tom)}`,
     REGRAS_GERAIS,
     plataformaPrompt,
-    SCORE_INSTRUCTION,
+    SUGESTOES_INSTRUCTION,
     buildLegendaInstruction(nFotos),   // string vazia se nFotos = 0
     buildFormatoResposta(plataforma, nFotos),
   ];
