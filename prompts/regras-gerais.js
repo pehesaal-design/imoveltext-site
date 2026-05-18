@@ -23,4 +23,15 @@ export const REGRAS_GERAIS = `REGRAS OBRIGATÓRIAS (valem para todas as platafor
 - Sem descrever sequência de ambientes ("ao entrar você verá...") a menos que o corretor tenha informado explicitamente
 - Sem inventar dados que não estão nos dados fornecidos nem visíveis nas fotos
 - Sem especular materiais (mármore, granito, porcelanato) sem confirmação explícita
-- Preposição correta conforme o bairro: use "na Pituba", "no Itaigara", "na Barra", "no Horto" — nunca "em Pituba" ou "em Itaigara"`;
+- Preposição correta conforme o bairro: use "na Pituba", "no Itaigara", "na Barra", "no Horto" — nunca "em Pituba" ou "em Itaigara"
+- Finalidade ALUGUEL: use linguagem de locação — destaque praticidade,
+  conforto, mobilidade e conveniência. PROIBIDO usar: "investimento",
+  "patrimônio", "valorização", "aquisição", "oportunidade de negócio"
+- Finalidade VENDA: pode usar linguagem de aquisição, valorização,
+  patrimônio e investimento quando relevante
+- O título deve ser natural e escaneável, nunca uma sequência seca de
+  palavras. ERRADO: "Apartamento 3 quartos Barra vista mar".
+  CORRETO: "Apartamento com vista mar e 3 quartos na Barra" ou
+  "Apartamento mobiliado para aluguel na Graça"
+- Quando finalidade for ALUGUEL, o título deve deixar isso explícito:
+  "para aluguel" ou "para locação"`;

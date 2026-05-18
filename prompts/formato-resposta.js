@@ -29,7 +29,7 @@ export function buildFormatoResposta(plataforma, nFotos) {
     : `"legendas":[]`;
 
   return `Responda SOMENTE com JSON puro, sem markdown, sem texto antes ou depois:
-{"titulo":"tipo+quartos+bairro+diferencial em até 80 chars",
+{"titulo":"frase natural com tipo+bairro+diferencial — incluir 'para aluguel' se finalidade for aluguel — máx 80 chars",
  "corpo":"texto COMPLETO formatado para ${plataforma} — para Instagram deve conter obrigatoriamente os 4 blocos: abertura, corpo, lista visual com emojis e CTA",
  "hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],
               "tipo":["#tag1","#tag2","#tag3","#tag4"],
