@@ -78,7 +78,7 @@ export const AppState = {
   // ── PDF ────────────────────────────────────────────
   // Controlado por: scripts/pdf/pdf-core.js e ui/ui-sync.js
   pdf: {
-    tema:     'escuro',  // 'escuro' | 'bege' — selecionado pelo usuário
+    tema:     'escuro',  // tema único
     corrData: {          // dados do corretor para o rodapé do PDF
       nome:  '',
       tel:   '',

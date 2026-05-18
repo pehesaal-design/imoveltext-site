@@ -81,17 +81,6 @@ function _registrarEventos() {
     });
   }
 
-  // Seletor de tema do PDF (Escuro / Bege)
-  document.querySelectorAll('.tema-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      AppState.pdf.tema = btn.dataset.tema;
-
-      // Atualizar visual dos botões
-      document.querySelectorAll('.tema-btn').forEach(b => {
-        b.classList.toggle('tema-ativo', b.dataset.tema === AppState.pdf.tema);
-      });
-    });
-  });
 }
 
 // ── PENDING GENERATION ────────────────────────────────

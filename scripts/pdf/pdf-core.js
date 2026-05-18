@@ -4,12 +4,11 @@
  * DEPENDÊNCIAS:
  *   - pdf-utils.js       (distribuirFotos)
  *   - dark/dark-layout.js (montarPaginas)
- *   - light/light-layout.js (montarPaginasBege)
  *   - html2canvas (global — carregado via CDN no index.html)
  *   - jsPDF (global — carregado via CDN no index.html)
  *   - AppState (importado de scripts/state.js)
  *
- * IMPACTO: Alterações aqui afetam a geração de AMBOS os temas de PDF.
+ * IMPACTO: Alterações aqui afetam a geração do PDF (tema escuro).
  *
  * ════════════════════════════════════════════════════════
  * PARÂMETROS CRÍTICOS DO html2canvas — NÃO ALTERAR:
@@ -60,10 +59,9 @@
  *   Definido em styles/tokens.css.
  */
 
-import { distribuirFotos }    from './pdf-utils.js';
-import { montarPaginas }      from './dark/dark-layout.js';
-import { montarPaginasBege }  from './light/light-layout.js';
-import { AppState }           from '../state.js';
+import { distribuirFotos } from './pdf-utils.js';
+import { montarPaginas }   from './dark/dark-layout.js';
+import { AppState }        from '../state.js';
 
 /**
  * Renderiza uma página HTML no #pdf-template e captura como JPEG base64.
@@ -142,15 +140,15 @@ export async function renderPagina(html) {
  *   4. Renderiza cada página via renderPagina()
  *   5. Adiciona ao jsPDF e exporta o arquivo
  *
- * @param {string} tema — 'escuro' | 'bege'
+ * @param {string} tema — 'escuro'
  * @param {Function} [onProgresso] — callback(atual, total) para feedback de progresso
  */
 export async function gerarPDF(tema = 'escuro', onProgresso = null) {
-  const fotos     = AppState.form.fotos;
-const legendas  = AppState.generation.legendasGeradas;
-const fotoCapaIdx = AppState.generation.fotoCapaIdx;
-const imovel    = AppState.lastGeneration;
-const corrData  = AppState.pdf.corrData;
+  const fotos       = AppState.form.fotos;
+  const legendas    = AppState.generation.legendasGeradas;
+  const fotoCapaIdx = AppState.generation.fotoCapaIdx;
+  const imovel      = AppState.lastGeneration;
+  const corrData    = AppState.pdf.corrData;
 
   // Validações básicas
   if (!fotos || fotos.length === 0) {
@@ -167,13 +165,8 @@ const corrData  = AppState.pdf.corrData;
   // Dados do corretor
   const corrDataFinal = corrData || { nome: '', tel: '', creci: '' };
 
-  // 2. Montar páginas HTML conforme o tema
-  let pages;
-  if (tema === 'bege') {
-    pages = montarPaginasBege(capa, galeria, corrDataFinal, imovel);
-  } else {
-    pages = montarPaginas(capa, galeria, corrDataFinal, imovel);
-  }
+  // 2. Montar páginas HTML
+  const pages = montarPaginas(capa, galeria, corrDataFinal, imovel);
 
   // 3. Inicializar jsPDF em modo landscape
   const { jsPDF } = window.jspdf;
