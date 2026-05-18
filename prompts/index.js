@@ -43,7 +43,6 @@
 import { buildPersona }          from './persona.js';
 import { tomDesc }               from './tons.js';
 import { REGRAS_GERAIS }         from './regras-gerais.js';
-import { SUGESTOES_INSTRUCTION } from './sugestoes.js';
 import { buildLegendaInstruction } from './legendas.js';
 import { buildFormatoResposta }  from './formato-resposta.js';
 
@@ -99,7 +98,6 @@ export function buildPrompt(dados, plataforma, tom, nFotos) {
     `TOM: ${tomDesc(tom)}`,
     REGRAS_GERAIS,
     plataformaPrompt,
-    SUGESTOES_INSTRUCTION,
     buildLegendaInstruction(nFotos),   // string vazia se nFotos = 0
     buildFormatoResposta(plataforma, nFotos),
   ];

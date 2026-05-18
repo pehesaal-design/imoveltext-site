@@ -1,35 +1,33 @@
 /**
  * MÓDULO: Render Sugestões
- * RESPONSABILIDADE: Renderizar o card de sugestões de melhoria do anúncio
+ * RESPONSABILIDADE: Renderizar o card de dicas fixas após cada geração
  * DEPENDÊNCIAS: Nenhuma (módulo puro de DOM)
  * IMPACTO: Afeta o card #score-card
  *
  * COMPORTAMENTO:
- *   Array vazio → card oculto (anúncio já tem dados suficientes)
- *   Com itens  → lista de informações ausentes que melhorariam o anúncio
+ *   Sempre exibe o card com dicas fixas — não depende da resposta da IA.
  */
 
+const DICAS_FIXAS = [
+  'Informar o valor do condomínio',
+  'Informar o valor do IPTU',
+  'Informar o número de vagas de garagem',
+  'Informar se o imóvel é mobiliado ou vazio',
+  'Informar o andar e se tem elevador (apartamentos)',
+];
+
 /**
- * Renderiza o card de sugestões de melhoria.
- * Oculta o card se não há sugestões.
- *
- * @param {string[]} sugestoes — array de sugestões geradas pela IA
+ * Renderiza o card de dicas fixas.
+ * Sempre exibido após a geração, independente dos dados informados.
  */
-export function renderizarSugestoes(sugestoes) {
+export function renderizarSugestoes() {
   const card  = document.getElementById('score-card');
   const corpo = document.getElementById('sugestoes-body');
   if (!card) return;
 
-  const lista = Array.isArray(sugestoes) ? sugestoes.filter(Boolean) : [];
-
-  if (lista.length === 0) {
-    card.style.display = 'none';
-    return;
-  }
-
   if (corpo) {
     corpo.innerHTML = `<div class="score-body-inner"><div class="score-tips">${
-      lista.map(s => `<div class="score-tip">${s}</div>`).join('')
+      DICAS_FIXAS.map(d => `<div class="score-tip">${d}</div>`).join('')
     }</div></div>`;
   }
 

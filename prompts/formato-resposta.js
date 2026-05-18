@@ -8,7 +8,6 @@
  * CAMPOS DO JSON:
  *   titulo    → string, máx 80 chars: tipo + quartos + bairro + diferencial
  *   corpo     → string: texto do anúncio formatado para a plataforma
- *   sugestoes → array[0–3]: informações ausentes que melhorariam o anúncio
  *   hashtags  → object: { local[], tipo[], perfil[] } — 4 tags cada
  *   legendas  → array[nFotos]: uma legenda por foto, na ordem enviada
  *
@@ -32,7 +31,6 @@ export function buildFormatoResposta(plataforma, nFotos) {
   return `Responda SOMENTE com JSON puro, sem markdown, sem texto antes ou depois:
 {"titulo":"tipo+quartos+bairro+diferencial em até 80 chars",
  "corpo":"texto formatado para ${plataforma}",
- "sugestoes":["sugestão 1","sugestão 2"],
  "hashtags":{"local":["#tag1","#tag2","#tag3","#tag4"],
               "tipo":["#tag1","#tag2","#tag3","#tag4"],
               "perfil":["#tag1","#tag2","#tag3","#tag4"]},

@@ -124,8 +124,8 @@ export async function gerar() {
     // Título + corpo primeiro — sensação de resposta rápida
     renderizarAnuncio(resultado.titulo, resultado.corpo);
 
-    // Sugestões de melhoria
-    renderizarSugestoes(resultado.sugestoes);
+    // Dicas fixas de melhoria
+    renderizarSugestoes();
 
     // Hashtags (condicional por plataforma)
     renderizarHashtags(resultado.hashtags, dados.plataforma);
