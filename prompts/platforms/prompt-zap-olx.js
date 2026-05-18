@@ -64,4 +64,7 @@ ESTILO:
 - Parágrafos curtos e escaneáveis
 - Linguagem direta, humana e profissional
 - Dados integrados no texto — não em lista separada
-- SEM LIMITE RÍGIDO DE PALAVRAS — priorize completar todos os parágrafos`;
+- SEM LIMITE RÍGIDO DE PALAVRAS — priorize completar todos os parágrafos
+- PROIBIDO usar: "Descubra", "deslumbrante", "proporciona", "proporcionar",
+  "perfeito para", "ideal para", "sofisticado", "alto padrão", "qualidade de vida",
+  "momentos inesquecíveis", "estilo de vida", "experiência única"`;
