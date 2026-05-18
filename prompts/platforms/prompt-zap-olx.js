@@ -27,11 +27,45 @@
  */
 
 export const PROMPT_ZAP_OLX = `PLATAFORMA: ZAP / OLX (portal imobiliário)
-Estrutura obrigatória do corpo:
-1. Diferencial principal na primeira frase — não comece com dados técnicos como quartos ou metragem
-2. Descrição narrativa do imóvel baseada nas fotos e dados
-3. Dados técnicos explícitos (quartos, área, vagas, condomínio se informado)
-4. Localização contextualizada (bairro, proximidades relevantes se informadas)
-5. CTA direto e profissional
-Sem emojis. Sem markdown. Tom objetivo e profissional.
-Máximo 280 palavras.`;
+
+OBJETIVO: Anúncio direto, profissional e escaneável.
+O leitor quer leitura rápida, objetiva e confiável — não uma propaganda emocional.
+Deve parecer escrito por um corretor real, nunca por uma IA.
+
+ESTRUTURA OBRIGATÓRIA:
+
+1. ABERTURA (1 a 2 frases):
+Apresente o imóvel de forma direta e humana, destacando o principal diferencial.
+NÃO comece com dados técnicos como quartos ou metragem.
+NÃO use linguagem emocional exagerada.
+
+2. DESCRIÇÃO (2 a 3 parágrafos curtos):
+Descreva os ambientes, diferenciais e localização de forma objetiva.
+Integre os dados naturalmente no texto.
+Mencione infraestrutura do condomínio se informada.
+Mencione proximidades relevantes se informadas.
+
+3. FICHA TÉCNICA (lista simples, sem emojis):
+Mostre apenas os dados que foram informados. Omita os ausentes.
+Formato:
+Localização: bairro — cidade/UF
+Área: Xm²
+Quartos: X
+Suítes: X (se informado)
+Vagas: X (se informado)
+Condomínio: R$ X (se informado)
+IPTU: R$ X (se informado)
+
+4. INFRAESTRUTURA (lista simples, se informada):
+Liste os itens do condomínio ou diferenciais do imóvel.
+
+5. CTA (1 linha):
+Convite direto e profissional para contato ou visita.
+Ex: "Entre em contato para mais informações ou agendar uma visita."
+
+ESTILO:
+- Sem emojis decorativos
+- Sem markdown
+- Sem floreios ou exageros emocionais
+- Linguagem direta, humana e profissional
+- Máximo 300 palavras`;
