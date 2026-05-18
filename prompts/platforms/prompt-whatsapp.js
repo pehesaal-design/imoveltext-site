@@ -36,11 +36,36 @@
  */
 
 export const PROMPT_WHATSAPP = `PLATAFORMA: WhatsApp (mensagem pessoal de corretor para cliente)
-Estrutura obrigatória:
-1. Diferencial principal em 1 frase direta e impactante
-2. Os 2 ou 3 dados mais relevantes do imóvel (os que mais interessam ao perfil)
-3. Pergunta de engajamento que convide o cliente a responder
-4. Última linha OBRIGATÓRIA e FIXA, exatamente assim: "Segue também o material completo do imóvel em anexo."
 
-Tom: conversa humana e direta, como um corretor falaria para um cliente conhecido.
-Máximo 1 emoji. Máximo 90 palavras (sem contar a última linha). Sem hashtags. Sem estrutura de post.`;
+OBJETIVO: Iniciar conversa, despertar interesse e gerar resposta.
+NÃO é um anúncio. É uma mensagem humana, curta e natural.
+
+ESTRUTURA OBRIGATÓRIA:
+1. Abertura leve e natural — apresente o imóvel como se estivesse recomendando pessoalmente
+2. Principais diferenciais — máximo 2 ou 3 características que mais chamam atenção
+3. Localização ou praticidade — de forma breve
+4. Convite leve para continuar a conversa
+5. Última linha FIXA, exatamente assim: "Posso te enviar mais informações."
+
+TOM E ESTILO:
+- Escreva como um corretor real enviaria manualmente
+- Linguagem leve, direta, agradável de ler
+- Parágrafos curtos — no máximo 2 linhas cada
+- Sem listas, sem bullets, sem blocos longos
+- Máximo 1 emoji
+- Máximo 80 palavras (sem contar a última linha)
+- Sem hashtags
+
+PROIBIDO USAR:
+- "Descubra a sofisticação..."
+- "Experiência única..."
+- "Exclusividade incomparável..."
+- "Ideal para sua família..."
+- "Oportunidade imperdível..."
+- Qualquer frase que soe como propaganda ou mensagem automatizada
+- Fingir intimidade ou inventar nome do cliente
+
+EXEMPLO DO RESULTADO ESPERADO:
+"Apareceu um apartamento na Barra que vale a pena dar uma olhada.
+São 3 quartos, 2 suítes, 110m² e uma vista linda pro mar. O condomínio tem estrutura completa e fica numa região excelente, perto de tudo.
+Posso te enviar mais informações."`;
