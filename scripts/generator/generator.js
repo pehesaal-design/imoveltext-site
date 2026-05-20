@@ -127,6 +127,10 @@ export async function gerar() {
     // Dicas fixas de melhoria
     renderizarSugestoes();
 
+    // Exibir card de imagem para Instagram
+    const imageCard = document.getElementById('image-card');
+    if (imageCard) imageCard.style.display = 'block';
+
     // Hashtags (condicional por plataforma)
     renderizarHashtags(resultado.hashtags, dados.plataforma);
 
@@ -162,7 +166,7 @@ export async function gerar() {
 /** Oculta todos os cards de resultado antes de uma nova geração. */
 function _ocultarResultados() {
   const ids = ['titulo-card', 'score-card', 'hash-card', 'captions-card',
-               'capa-selector', 'pdf-wrap'];
+               'capa-selector', 'pdf-wrap', 'image-card'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';

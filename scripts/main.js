@@ -27,9 +27,10 @@ import { initUpload }    from './form/upload-manager.js';
 import { initModals }    from './ui/ui-modals.js';
 import { initReveal }    from './ui/ui-reveal.js';
 import { sincronizarUI } from './ui/ui-sync.js';
-import { gerar }         from './generator/generator.js';
-import { gerarPDF }      from './pdf/pdf-core.js';
-import { AppState }      from './state.js';
+import { gerar }                from './generator/generator.js';
+import { gerarPDF }             from './pdf/pdf-core.js';
+import { gerarImagemTemplate }  from './image/image-generator.js';
+import { AppState }             from './state.js';
 
 // ── INICIALIZAÇÃO ─────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
@@ -64,6 +65,10 @@ function _registrarEventos() {
   if (btnGerar) {
     btnGerar.addEventListener('click', gerar);
   }
+
+  // Botão de geração de imagem para Instagram
+  document.getElementById('image-gen-btn')
+    ?.addEventListener('click', gerarImagemTemplate);
 
   // Botão de geração do PDF
   const btnPDF = document.getElementById('pdf-btn');
