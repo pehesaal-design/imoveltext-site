@@ -19,26 +19,39 @@
  * @returns {string} Prompt completo para envio à IA
  */
 export function buildTemplatePrompt(dados) {
-  return `Você é um especialista em marketing imobiliário de alto padrão.
-
-Gere os textos para um flyer premium de Instagram com base estritamente nos dados abaixo.
+  return `Você é um especialista em marketing imobiliário premium.
+Gere os textos para um flyer de Instagram com base estritamente nos dados abaixo.
 
 DADOS DO IMÓVEL:
 - Tipo: ${dados.tipo || 'Não informado'}
 - Bairro: ${dados.bairro || 'Não informado'}
+- Cidade: ${dados.cidade || 'Salvador/BA'}
 - Preço: ${dados.preco || 'Não informado'}
 - Quartos: ${dados.quartos || 'Não informado'}
 - Suítes: ${dados.suites || 'Não informado'}
 - Área: ${dados.area ? dados.area + ' m²' : 'Não informado'}
+- Vagas: ${dados.vagas || 'Não informado'}
+- Observações do corretor: ${dados.obs || 'Nenhuma'}
 
-REGRAS OBRIGATÓRIAS — leia com atenção:
-1. Use APENAS informações presentes nos dados acima — nunca invente características
-2. Os 4 diferenciais devem refletir o que foi informado; repita os mais importantes se necessário
-3. titulo: máximo 2 palavras, MAIÚSCULAS, impactante (ex: "VISTA MAR", "ALTO PADRÃO")
-4. subtitulo: frase curta de até 6 palavras descrevendo o imóvel e localização
-5. descricao: 4 a 8 palavras destacando O PRINCIPAL diferencial real disponível nos dados
-6. Responder SOMENTE JSON puro, sem markdown, sem texto antes ou depois
+ATENÇÃO — As observações do corretor contêm informações extras como vista,
+condomínio, lazer, mobília, andar, diferenciais do imóvel. Use tudo que
+estiver ali para gerar textos mais precisos e impactantes.
 
-Responda SOMENTE com este JSON:
-{"titulo":"MÁXIMO DUAS PALAVRAS","subtitulo":"frase descritiva de até 6 palavras","descricao":"4 a 8 palavras com o principal diferencial","diferenciais":[{"titulo":"DIFERENCIAL 1","sub":"detalhe curto"},{"titulo":"DIFERENCIAL 2","sub":"detalhe curto"},{"titulo":"DIFERENCIAL 3","sub":"detalhe curto"},{"titulo":"DIFERENCIAL 4","sub":"detalhe curto"}]}`;
+REGRAS OBRIGATÓRIAS:
+1. Use APENAS informações presentes nos dados acima — NUNCA invente
+2. titulo: até 4 palavras em MAIÚSCULAS, impactante e específico do imóvel
+   Ex: "VISTA MAR NA BARRA", "3 SUÍTES NO ITAIGARA", "COBERTURA COM PISCINA"
+   NUNCA use títulos genéricos como "ALTO PADRÃO" ou "EXCELENTE IMÓVEL"
+3. subtitulo: frase de até 8 palavras descrevendo tipo + bairro + cidade
+   Ex: "Apartamento de 3 quartos na Barra, Salvador"
+4. descricao: frase de 5 a 10 palavras destacando o principal diferencial REAL
+   Deve ser algo específico e concreto, não genérico
+   Ex: "Vista privilegiada para o mar e o Farol da Barra"
+5. diferenciais: 4 itens baseados nos dados reais informados
+   Priorizar: vista, vagas, lazer, suítes, área, localização, mobília
+   titulo: até 3 palavras em MAIÚSCULAS
+   sub: detalhe concreto e curto baseado nos dados
+6. Responder SOMENTE JSON puro, sem markdown
+
+{"titulo":"ATÉ 4 PALAVRAS IMPACTANTES","subtitulo":"tipo + bairro + cidade em até 8 palavras","descricao":"diferencial real e específico em 5 a 10 palavras","diferenciais":[{"titulo":"DIFERENCIAL 1","sub":"detalhe concreto"},{"titulo":"DIFERENCIAL 2","sub":"detalhe concreto"},{"titulo":"DIFERENCIAL 3","sub":"detalhe concreto"},{"titulo":"DIFERENCIAL 4","sub":"detalhe concreto"}]}`;
 }

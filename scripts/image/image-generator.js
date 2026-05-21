@@ -65,6 +65,8 @@ export async function gerarImagemTemplate() {
       area:    lg.area    || '',
       quartos: lg.quartos || '',
       suites:  lg.suites  || '',
+      vagas:   lg.vagas   || '',
+      obs:     lg.obs     || '',
     };
 
     // 5. Chamar IA com o prompt do template
@@ -75,12 +77,13 @@ export async function gerarImagemTemplate() {
     _currentDados = {
       tipo:       lg.tipo    || '',
       bairro:     lg.bairro  || '',
-      cidade:     '',
+      cidade:     'Salvador/BA',
       preco:      lg.preco   || '',
       quartos:    lg.quartos || '',
       suites:     lg.suites  || '',
       area:       lg.area    || '',
-      vagas:      '',
+      vagas:      lg.vagas   || '',
+      obs:        lg.obs     || '',
       fotoBase64: AppState.form.fotos[_selectedIdx]?.src || '',
       corretor: {
         nome: AppState.pdf.corrData.nome || '',

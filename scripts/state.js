@@ -74,6 +74,8 @@ export const AppState = {
     area:    '',
     quartos: '',
     suites:  '',
+    vagas:   '',
+    obs:     '',
   },
 
   // ── PDF ────────────────────────────────────────────
@@ -107,6 +109,8 @@ export function resetGenerationState() {
     area:    '',
     quartos: '',
     suites:  '',
+    vagas:   '',
+    obs:     '',
   };
 }
 

@@ -118,6 +118,8 @@ export async function gerar() {
       area:    dados.area        || '',
       quartos: dados.quartos     || '',
       suites:  dados.suites      || '',
+      vagas:   dados.vagas       || '',
+      obs:     dados.obs         || '',
     };
 
     // ── 8. RENDERIZAR PROGRESSIVAMENTE ────────────
