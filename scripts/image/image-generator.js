@@ -171,23 +171,44 @@ async function _chamarIATemplate(prompt) {
  * A escala é calculada para ajustar a largura de 1080px ao container.
  */
 function _renderFrame() {
-  const frame = document.getElementById('image-frame');
-  if (!frame || !_currentDados || !_currentTextos) return;
+  if (!_currentDados || !_currentTextos) return;
+
+  // Remover container anterior se existir
+  const anterior = document.getElementById('image-template-container');
+  if (anterior) anterior.remove();
 
   const html = buildTemplateHTML(_currentDados, _currentTextos);
 
-  frame.onload = () => {
-    const containerWidth = frame.parentElement?.offsetWidth || 540;
-    const scale          = containerWidth / 1080;
-    frame.style.width           = '1080px';
-    frame.style.height          = '1350px';
-    frame.style.transform       = `scale(${scale})`;
-    frame.style.transformOrigin = 'top left';
-    // Compensar o espaço que o iframe ocupa no layout após a escala
-    frame.style.marginBottom    = `${(1350 * scale - 1350)}px`;
-  };
+  // Criar div oculta fora da viewport mas presente no DOM
+  const container = document.createElement('div');
+  container.id = 'image-template-container';
+  container.style.cssText = [
+    'position:fixed',
+    'top:-9999px',
+    'left:-9999px',
+    'width:1080px',
+    'height:1350px',
+    'overflow:hidden',
+    'z-index:-1',
+    'pointer-events:none',
+  ].join(';');
+  container.innerHTML = html;
+  document.body.appendChild(container);
 
-  frame.srcdoc = html;
+  // Atualizar o preview visual no iframe para o corretor ver
+  const frame = document.getElementById('image-frame');
+  if (frame) {
+    frame.onload = () => {
+      const containerWidth = frame.parentElement?.offsetWidth || 540;
+      const scale = containerWidth / 1080;
+      frame.style.width = '1080px';
+      frame.style.height = '1350px';
+      frame.style.transform = `scale(${scale})`;
+      frame.style.transformOrigin = 'top left';
+      frame.style.marginBottom = `${(1350 * scale - 1350)}px`;
+    };
+    frame.srcdoc = html;
+  }
 }
 
 /**
@@ -235,30 +256,39 @@ function _renderFotoSelector() {
  * Aguarda fonts.ready do iframe antes de capturar para evitar fallback de fonte.
  */
 async function _baixarPNG() {
-  const frame = document.getElementById('image-frame');
-  if (!frame?.contentDocument?.body) return;
+  const container = document.getElementById('image-template-container');
+  if (!container) {
+    alert('Gere a imagem antes de baixar.');
+    return;
+  }
 
   const btn = document.getElementById('image-download-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Gerando PNG...'; }
 
   try {
-    // Aguardar fontes do iframe carregarem
-    if (frame.contentDocument.fonts?.ready) {
-      await frame.contentDocument.fonts.ready;
-    }
+    // Aguardar fontes carregarem
+    await document.fonts.ready;
+    await new Promise(r => setTimeout(r, 500));
 
-    const canvas = await window.html2canvas(frame.contentDocument.body, {
+    const canvas = await window.html2canvas(container, {
       scale:           3,
       useCORS:         true,
       allowTaint:      false,
       backgroundColor: '#0b1828',
       width:           1080,
       height:          1350,
+      x:               0,
+      y:               0,
+      scrollX:         0,
+      scrollY:         0,
+      windowWidth:     1080,
+      windowHeight:    1350,
+      logging:         false,
     });
 
-    const link    = document.createElement('a');
+    const link = document.createElement('a');
     link.download = 'imovel-instagram.png';
-    link.href     = canvas.toDataURL('image/png');
+    link.href = canvas.toDataURL('image/png');
     link.click();
 
   } catch (err) {
