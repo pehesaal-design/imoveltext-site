@@ -266,9 +266,22 @@ async function _baixarPNG() {
   if (btn) { btn.disabled = true; btn.textContent = 'Gerando PNG...'; }
 
   try {
-    // Aguardar fontes carregarem
     await document.fonts.ready;
     await new Promise(r => setTimeout(r, 500));
+
+    // Mover temporariamente para posição visível mas fora do fluxo
+    const prev = container.style.cssText;
+    container.style.cssText = [
+      'position:absolute',
+      'top:0',
+      'left:0',
+      'width:1080px',
+      'height:1350px',
+      'overflow:hidden',
+      'z-index:-9999',
+      'opacity:0',
+      'pointer-events:none',
+    ].join(';');
 
     const canvas = await window.html2canvas(container, {
       scale:           3,
@@ -281,10 +294,22 @@ async function _baixarPNG() {
       y:               0,
       scrollX:         0,
       scrollY:         0,
-      windowWidth:     1080,
-      windowHeight:    1350,
+      windowWidth:     1920,
+      windowHeight:    1080,
       logging:         false,
+      onclone: (doc) => {
+        const el = doc.getElementById('image-template-container');
+        if (el) {
+          el.style.position = 'absolute';
+          el.style.top = '0';
+          el.style.left = '0';
+          el.style.opacity = '1';
+        }
+      }
     });
+
+    // Restaurar posição original
+    container.style.cssText = prev;
 
     const link = document.createElement('a');
     link.download = 'imovel-instagram.png';
