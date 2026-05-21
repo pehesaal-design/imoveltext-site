@@ -110,7 +110,7 @@ export async function gerarImagemTemplate() {
     if (!_downloadBound) {
       _downloadBound = true;
       document.getElementById('image-download-btn')
-        ?.addEventListener('click', _baixarPNG);
+        ?.addEventListener('click', _abrirTemplate);
     }
 
   } catch (err) {
@@ -233,45 +233,14 @@ function _renderFotoSelector() {
  * Captura o iframe com html2canvas em scale:3 e faz download do PNG.
  * Aguarda fonts.ready do iframe antes de capturar para evitar fallback de fonte.
  */
-async function _baixarPNG() {
-  const frame = document.getElementById('image-frame');
-  if (!frame?.contentDocument?.body) {
-    alert('Gere a imagem antes de baixar.');
+function _abrirTemplate() {
+  if (!_currentDados || !_currentTextos) {
+    alert('Gere a imagem antes de abrir o template.');
     return;
   }
 
-  const btn = document.getElementById('image-download-btn');
-  if (btn) { btn.disabled = true; btn.textContent = 'Gerando PNG...'; }
-
-  try {
-    // Aguardar fontes do iframe
-    if (frame.contentDocument.fonts?.ready) {
-      await frame.contentDocument.fonts.ready;
-    }
-    await new Promise(r => setTimeout(r, 800));
-
-    const node = frame.contentDocument.querySelector('.flyer');
-    if (!node) throw new Error('Template não encontrado no iframe');
-
-    const dataUrl = await domtoimage.toPng(node, {
-      width:  1080,
-      height: 1350,
-      style: {
-        transform: 'none',
-        transformOrigin: 'top left',
-      },
-      quality: 1,
-    });
-
-    const link = document.createElement('a');
-    link.download = 'imovel-instagram.png';
-    link.href = dataUrl;
-    link.click();
-
-  } catch (err) {
-    console.error('[image-generator] Erro no download:', err);
-    alert('Não foi possível gerar o PNG. Tente novamente.');
-  } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Baixar PNG'; }
-  }
+  const html = buildTemplateHTML(_currentDados, _currentTextos);
+  const blob = new Blob([html], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  window.open(url, '_blank');
 }
