@@ -17,9 +17,9 @@ export function buildTemplateHTML(dados, textos) {
   }
   html, body { width: 1080px; height: 1350px; overflow: hidden; background: #060f1c; font-family: 'Montserrat', sans-serif; }
   .flyer { width: 1080px; height: 1350px; background: var(--navy); display: flex; flex-direction: column; overflow: hidden; }
-  .hero { position: relative; width: 1080px; height: 520px; flex-shrink: 0; overflow: hidden; background: #0b1828; }
+  .hero { position: relative; width: 1080px; height: 520px; flex-shrink: 0; overflow: hidden; background: linear-gradient(160deg,#1a3050 0%,#0b1828 60%,#050d18 100%); }
   .hero-photo { width: 100%; height: 100%; object-fit: cover; opacity: 0.82; display: block; }
-  .hero-overlay { position: absolute; inset: 0; background: rgba(6,15,28,0.55); }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(6,15,28,0.60) 0%, rgba(6,15,28,0.15) 45%, rgba(6,15,28,0.72) 100%); }
   .hero-content { position: absolute; top: 0; left: 0; right: 0; padding: 52px 60px 0; text-align: center; }
   .label-residencial { font-size: 18px; font-weight: 600; letter-spacing: 9px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 10px; }
   .title-villa { font-size: 110px; font-weight: 900; line-height: 0.95; letter-spacing: -2px; text-transform: uppercase; margin-bottom: 20px; }
@@ -29,7 +29,7 @@ export function buildTemplateHTML(dados, textos) {
   .sub-line { flex: 1; height: 1.5px; background: var(--gold); max-width: 110px; }
   .sub-text { font-size: 14px; font-weight: 700; letter-spacing: 4.5px; text-transform: uppercase; color: var(--white); white-space: nowrap; }
   .middle { flex: 1; display: grid; grid-template-columns: 1fr 2px 1fr; padding: 38px 46px 28px; gap: 0; background: var(--navy); min-height: 0; }
-  .div-v { background: var(--gold); opacity: 0.45; margin: 0 6px; }
+  .div-v { background: linear-gradient(to bottom, transparent, var(--gold) 15%, var(--gold) 85%, transparent); opacity: 0.45; margin: 0 6px; }
   .tag { display: inline-block; background: var(--gold); color: var(--navy); font-size: 13px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 7px 18px; border-radius: 3px; margin-bottom: 22px; }
   .feat-list { list-style: none; display: flex; flex-direction: column; gap: 17px; }
   .feat-item { display: flex; align-items: flex-start; gap: 14px; }
@@ -40,10 +40,10 @@ export function buildTemplateHTML(dados, textos) {
   .invest-head .w { color: var(--white); }
   .invest-head .g { color: var(--gold-light); }
   .invest-sub { font-size: 15px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--white); line-height: 1.55; opacity: 0.85; }
-  .price-block { margin: 0 38px 26px; border: 2.5px solid var(--gold); border-radius: 8px; padding: 22px 36px; text-align: center; background: #0e1f38; flex-shrink: 0; }
+  .price-block { margin: 0 38px 26px; border: 2.5px solid var(--gold); border-radius: 8px; padding: 22px 36px; text-align: center; background: linear-gradient(135deg, #0e1f38 0%, #0b1828 100%); flex-shrink: 0; }
   .price-label { font-size: 15px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
   .price-value { font-size: 80px; font-weight: 900; color: var(--white); line-height: 1; letter-spacing: -2px; margin-bottom: 14px; }
-  .price-div { height: 2px; background: var(--gold); margin-bottom: 12px; }
+  .price-div { height: 2px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin-bottom: 12px; }
   .footer { background: #0a1626; border-top: 2px solid rgba(200,153,31,0.3); display: grid; grid-template-columns: repeat(4, 1fr); padding: 20px 30px 24px; gap: 6px; flex-shrink: 0; }
   .foot-item { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; }
   .foot-icon { width: 40px; height: 40px; color: var(--gold-light); }
