@@ -31,7 +31,7 @@ export function buildTemplateHTML(dados, textos) {
 :root { --navy: #0b1828; --navy-card: #0e1f38; --gold: #c8991f; --gold-light: #deb84a; --white: #ffffff; }
 html, body { width: 1080px; height: 1350px; overflow: hidden; background: #060f1c; font-family: 'Montserrat', sans-serif; }
 .flyer { width: 1080px; height: 1350px; background: var(--navy); display: flex; flex-direction: column; overflow: hidden; }
-.hero { position: relative; width: 1080px; height: 600px; flex-shrink: 0; overflow: hidden; background: linear-gradient(160deg,#1a3050 0%,#0b1828 60%,#050d18 100%); }
+.hero { position: relative; width: 1080px; height: 560px; flex-shrink: 0; overflow: hidden; background: linear-gradient(160deg,#1a3050 0%,#0b1828 60%,#050d18 100%); }
 .hero-photo { width: 100%; height: 100%; object-fit: cover; opacity: 0.82; display: block; }
 .hero-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: linear-gradient(135deg,#1a3a5c,#0d2240,#050f20); color: rgba(200,153,31,0.45); font-size: 18px; letter-spacing: 3px; text-transform: uppercase; }
 .hero-placeholder svg { opacity: 0.3; }
@@ -44,7 +44,7 @@ html, body { width: 1080px; height: 1350px; overflow: hidden; background: #060f1
 .subtitle-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
 .sub-line { flex: 1; height: 1.5px; background: var(--gold); max-width: 110px; }
 .sub-text { font-size: 14px; font-weight: 700; letter-spacing: 4.5px; text-transform: uppercase; color: var(--white); white-space: nowrap; }
-.middle { flex: none; height: 380px; display: grid; grid-template-columns: 1fr 2px 1fr; padding: 38px 46px 28px; gap: 0; background: var(--navy); }
+.middle { flex: none; height: 320px; display: grid; grid-template-columns: 1fr 2px 1fr; padding: 38px 46px 28px; gap: 0; background: var(--navy); align-content: start; }
 .div-v { background: linear-gradient(to bottom, transparent, var(--gold) 15%, var(--gold) 85%, transparent); opacity: 0.45; margin: 0 6px; }
 .tag { display: inline-block; background: var(--gold); color: var(--navy); font-size: 13px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 7px 18px; border-radius: 3px; margin-bottom: 22px; }
 .feat-list { list-style: none; display: flex; flex-direction: column; gap: 17px; }
@@ -56,14 +56,14 @@ html, body { width: 1080px; height: 1350px; overflow: hidden; background: #060f1
 .invest-head .w { color: var(--white); }
 .invest-head .g { color: var(--gold-light); }
 .invest-sub { font-size: 15px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--white); line-height: 1.55; opacity: 0.85; }
-.price-block { margin: 0 38px 26px; border: 2.5px solid var(--gold); border-radius: 8px; padding: 22px 36px; text-align: center; background: linear-gradient(135deg, #0e1f38 0%, #0b1828 100%); flex-shrink: 0; }
+.price-block { margin: 0 38px 16px; border: 2.5px solid var(--gold); border-radius: 8px; padding: 16px 36px; text-align: center; background: linear-gradient(135deg, #0e1f38 0%, #0b1828 100%); flex-shrink: 0; }
 .price-label { font-size: 15px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
-.price-value { font-size: 80px; font-weight: 900; color: var(--white); line-height: 1; letter-spacing: -2px; margin-bottom: 14px; }
+.price-value { font-size: 72px; font-weight: 900; color: var(--white); line-height: 1; letter-spacing: -2px; margin-bottom: 14px; }
 .price-div { height: 2px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin-bottom: 12px; }
-.footer { background: #0a1626; border-top: 2px solid rgba(200,153,31,0.3); display: grid; grid-template-columns: repeat(4, 1fr); padding: 28px 30px 32px; gap: 6px; flex-shrink: 0; }
+.footer { background: #0a1626; border-top: 2px solid rgba(200,153,31,0.3); display: grid; grid-template-columns: repeat(4, 1fr); padding: 24px 30px 28px; gap: 6px; flex-shrink: 0; min-height: 160px; }
 .foot-item { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; }
 .foot-icon { width: 40px; height: 40px; color: var(--gold-light); }
-.foot-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--white); line-height: 1.45; opacity: 0.9; }
+.foot-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--white); line-height: 1.45; opacity: 0.9; overflow: visible; white-space: normal; word-break: break-word; }
 .foot-item + .foot-item { border-left: 1px solid rgba(200,153,31,0.18); }
 </style>
 </head>
