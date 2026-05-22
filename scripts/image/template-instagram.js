@@ -31,7 +31,7 @@ export function buildTemplateHTML(dados, textos) {
 :root { --navy: #0b1828; --navy-card: #0e1f38; --gold: #c8991f; --gold-light: #deb84a; --white: #ffffff; }
 html, body { width: 1080px; height: 1350px; overflow: hidden; background: #060f1c; font-family: 'Montserrat', sans-serif; }
 .flyer { width: 1080px; height: 1350px; background: var(--navy); display: flex; flex-direction: column; overflow: hidden; }
-.hero { position: relative; width: 1080px; height: 520px; flex-shrink: 0; overflow: hidden; background: linear-gradient(160deg,#1a3050 0%,#0b1828 60%,#050d18 100%); }
+.hero { position: relative; width: 1080px; height: 600px; flex-shrink: 0; overflow: hidden; background: linear-gradient(160deg,#1a3050 0%,#0b1828 60%,#050d18 100%); }
 .hero-photo { width: 100%; height: 100%; object-fit: cover; opacity: 0.82; display: block; }
 .hero-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: linear-gradient(135deg,#1a3a5c,#0d2240,#050f20); color: rgba(200,153,31,0.45); font-size: 18px; letter-spacing: 3px; text-transform: uppercase; }
 .hero-placeholder svg { opacity: 0.3; }
@@ -44,7 +44,7 @@ html, body { width: 1080px; height: 1350px; overflow: hidden; background: #060f1
 .subtitle-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
 .sub-line { flex: 1; height: 1.5px; background: var(--gold); max-width: 110px; }
 .sub-text { font-size: 14px; font-weight: 700; letter-spacing: 4.5px; text-transform: uppercase; color: var(--white); white-space: nowrap; }
-.middle { flex: 1; display: grid; grid-template-columns: 1fr 2px 1fr; padding: 38px 46px 28px; gap: 0; background: var(--navy); min-height: 0; }
+.middle { flex: none; height: 440px; display: grid; grid-template-columns: 1fr 2px 1fr; padding: 38px 46px 28px; gap: 0; background: var(--navy); }
 .div-v { background: linear-gradient(to bottom, transparent, var(--gold) 15%, var(--gold) 85%, transparent); opacity: 0.45; margin: 0 6px; }
 .tag { display: inline-block; background: var(--gold); color: var(--navy); font-size: 13px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 7px 18px; border-radius: 3px; margin-bottom: 22px; }
 .feat-list { list-style: none; display: flex; flex-direction: column; gap: 17px; }
