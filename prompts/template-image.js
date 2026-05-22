@@ -53,6 +53,10 @@ REGRAS OBRIGATÓRIAS:
    sub: detalhe concreto e curto baseado nos dados
 6. Responder SOMENTE JSON puro, sem markdown
 
+REGRA DE PREPOSIÇÃO: use sempre a preposição correta para o bairro.
+Exemplos: 'na Barra', 'na Pituba', 'no Itaigara', 'no Horto',
+'na Graça', 'no Rio Vermelho'. NUNCA use 'em Barra' ou 'em Pituba'.
+
 {"titulo":"ATÉ 4 PALAVRAS IMPACTANTES","subtitulo":"tipo + bairro + cidade em até 8 palavras","descricao":"diferencial real e específico em 5 a 10 palavras","diferenciais":[{"titulo":"DIFERENCIAL 1","sub":"detalhe concreto"},{"titulo":"DIFERENCIAL 2","sub":"detalhe concreto"},{"titulo":"DIFERENCIAL 3","sub":"detalhe concreto"},{"titulo":"DIFERENCIAL 4","sub":"detalhe concreto"}]}`;
 }
 
@@ -94,6 +98,10 @@ REGRAS OBRIGATÓRIAS:
    - texto_dourado: parte final mais impactante (ficará em dourado)
 8. Responder SOMENTE JSON puro, sem markdown
 
+REGRA DE PREPOSIÇÃO: use sempre a preposição correta para o bairro.
+Exemplos: 'na Barra', 'na Pituba', 'no Itaigara', 'no Horto',
+'na Graça', 'no Rio Vermelho'. NUNCA use 'em Barra' ou 'em Pituba'.
+
 {"titulo_linha1":"palavra curta","titulo_linha2":"DESTAQUE DOURADO","titulo_linha3":"complemento","subtitulo_normal":"frase descritiva normal","subtitulo_dourado":"parte dourada impactante","diferenciais":[{"titulo":"PALAVRA-CHAVE","texto_normal":"texto normal da frase","texto_dourado":"parte dourada."},{"titulo":"PALAVRA-CHAVE","texto_normal":"texto normal da frase","texto_dourado":"parte dourada."},{"titulo":"PALAVRA-CHAVE","texto_normal":"texto normal da frase","texto_dourado":"parte dourada."}]}`;
 }
 
@@ -130,6 +138,10 @@ REGRAS OBRIGATÓRIAS:
    - titulo: diferencial em maiúsculas (ex: QUARTOS, SUÍTES, ÁREA, VAGAS, LAZER)
    - sub: detalhe concreto e curto baseado nos dados (ex: "3 quartos", "92 m²")
 6. Responder SOMENTE JSON puro, sem markdown
+
+REGRA DE PREPOSIÇÃO: use sempre a preposição correta para o bairro.
+Exemplos: 'na Barra', 'na Pituba', 'no Itaigara', 'no Horto',
+'na Graça', 'no Rio Vermelho'. NUNCA use 'em Barra' ou 'em Pituba'.
 
 {"titulo_normal":"parte normal do título","titulo_dourado":"parte dourada","subtitulo":"frase descritiva curta e elegante","diferenciais":[{"titulo":"DIFERENCIAL","sub":"detalhe curto"},{"titulo":"DIFERENCIAL","sub":"detalhe curto"},{"titulo":"DIFERENCIAL","sub":"detalhe curto"},{"titulo":"DIFERENCIAL","sub":"detalhe curto"}]}`;
 }
