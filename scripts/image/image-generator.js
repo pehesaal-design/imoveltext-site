@@ -26,13 +26,23 @@
 import { AppState }            from '../state.js';
 import { EDGE_FUNCTION }       from '../config.js';
 import { getSupabase }         from '../auth/auth.js';
-import { buildTemplatePrompt } from '../../prompts/template-image.js';
+import { buildTemplatePrompt, buildTemplate2Prompt, buildTemplate3Prompt } from '../../prompts/template-image.js';
 import { buildTemplateHTML }   from './template-instagram.js';
+import { buildTemplate2HTML }  from './template2-instagram.js';
+import { buildTemplate3HTML }  from './template3-instagram.js';
 
-let _currentDados  = null;
-let _currentTextos = null;
-let _selectedIdx   = 0;
-let _downloadBound = false;
+let _currentDados       = null;
+let _currentTextos      = null;
+let _selectedIdx        = 0;
+let _downloadBound      = false;
+let _templateSelecionado = 1;
+
+export function selecionarTemplate(n) {
+  _templateSelecionado = n;
+  document.querySelectorAll('.template-btn').forEach(b => {
+    b.classList.toggle('active', Number(b.dataset.template) === n);
+  });
+}
 
 /**
  * Função principal — chamada pelo botão "Gerar imagem para Instagram".
@@ -69,9 +79,13 @@ export async function gerarImagemTemplate() {
       obs:     lg.obs     || '',
     };
 
-    // 5. Chamar IA com o prompt do template
-    const prompt  = buildTemplatePrompt(dadosPrompt);
-    const textos  = await _chamarIATemplate(prompt);
+    // 5. Chamar IA com o prompt correto para o template selecionado
+    const prompt = _templateSelecionado === 2
+      ? buildTemplate2Prompt(dadosPrompt)
+      : _templateSelecionado === 3
+      ? buildTemplate3Prompt(dadosPrompt)
+      : buildTemplatePrompt(dadosPrompt);
+    const textos = await _chamarIATemplate(prompt);
 
     // 6. Montar dados do template com a foto selecionada
     _currentDados = {
@@ -91,12 +105,19 @@ export async function gerarImagemTemplate() {
       },
     };
 
-    _currentTextos = {
-      titulo:       textos.titulo       || lg.tipo   || '',
-      subtitulo:    textos.subtitulo    || lg.bairro || '',
-      descricao:    textos.descricao    || '',
-      diferenciais: Array.isArray(textos.diferenciais) ? textos.diferenciais : [],
-    };
+    if (_templateSelecionado === 1) {
+      _currentTextos = {
+        titulo:       textos.titulo       || lg.tipo   || '',
+        subtitulo:    textos.subtitulo    || lg.bairro || '',
+        descricao:    textos.descricao    || '',
+        diferenciais: Array.isArray(textos.diferenciais) ? textos.diferenciais : [],
+      };
+    } else {
+      _currentTextos = {
+        ...textos,
+        diferenciais: Array.isArray(textos.diferenciais) ? textos.diferenciais : [],
+      };
+    }
 
     // 7. Renderizar iframe e seletor
     _renderFrame();
@@ -174,7 +195,11 @@ function _renderFrame() {
   const frame = document.getElementById('image-frame');
   if (!frame || !_currentDados || !_currentTextos) return;
 
-  const html = buildTemplateHTML(_currentDados, _currentTextos);
+  const html = _templateSelecionado === 2
+    ? buildTemplate2HTML(_currentDados, _currentTextos)
+    : _templateSelecionado === 3
+    ? buildTemplate3HTML(_currentDados, _currentTextos)
+    : buildTemplateHTML(_currentDados, _currentTextos);
 
   frame.onload = () => {
     const containerWidth = frame.parentElement?.offsetWidth || 540;
@@ -239,7 +264,11 @@ function _abrirTemplate() {
     return;
   }
 
-  const html = buildTemplateHTML(_currentDados, _currentTextos);
+  const html = _templateSelecionado === 2
+    ? buildTemplate2HTML(_currentDados, _currentTextos)
+    : _templateSelecionado === 3
+    ? buildTemplate3HTML(_currentDados, _currentTextos)
+    : buildTemplateHTML(_currentDados, _currentTextos);
   const blob = new Blob([html], { type: 'text/html' });
   const url  = URL.createObjectURL(blob);
   window.open(url, '_blank');

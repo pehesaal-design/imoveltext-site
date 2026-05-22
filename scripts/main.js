@@ -29,8 +29,10 @@ import { initReveal }    from './ui/ui-reveal.js';
 import { sincronizarUI } from './ui/ui-sync.js';
 import { gerar }                from './generator/generator.js';
 import { gerarPDF }             from './pdf/pdf-core.js';
-import { gerarImagemTemplate }  from './image/image-generator.js';
+import { gerarImagemTemplate, selecionarTemplate } from './image/image-generator.js';
 import { AppState }             from './state.js';
+
+window.selecionarTemplate = selecionarTemplate;
 
 // ── INICIALIZAÇÃO ─────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
