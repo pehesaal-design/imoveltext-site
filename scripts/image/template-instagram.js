@@ -1,3 +1,25 @@
+function _iconeParaDiferencial(titulo) {
+  const t = (titulo || '').toLowerCase();
+  if (t.includes('vista') || t.includes('mar') || t.includes('praia'))
+    return '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  if (t.includes('garagem') || t.includes('vaga') || t.includes('carro'))
+    return '<rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>';
+  if (t.includes('lazer') || t.includes('piscina') || t.includes('churras'))
+    return '<path d="M2 12h20M2 12c2-4 4-6 6-6s4 4 6 4 4-4 6-4M2 12c2 4 4 6 6 6s4-4 6-4 4 4 6 4"/>';
+  if (t.includes('segurança') || t.includes('portaria') || t.includes('24h'))
+    return '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>';
+  if (t.includes('localização') || t.includes('localiz') || t.includes('perto') || t.includes('próximo'))
+    return '<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/>';
+  if (t.includes('mobil') || t.includes('decorad') || t.includes('planejad'))
+    return '<path d="M20 9V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0z"/>';
+  if (t.includes('andar') || t.includes('alto') || t.includes('cobertura'))
+    return '<polyline points="18 15 12 9 6 15"/>';
+  if (t.includes('área') || t.includes('espaço') || t.includes('amplo'))
+    return '<rect x="3" y="3" width="18" height="18" rx="1" stroke-dasharray="3 2"/>';
+  // ícone padrão: diamante
+  return '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>';
+}
+
 export function buildTemplateHTML(dados, textos) {
   return `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -111,19 +133,19 @@ html, body { width: 1080px; height: 1350px; overflow: hidden; background: #060f1
   </div>
   <div class="price-block">
     <div class="price-label">Valor</div>
-    <div class="price-value">${dados.preco || 'Consultar'}</div>
+    <div class="price-value">${dados.preco ? (String(dados.preco).includes('R$') ? dados.preco : 'R$ ' + dados.preco) : 'Consultar'}</div>
     <div class="price-div"></div>
   </div>
   <div class="footer">
     ${textos.diferenciais.map(d => `
-    <div class="foot-item">
-      <svg class="foot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-      <span class="foot-label">${d.titulo}<br>
-        <span style="opacity:0.7;font-weight:500">${d.sub}</span>
-      </span>
-    </div>`).join('')}
+<div class="foot-item">
+  <svg class="foot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    ${_iconeParaDiferencial(d.titulo)}
+  </svg>
+  <span class="foot-label">${d.titulo}<br>
+    <span style="opacity:0.7;font-weight:500">${d.sub}</span>
+  </span>
+</div>`).join('')}
   </div>
 </div>
 </body>
