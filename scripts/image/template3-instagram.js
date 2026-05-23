@@ -5,7 +5,7 @@ function _iconeParaDiferencial3(titulo) {
   if (t.includes('garagem') || t.includes('vaga') || t.includes('carro'))
     return '<rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>';
   if (t.includes('lazer') || t.includes('piscina') || t.includes('churras'))
-    return '<path d="M3 17h4l2-6h6l2 3h4"/><path d="M5 17v2M19 17v2"/><path d="M9 11V8a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1"/><circle cx="12" cy="4" r="1.5"/>';
+    return '<path d="M23 12a11.05 11.05 0 0 0-22 0zm-5 7a3 3 0 0 1-6 0v-7"/><line x1="12" y1="12" x2="12" y2="19"/>';
   if (t.includes('segurança') || t.includes('portaria') || t.includes('24h'))
     return '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>';
   if (t.includes('localização') || t.includes('localiz') || t.includes('perto') || t.includes('próximo'))
@@ -32,7 +32,7 @@ body { background: #ede8dc; margin: 0; padding: 0; }
 
 .foto-wrap { position: absolute; top: 0; left: 0; right: 0; height: 560px; overflow: hidden; }
 .foto { width: 100%; height: 100%; object-fit: cover; display: block; }
-.foto-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 120px; background: linear-gradient(to bottom, transparent, #1a3a4a); z-index: 2; }
+.foto-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 120px; background: linear-gradient(to bottom, transparent 0%, transparent 30%, #1a3a4a 100%); z-index: 2; }
 
 .triangulo-dir { position: absolute; top: 0; right: 0; border-style: solid; border-width: 0 180px 180px 0; border-color: transparent #1a3a4a transparent transparent; z-index: 3; }
 

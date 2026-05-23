@@ -5,7 +5,7 @@ function _iconeParaDiferencial2(titulo) {
   if (t.includes('garagem') || t.includes('vaga') || t.includes('carro'))
     return '<rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>';
   if (t.includes('lazer') || t.includes('piscina') || t.includes('churras'))
-    return '<path d="M17 14c0 4-5 8-5 8s-5-4-5-8a5 5 0 0 1 10 0z"/><line x1="12" y1="22" x2="12" y2="14"/>';
+    return '<path d="M23 12a11.05 11.05 0 0 0-22 0zm-5 7a3 3 0 0 1-6 0v-7"/><line x1="12" y1="12" x2="12" y2="19"/>';
   if (t.includes('segurança') || t.includes('portaria') || t.includes('24h'))
     return '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>';
   if (t.includes('localização') || t.includes('localiz') || t.includes('perto') || t.includes('próximo'))
