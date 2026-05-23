@@ -5,7 +5,7 @@ function _iconeParaDiferencial3(titulo) {
   if (t.includes('garagem') || t.includes('vaga') || t.includes('carro'))
     return '<rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>';
   if (t.includes('lazer') || t.includes('piscina') || t.includes('churras'))
-    return '<path d="M17 14c0 4-5 8-5 8s-5-4-5-8a5 5 0 0 1 10 0z"/><line x1="12" y1="22" x2="12" y2="14"/>';
+    return '<path d="M3 17h4l2-6h6l2 3h4"/><path d="M5 17v2M19 17v2"/><path d="M9 11V8a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1"/><circle cx="12" cy="4" r="1.5"/>';
   if (t.includes('segurança') || t.includes('portaria') || t.includes('24h'))
     return '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>';
   if (t.includes('localização') || t.includes('localiz') || t.includes('perto') || t.includes('próximo'))
@@ -27,69 +27,79 @@ export function buildTemplate3HTML(dados, textos) {
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #f5f0e8; margin: 0; padding: 0; }
-.flyer { width: 1080px; height: 1350px; position: relative; overflow: hidden; background: #f5f0e8; font-family: 'Montserrat', sans-serif; }
-.foto-wrap { position: absolute; top: 0; left: 0; right: 0; height: 620px; overflow: hidden; }
+body { background: #ede8dc; margin: 0; padding: 0; }
+.flyer { width: 1080px; height: 1350px; position: relative; overflow: hidden; background: #ede8dc; font-family: 'Montserrat', sans-serif; }
+
+.foto-wrap { position: absolute; top: 0; left: 0; right: 0; height: 560px; overflow: hidden; }
 .foto { width: 100%; height: 100%; object-fit: cover; display: block; }
-.triangulo-dir { position: absolute; top: 0; right: 0; width: 0; height: 0; border-style: solid; border-width: 0 160px 160px 0; border-color: transparent #f5f0e8 transparent transparent; z-index: 3; }
-.corte { position: absolute; top: 540px; left: 0; width: 100%; height: 120px; z-index: 2; }
-.fundo-claro { position: absolute; top: 600px; left: 0; right: 0; bottom: 0; background: #f5f0e8; z-index: 1; }
-.content { position: absolute; top: 640px; left: 0; right: 0; bottom: 0; z-index: 3; padding: 0 72px 56px; display: flex; flex-direction: column; justify-content: space-between; }
-.marca { display: flex; align-items: center; gap: 20px; margin-bottom: 32px; }
-.marca-icone { width: 52px; height: 52px; color: #c8991f; }
-.marca-texto { display: flex; flex-direction: column; gap: 2px; }
-.marca-nome { font-size: 22px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #1a1a1a; }
-.marca-sub { font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: #c8991f; }
-.titulo { font-family: 'Playfair Display', serif; font-size: 76px; font-weight: 700; line-height: 1.05; color: #1a1a1a; letter-spacing: -1px; margin-bottom: 28px; }
-.titulo .dourado { color: #c8991f; }
-.separador { width: 52px; height: 2px; background: #c8991f; margin-bottom: 24px; }
-.subtitulo { font-size: 24px; font-weight: 300; color: #555; line-height: 1.6; letter-spacing: 0.5px; }
-.icones { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(200,153,31,0.3); padding-top: 32px; }
-.icone-item { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 0 12px; border-right: 1px solid rgba(200,153,31,0.25); }
+.foto-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 120px; background: linear-gradient(to bottom, transparent, #1a3a4a); z-index: 2; }
+
+.triangulo-dir { position: absolute; top: 0; right: 0; border-style: solid; border-width: 0 180px 180px 0; border-color: transparent #1a3a4a transparent transparent; z-index: 3; }
+
+.faixa-azul { position: absolute; top: 560px; left: 0; right: 0; height: 100px; background: #1a3a4a; z-index: 2; display: flex; align-items: center; padding: 0 72px; gap: 20px; }
+.marca-icone { width: 40px; height: 40px; color: #a67c1a; flex-shrink: 0; }
+.marca-nome { font-size: 18px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #ffffff; }
+.marca-sub { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: rgba(166,124,26,0.85); margin-top: 3px; }
+
+.faixa-esq { position: absolute; top: 660px; left: 0; width: 8px; bottom: 0; background: #1a3a4a; z-index: 3; }
+
+.zona-texto { position: absolute; top: 660px; left: 0; right: 0; height: 520px; background: #ede8dc; z-index: 1; padding: 48px 72px 0; display: flex; flex-direction: column; justify-content: flex-start; gap: 20px; }
+
+.titulo { font-family: 'Playfair Display', serif; font-size: 74px; font-weight: 700; line-height: 1.05; color: #0d0d0d; letter-spacing: -1px; }
+.titulo .dourado { color: #a67c1a; }
+.separador { width: 52px; height: 3px; background: #1a3a4a; }
+.subtitulo { font-size: 23px; font-weight: 400; color: #2a2a2a; line-height: 1.6; }
+
+.zona-icones { position: absolute; top: 1180px; left: 0; right: 0; height: 170px; background: #ede8dc; z-index: 2; border-top: 2px solid rgba(26,58,74,0.25); display: grid; grid-template-columns: repeat(4, 1fr); align-items: center; padding: 0 40px; }
+
+.icone-item { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; padding: 0 12px; border-right: 2px solid rgba(26,58,74,0.15); }
 .icone-item:last-child { border-right: none; }
-.icone-svg { width: 40px; height: 40px; color: #c8991f; }
-.icone-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #1a1a1a; line-height: 1.5; }
+.icone-svg { width: 38px; height: 38px; color: #1a3a4a; }
+.icone-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #1a1a1a; line-height: 1.6; }
 </style>
 </head>
 <body>
 <div class="flyer">
+
   <div class="foto-wrap">
     <img class="foto" src="${dados.fotoBase64}" alt="">
+    <div class="foto-fade"></div>
   </div>
+
   <div class="triangulo-dir"></div>
-  <svg class="corte" viewBox="0 0 1080 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,80 L1080,0 L1080,120 L0,120 Z" fill="#f5f0e8"/>
-  </svg>
-  <div class="fundo-claro"></div>
-  <div class="content">
+
+  <div class="faixa-azul">
+    <svg class="marca-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <path d="M9 22V12h6v10"/>
+    </svg>
     <div>
-      <div class="marca">
-        <svg class="marca-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-          <path d="M9 22V12h6v10"/>
-        </svg>
-        <div class="marca-texto">
-          <span class="marca-nome">${dados.tipo} • ${dados.bairro}</span>
-          <span class="marca-sub">${dados.cidade || 'Salvador / BA'}</span>
-        </div>
-      </div>
-      <div class="titulo">
-        ${textos.titulo_normal || ''}<br>
-        <span class="dourado">${textos.titulo_dourado || ''}</span>
-      </div>
-      <div class="separador"></div>
-      <div class="subtitulo">${textos.subtitulo || ''}</div>
-    </div>
-    <div class="icones">
-      ${(textos.diferenciais || []).slice(0,4).map(d => `
-      <div class="icone-item">
-        <svg class="icone-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-          ${_iconeParaDiferencial3(d.titulo)}
-        </svg>
-        <span class="icone-label">${d.titulo}<br><span style="font-weight:400;opacity:0.7">${d.sub}</span></span>
-      </div>`).join('')}
+      <div class="marca-nome">${dados.tipo} • ${dados.bairro}</div>
+      <div class="marca-sub">${dados.cidade || 'Salvador / BA'}</div>
     </div>
   </div>
+
+  <div class="faixa-esq"></div>
+
+  <div class="zona-texto">
+    <div class="titulo">
+      ${textos.titulo_normal || ''}<br>
+      <span class="dourado">${textos.titulo_dourado || ''}</span>
+    </div>
+    <div class="separador"></div>
+    <div class="subtitulo">${textos.subtitulo || ''}</div>
+  </div>
+
+  <div class="zona-icones">
+    ${(textos.diferenciais || []).slice(0,4).map(d => `
+    <div class="icone-item">
+      <svg class="icone-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        ${_iconeParaDiferencial3(d.titulo)}
+      </svg>
+      <span class="icone-label">${d.titulo}<br><span style="font-weight:400;opacity:0.7">${d.sub}</span></span>
+    </div>`).join('')}
+  </div>
+
 </div>
 </body>
 </html>`;
