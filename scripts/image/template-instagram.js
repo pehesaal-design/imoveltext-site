@@ -29,7 +29,7 @@ export function buildTemplateHTML(dados, textos) {
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root { --navy: #0b1828; --navy-card: #0e1f38; --gold: #c8991f; --gold-light: #deb84a; --white: #ffffff; }
-html, body { width: 1080px; height: 1350px; overflow: hidden; background: #060f1c; font-family: 'Montserrat', sans-serif; }
+html, body { width: 1080px; height: 1350px; overflow: hidden; background: #0a1626; font-family: 'Montserrat', sans-serif; }
 .flyer { width: 1080px; height: 1350px; background: var(--navy); display: flex; flex-direction: column; overflow: hidden; }
 .hero { position: relative; width: 1080px; height: 560px; flex-shrink: 0; overflow: hidden; background: linear-gradient(160deg,#1a3050 0%,#0b1828 60%,#050d18 100%); }
 .hero-photo { width: 100%; height: 100%; object-fit: cover; opacity: 0.82; display: block; }
@@ -38,7 +38,7 @@ html, body { width: 1080px; height: 1350px; overflow: hidden; background: #060f1
 .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(6,15,28,0.60) 0%, rgba(6,15,28,0.15) 45%, rgba(6,15,28,0.72) 100%); }
 .hero-content { position: absolute; top: 0; left: 0; right: 0; padding: 52px 60px 0; text-align: center; }
 .label-residencial { font-size: 18px; font-weight: 600; letter-spacing: 9px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 10px; }
-.title-villa { font-size: 110px; font-weight: 900; line-height: 0.95; letter-spacing: -2px; text-transform: uppercase; margin-bottom: 20px; }
+.title-villa { font-size: clamp(48px, 8vw, 80px); font-weight: 900; line-height: 0.95; letter-spacing: -2px; text-transform: uppercase; margin-bottom: 20px; }
 .title-villa .w { color: var(--white); }
 .title-villa .g { color: var(--gold-light); }
 .subtitle-row { display: flex; align-items: center; justify-content: center; gap: 18px; }
@@ -60,7 +60,7 @@ html, body { width: 1080px; height: 1350px; overflow: hidden; background: #060f1
 .price-label { font-size: 15px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-light); margin-bottom: 6px; }
 .price-value { font-size: 72px; font-weight: 900; color: var(--white); line-height: 1; letter-spacing: -2px; margin-bottom: 14px; }
 .price-div { height: 2px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin-bottom: 12px; }
-.footer { background: #0a1626; border-top: 2px solid rgba(200,153,31,0.3); display: grid; grid-template-columns: repeat(4, 1fr); padding: 24px 30px 28px; gap: 6px; flex-shrink: 0; min-height: 160px; }
+.footer { background: #0a1626; border-top: 2px solid rgba(200,153,31,0.3); display: grid; grid-template-columns: repeat(4, 1fr); padding: 24px 30px 28px; gap: 6px; flex-shrink: 0; min-height: 160px; height: 150px; }
 .foot-item { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; }
 .foot-icon { width: 40px; height: 40px; color: var(--gold-light); }
 .foot-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--white); line-height: 1.45; opacity: 0.9; overflow: visible; white-space: normal; word-break: break-word; }
