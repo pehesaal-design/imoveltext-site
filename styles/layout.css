@@ -219,3 +219,108 @@
   .hero h1 { font-size: 2.2rem; }
   .hero-stats { gap: 1.5rem; }
 }
+
+/* ══ EXEMPLO REAL ═══════════════════════════════════════ */
+.exemplo-real {
+  padding: 6rem 0;
+}
+
+.exemplo-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.exemplo-img-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.exemplo-img {
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+  display: block;
+}
+
+.exemplo-img-label {
+  text-align: center;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-top: 1rem;
+}
+
+.exemplo-anuncios {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.exemplo-bloco {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.exemplo-plataforma {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--g);
+  margin-bottom: 1rem;
+}
+
+.exemplo-titulo {
+  font-family: 'Fraunces', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+.exemplo-corpo {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.9;
+}
+
+.exemplo-instagram {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.9;
+  white-space: pre-line;
+}
+
+.exemplo-hashtags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 1.25rem;
+}
+
+.exemplo-hashtag {
+  font-size: 11px; font-weight: 500;
+  color: var(--g);
+  background: rgba(29,158,117,0.08);
+  border: 1px solid rgba(29,158,117,0.2);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+.exemplo-cta {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.exemplo-cta-text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+}
