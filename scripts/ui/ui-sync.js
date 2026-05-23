@@ -86,8 +86,8 @@ function _atualizarBanner() {
 
   if (isProUser) {
     banner.classList.add('pro-b');
-    bannerTitle.textContent = '✦ Plano Pro ativo — anúncios ilimitados';
-    bannerSub.textContent   = 'PDF profissional desbloqueado em todos os anúncios.';
+    bannerTitle.textContent = 'Plano Pro — anúncios ilimitados';
+    bannerSub.textContent   = 'Gere quantos anúncios precisar.';
     if (upgradeBtn) upgradeBtn.style.display = 'none';
     return;
   }

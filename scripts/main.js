@@ -72,6 +72,12 @@ function _registrarEventos() {
   document.getElementById('image-gen-btn')
     ?.addEventListener('click', gerarImagemTemplate);
 
+  // Botão "Entrar" na navbar
+  document.getElementById('btn-login-nav')
+    ?.addEventListener('click', () => {
+      document.getElementById('signup-modal').style.display = 'flex';
+    });
+
   // Botão de geração do PDF
   const btnPDF = document.getElementById('pdf-btn');
   if (btnPDF) {
