@@ -139,7 +139,7 @@ export function saveFormToSession(dadosForm) {
     obs:        dadosForm.obs        || '',
     pending:    true,
   };
-  sessionStorage.setItem('imoveltext_form', JSON.stringify(dados));
+  sessionStorage.setItem('imovelstudio_form', JSON.stringify(dados));
 }
 
 /**
@@ -149,15 +149,15 @@ export function saveFormToSession(dadosForm) {
  * @returns {Object|null} Dados restaurados ou null se não havia dados salvos
  */
 export function restoreFormFromSession() {
-  const raw = sessionStorage.getItem('imoveltext_form');
+  const raw = sessionStorage.getItem('imovelstudio_form');
   if (!raw) return null;
 
   try {
     const dados = JSON.parse(raw);
-    sessionStorage.removeItem('imoveltext_form'); // limpar após restaurar
+    sessionStorage.removeItem('imovelstudio_form'); // limpar após restaurar
     return dados;
   } catch {
-    sessionStorage.removeItem('imoveltext_form');
+    sessionStorage.removeItem('imovelstudio_form');
     return null;
   }
 }

@@ -85,7 +85,7 @@
   z-index: 0;
 }
 
-/* Brand tag — "ImóvelText · MÊS ANO" */
+/* Brand tag — "ImóvelStudio · MÊS ANO" */
 .pf-brand {
   font-size: 9px;
   font-weight: 600;
@@ -576,7 +576,7 @@
   position: relative;
 }
 
-/* Logo ImóvelText — baixa opacidade como watermark */
+/* Logo ImóvelStudio — baixa opacidade como watermark */
 .pf-l6-logo {
   font-family: 'Playfair Display', serif;
   font-size: 11px;

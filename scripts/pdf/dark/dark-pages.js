@@ -86,7 +86,7 @@ function fichaHtml({ bairro, preco, area, quartos, suites, tipo }) {
 function footerHtml({ nome, tel, creci }) {
   return `
     <div class="pf-footer">
-      <span class="pf-footer-nome">${nome || 'ImóvelText'}</span>
+      <span class="pf-footer-nome">${nome || 'ImóvelStudio'}</span>
       <span class="pf-footer-creci">${creci ? `CRECI ${creci}` : ''}</span>
     </div>`;
 }
@@ -104,7 +104,7 @@ export function pgCapaV({ titulo, bairro, preco, area, quartos, suites, tipo, sr
     ${circ(-80, -80, 300)}
     ${circ(40, -60, 160)}
 
-    <div class="pf-brand">ImóvelText · ${mes || ''} ${ano || ''}</div>
+    <div class="pf-brand">ImóvelStudio · ${mes || ''} ${ano || ''}</div>
     <div class="pf-badge">${tipo || 'Imóvel'}</div>
     <div class="pf-titulo" style="font-size:28px">${titulo || ''}</div>
 
@@ -142,7 +142,7 @@ export function pgCapaH({ titulo, bairro, preco, area, quartos, suites, tipo, sr
     ${circ(-60, -60, 280)}
     ${circ(30, 20, 120)}
 
-    <div class="pf-brand">ImóvelText · ${mes || ''} ${ano || ''}</div>
+    <div class="pf-brand">ImóvelStudio · ${mes || ''} ${ano || ''}</div>
     <div class="pf-badge">${tipo || 'Imóvel'}</div>
     <div class="pf-titulo" style="font-size:26px">${titulo || ''}</div>
 
@@ -305,7 +305,7 @@ export function pgEncerramento({ corretor }) {
   ${circ(-60, -60, 200)}
   ${circ(40, 120, 120)}
 
-  <div class="pf-l6-logo">ImóvelText</div>
+  <div class="pf-l6-logo">ImóvelStudio</div>
 
   <div class="pf-l6-titulo">Entre em<br>contato</div>
 
@@ -337,7 +337,7 @@ export function pgEncerramento({ corretor }) {
 
   <div class="pf-l6-divider"></div>
 
-  <div class="pf-l6-rodape">Gerado por ImóvelText · Marketing Imobiliário</div>
+  <div class="pf-l6-rodape">Gerado por ImóvelStudio · Marketing Imobiliário</div>
 
 </div>`.trim();
 }

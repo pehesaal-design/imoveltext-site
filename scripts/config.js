@@ -23,7 +23,7 @@ export const SUPABASE_KEY  = 'sb_publishable_GDsLQZy_Zsdhr3icE7PByQ_smjPROkn';
 // Em dev local, substituir temporariamente por window.location.origin.
 export const REDIRECT_URL  = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? window.location.origin
-  : 'https://pehesaal-design.github.io/imoveltext-site';
+  : 'https://pehesaal-design.github.io/imovelstudio-site';
 
 // ── STRIPE ────────────────────────────────────────────
 // TODO: substituir por URL real do checkout Stripe antes de produção

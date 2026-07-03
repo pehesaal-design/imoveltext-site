@@ -199,11 +199,11 @@ export async function gerarPDF(tema = 'escuro', onProgresso = null) {
 
 /**
  * Gera o nome do arquivo PDF baseado nos dados do imóvel.
- * Ex: "imoveltext-apartamento-pituba-escuro.pdf"
+ * Ex: "imovelstudio-apartamento-pituba-escuro.pdf"
  */
 function _gerarNomeArquivo(imovel, tema) {
   const tipo   = (imovel?.tipo    || 'imovel').toLowerCase().replace(/\s+/g, '-');
   const bairro = (imovel?.bairro  || '').toLowerCase().replace(/\s+/g, '-');
-  const partes = ['imoveltext', tipo, bairro, tema].filter(Boolean);
+  const partes = ['imovelstudio', tipo, bairro, tema].filter(Boolean);
   return partes.join('-') + '.pdf';
 }
