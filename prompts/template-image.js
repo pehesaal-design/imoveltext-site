@@ -145,3 +145,42 @@ Exemplos: 'na Barra', 'na Pituba', 'no Itaigara', 'no Horto',
 
 {"titulo_normal":"parte normal do título","titulo_dourado":"parte dourada","subtitulo":"frase descritiva curta e elegante","diferenciais":[{"titulo":"DIFERENCIAL","sub":"detalhe curto"},{"titulo":"DIFERENCIAL","sub":"detalhe curto"},{"titulo":"DIFERENCIAL","sub":"detalhe curto"},{"titulo":"DIFERENCIAL","sub":"detalhe curto"}]}`;
 }
+
+/**
+ * Prompt para o Template 4 — Dark Premium.
+ * SCHEMA RETORNADO:
+ *   finalidade    → string: "VENDA" ou "LOCAÇÃO"
+ *   titulo_linha1 → string: tipo do imóvel em 1-2 palavras (ex: "Casa", "Apartamento")
+ *   titulo_linha2 → string: qualificador em 1-3 palavras (ex: "Alto Padrão", "Vista Mar")
+ *   localizacao   → string: BAIRRO • CIDADE em maiúsculas
+ */
+export function buildTemplate4Prompt(dados) {
+  return `Você é um especialista em marketing imobiliário premium.
+Gere os textos para um flyer Instagram estilo Dark Premium com base estritamente nos dados abaixo.
+
+DADOS DO IMÓVEL:
+- Tipo: ${dados.tipo || 'Não informado'}
+- Bairro: ${dados.bairro || 'Não informado'}
+- Cidade: ${dados.cidade || 'Salvador/BA'}
+- Preço: ${dados.preco || 'Não informado'}
+- Quartos: ${dados.quartos || 'Não informado'}
+- Suítes: ${dados.suites || 'Não informado'}
+- Área: ${dados.area ? dados.area + ' m²' : 'Não informado'}
+- Vagas: ${dados.vagas || 'Não informado'}
+- Observações do corretor: ${dados.obs || 'Nenhuma'}
+
+REGRAS OBRIGATÓRIAS:
+1. Use APENAS informações presentes nos dados acima — NUNCA invente
+2. finalidade: "VENDA" ou "LOCAÇÃO" conforme as observações ou padrão "VENDA"
+3. titulo_linha1: o tipo do imóvel em 1-2 palavras curtas (ex: "Casa", "Apartamento", "Sala")
+   Extraia do campo Tipo — não use o tipo completo se for muito longo
+4. titulo_linha2: qualificador impactante de 1-3 palavras baseado nos dados reais
+   Priorizar: vista, localização premium, padrão construtivo, área generosa
+   Ex: "Alto Padrão", "Vista Mar", "com Piscina", "Cobertura"
+   NUNCA use genéricos sem base nos dados
+5. localizacao: BAIRRO • CIDADE em letras maiúsculas
+   Ex: "PITUBA • SALVADOR/BA", "SETOR MARISTA • GOIÂNIA/GO"
+6. Responder SOMENTE JSON puro, sem markdown
+
+{"finalidade":"VENDA","titulo_linha1":"Tipo curto","titulo_linha2":"Qualificador impactante","localizacao":"BAIRRO • CIDADE/UF"}`;
+}
