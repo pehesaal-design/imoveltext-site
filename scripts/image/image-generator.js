@@ -36,7 +36,7 @@ let _currentDados       = null;
 let _currentTextos      = null;
 let _selectedIdx        = 0;
 let _downloadBound      = false;
-let _templateSelecionado = 1;
+let _templateSelecionado = 4;
 
 export function selecionarTemplate(n) {
   _templateSelecionado = n;
