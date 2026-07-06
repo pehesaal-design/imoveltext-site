@@ -52,10 +52,17 @@ export function selecionarTemplate(n) {
  * Verifica pré-condições, chama a IA, renderiza template e seletor de fotos.
  */
 export async function gerarImagemTemplate() {
-  // 1. Verificar se há dados de uma geração anterior
+  // 1. Verificar acesso Pro
+  if (!AppState.auth.isProUser) {
+    const { showPaywall } = await import('../ui/ui-modals.js');
+    showPaywall();
+    return;
+  }
+
+  // 2. Verificar se há dados de uma geração anterior
   if (!AppState.lastGeneration.titulo && !AppState.lastGeneration.tipo) return;
 
-  // 2. Verificar se há fotos
+  // 3. Verificar se há fotos
   if (!AppState.form.fotos.length) {
     alert('Envie ao menos uma foto para gerar a imagem para Instagram.');
     return;
