@@ -26,11 +26,12 @@
 import { AppState }            from '../state.js';
 import { EDGE_FUNCTION }       from '../config.js';
 import { getSupabase }         from '../auth/auth.js';
-import { buildTemplatePrompt, buildTemplate2Prompt, buildTemplate3Prompt, buildTemplate4Prompt } from '../../prompts/template-image.js';
+import { buildTemplatePrompt, buildTemplate2Prompt, buildTemplate3Prompt, buildTemplate4Prompt, buildTemplate5Prompt } from '../../prompts/template-image.js';
 import { buildTemplateHTML }   from './template-instagram.js';
 import { buildTemplate2HTML }  from './template2-instagram.js';
 import { buildTemplate3HTML }  from './template3-instagram.js';
 import { buildTemplate4HTML }  from './template4-instagram.js';
+import { buildTemplate5HTML }  from './template5-instagram.js';
 
 let _currentDados       = null;
 let _currentTextos      = null;
@@ -91,6 +92,8 @@ export async function gerarImagemTemplate() {
       ? buildTemplate3Prompt(dadosPrompt)
       : _templateSelecionado === 4
       ? buildTemplate4Prompt(dadosPrompt)
+      : _templateSelecionado === 5
+      ? buildTemplate5Prompt(dadosPrompt)
       : buildTemplatePrompt(dadosPrompt);
     const textos = await _chamarIATemplate(prompt);
 
@@ -222,6 +225,8 @@ function _renderFrame() {
     ? buildTemplate3HTML(_currentDados, _currentTextos)
     : _templateSelecionado === 4
     ? buildTemplate4HTML(_currentDados, _currentTextos)
+    : _templateSelecionado === 5
+    ? buildTemplate5HTML(_currentDados, _currentTextos)
     : buildTemplateHTML(_currentDados, _currentTextos);
 
   frame.onload = () => {
@@ -293,6 +298,8 @@ function _abrirTemplate() {
     ? buildTemplate3HTML(_currentDados, _currentTextos)
     : _templateSelecionado === 4
     ? buildTemplate4HTML(_currentDados, _currentTextos)
+    : _templateSelecionado === 5
+    ? buildTemplate5HTML(_currentDados, _currentTextos)
     : buildTemplateHTML(_currentDados, _currentTextos);
   const blob = new Blob([html], { type: 'text/html' });
   const url  = URL.createObjectURL(blob);

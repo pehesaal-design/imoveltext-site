@@ -184,3 +184,34 @@ REGRAS OBRIGATÓRIAS:
 
 {"finalidade":"VENDA","titulo_linha1":"Tipo curto","titulo_linha2":"Qualificador impactante","localizacao":"BAIRRO • CIDADE/UF"}`;
 }
+
+/**
+ * Prompt para o Template 5 — Editorial Premium.
+ * SCHEMA RETORNADO:
+ *   titulo → string: headline editorial de 3-7 palavras (estilo Playfair Display)
+ */
+export function buildTemplate5Prompt(dados) {
+  return `Você é um especialista em marketing imobiliário premium.
+Gere o título editorial para um flyer de Instagram estilo revista de arquitetura com base nos dados abaixo.
+
+DADOS DO IMÓVEL:
+- Tipo: ${dados.tipo || 'Não informado'}
+- Bairro: ${dados.bairro || 'Não informado'}
+- Cidade: ${dados.cidade || 'Salvador/BA'}
+- Preço: ${dados.preco || 'Não informado'}
+- Quartos: ${dados.quartos || 'Não informado'}
+- Suítes: ${dados.suites || 'Não informado'}
+- Área: ${dados.area ? dados.area + ' m²' : 'Não informado'}
+- Vagas: ${dados.vagas || 'Não informado'}
+- Observações do corretor: ${dados.obs || 'Nenhuma'}
+
+REGRAS OBRIGATÓRIAS:
+1. Use APENAS informações presentes nos dados acima — NUNCA invente
+2. titulo: headline editorial elegante de 3 a 7 palavras, estilo revista de arquitetura/Sotheby's
+   Deve evocar o principal diferencial real do imóvel
+   Ex: "Residência com Vista para o Mar", "Alto Padrão na Pituba", "Cobertura com Piscina Privativa"
+   NUNCA use "Imóvel Exclusivo" ou outros genéricos sem base nos dados
+3. Responder SOMENTE JSON puro, sem markdown
+
+{"titulo":"Headline editorial elegante de 3 a 7 palavras"}`;
+}
