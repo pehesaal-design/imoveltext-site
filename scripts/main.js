@@ -30,6 +30,7 @@ import { sincronizarUI } from './ui/ui-sync.js';
 import { gerar }                from './generator/generator.js';
 import { gerarPDF }             from './pdf/pdf-core.js';
 import { gerarImagemTemplate, selecionarTemplate } from './image/image-generator.js';
+import { iniciarAssinatura, verificarRetornoStripe } from './payment/stripe-checkout.js';
 import { AppState }             from './state.js';
 
 window.selecionarTemplate = selecionarTemplate;
@@ -55,7 +56,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // 4. Eventos globais
+  // 4. Verificar retorno do Stripe Checkout (?assinatura=sucesso)
+  await verificarRetornoStripe();
+
+  // 5. Eventos globais
   _registrarEventos();
 });
 
@@ -77,6 +81,14 @@ function _registrarEventos() {
     ?.addEventListener('click', () => {
       document.getElementById('signup-modal').style.display = 'flex';
     });
+
+  // Botões de assinatura — planos, paywall e banner
+  document.getElementById('btn-assinar-planos')
+    ?.addEventListener('click', iniciarAssinatura);
+  document.getElementById('btn-assinar-paywall')
+    ?.addEventListener('click', iniciarAssinatura);
+  document.getElementById('banner-upgrade-btn')
+    ?.addEventListener('click', iniciarAssinatura);
 
   // Botão de geração do PDF
   const btnPDF = document.getElementById('pdf-btn');

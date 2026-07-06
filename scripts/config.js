@@ -26,8 +26,8 @@ export const REDIRECT_URL  = window.location.hostname === 'localhost' || window.
   : 'https://pehesaal-design.github.io/imovelstudio-site';
 
 // ── STRIPE ────────────────────────────────────────────
-// TODO: substituir por URL real do checkout Stripe antes de produção
-export const STRIPE_LINK   = 'STRIPE_PENDENTE';
+export const STRIPE_PUBLIC_KEY = 'STRIPE_PUBLIC_KEY_AQUI';
+export const STRIPE_PRICE_ID   = 'price_1TqBzx3rS3MLZqQ1vG6yWnrj';
 
 // ── LIMITES DO PLANO FREE ─────────────────────────────
 export const FREE_CREDITS  = 3;
