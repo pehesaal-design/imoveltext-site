@@ -3,8 +3,8 @@
  * RESPONSABILIDADE: Abrir/fechar modais de signup (OAuth) e paywall (upgrade)
  * DEPENDÊNCIAS:
  *   - state.js  (AppState)
- *   - config.js (STRIPE_LINK)
  *   - auth/auth.js (loginGoogle)
+ *   - payment/stripe-checkout.js (iniciarAssinatura)
  * IMPACTO: Afeta o fluxo de conversão (login + upgrade)
  *
  * MODAIS EXISTENTES:
@@ -21,9 +21,9 @@
  *   Click dentro do modal não fecha (stopPropagation via CSS pointer-events).
  */
 
-import { AppState }  from '../state.js';
-import { STRIPE_LINK } from '../config.js';
-import { loginGoogle } from '../auth/auth.js';
+import { AppState }          from '../state.js';
+import { loginGoogle }       from '../auth/auth.js';
+import { iniciarAssinatura } from '../payment/stripe-checkout.js';
 
 // ── INIT MODAIS ───────────────────────────────────────
 /**
@@ -97,16 +97,8 @@ function _initPaywallModal() {
 }
 
 // ── BOTÕES DE ASSINAR (landing page) ─────────────────
-/**
- * Redireciona para o checkout do Stripe.
- * Usado pelo botão da seção de planos e pelo paywall modal.
- */
 export function assinar() {
-  if (STRIPE_LINK === 'STRIPE_PENDENTE') {
-    console.warn('[modals] STRIPE_LINK não configurado — substituir em config.js');
-    return;
-  }
-  window.open(STRIPE_LINK, '_blank');
+  iniciarAssinatura();
 }
 
 function _initBotoesAssinar() {
