@@ -50,10 +50,8 @@ export function selecionarTemplate(n) {
  * Verifica pré-condições, chama a IA, renderiza template e seletor de fotos.
  */
 export async function gerarImagemTemplate() {
-  const lg = AppState.lastGeneration;
-
   // 1. Verificar se há dados de uma geração anterior
-  if (!lg.titulo && !lg.tipo) return;
+  if (!AppState.lastGeneration.titulo && !AppState.lastGeneration.tipo) return;
 
   // 2. Verificar se há fotos
   if (!AppState.form.fotos.length) {
@@ -64,20 +62,26 @@ export async function gerarImagemTemplate() {
   const btn = document.getElementById('image-gen-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Gerando...'; }
 
+  // Reset defensivo — garante que dados antigos não apareçam se a geração falhar
+  _currentDados  = null;
+  _currentTextos = null;
+
   try {
     // 3. Índice de foto inicial (usa a capa do PDF se já selecionada)
     _selectedIdx = AppState.generation.fotoCapaIdx || 0;
 
-    // 4. Montar dados para o prompt
+    // 4. Montar dados para o prompt com snapshot do estado atual
+    const snap = AppState.lastGeneration;
     const dadosPrompt = {
-      tipo:    lg.tipo    || '',
-      bairro:  lg.bairro  || '',
-      preco:   lg.preco   || '',
-      area:    lg.area    || '',
-      quartos: lg.quartos || '',
-      suites:  lg.suites  || '',
-      vagas:   lg.vagas   || '',
-      obs:     lg.obs     || '',
+      tipo:       snap.tipo       || '',
+      finalidade: snap.finalidade || '',
+      bairro:     snap.bairro     || '',
+      preco:      snap.preco      || '',
+      area:       snap.area       || '',
+      quartos:    snap.quartos    || '',
+      suites:     snap.suites     || '',
+      vagas:      snap.vagas      || '',
+      obs:        snap.obs        || '',
     };
 
     // 5. Chamar IA com o prompt correto para o template selecionado
@@ -90,17 +94,22 @@ export async function gerarImagemTemplate() {
       : buildTemplatePrompt(dadosPrompt);
     const textos = await _chamarIATemplate(prompt);
 
-    // 6. Montar dados do template com a foto selecionada
+    // 6. Reler AppState.lastGeneration APÓS o await para pegar o valor mais recente
+    //    (evita usar preço/tipo de uma geração anterior se o usuário gerou de novo
+    //     enquanto aguardava a resposta da IA de template)
+    const lg = AppState.lastGeneration;
+
     _currentDados = {
-      tipo:       lg.tipo    || '',
-      bairro:     lg.bairro  || '',
+      tipo:       lg.tipo       || '',
+      transacao:  _mapFinalidade(lg.finalidade),
+      bairro:     lg.bairro     || '',
       cidade:     'Salvador/BA',
-      preco:      lg.preco   || '',
-      quartos:    lg.quartos || '',
-      suites:     lg.suites  || '',
-      area:       lg.area    || '',
-      vagas:      lg.vagas   || '',
-      obs:        lg.obs     || '',
+      preco:      lg.preco      || '',
+      quartos:    lg.quartos    || '',
+      suites:     lg.suites     || '',
+      area:       lg.area       || '',
+      vagas:      lg.vagas      || '',
+      obs:        lg.obs        || '',
       fotoBase64: AppState.form.fotos[_selectedIdx]?.src || '',
       corretor: {
         nome: AppState.pdf.corrData.nome || '',
@@ -143,6 +152,15 @@ export async function gerarImagemTemplate() {
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = 'Gerar imagem para Instagram'; }
   }
+}
+
+// ── UTILITÁRIOS ───────────────────────────────────────
+
+function _mapFinalidade(finalidade) {
+  const f = (finalidade || '').toLowerCase();
+  if (f.includes('aluguel')) return 'ALUGUEL';
+  if (f.includes('temporada')) return 'TEMPORADA';
+  return 'VENDA';
 }
 
 // ── CHAMADA À IA ──────────────────────────────────────

@@ -66,16 +66,17 @@ export const AppState = {
   // CRÍTICO: pdf-core.js depende destes dados — não limpar entre gerações
   //          sem garantir que o PDF não está sendo gerado simultaneamente.
   lastGeneration: {
-    titulo:  '',
-    corpo:   '',
-    tipo:    '',
-    bairro:  '',
-    preco:   '',
-    area:    '',
-    quartos: '',
-    suites:  '',
-    vagas:   '',
-    obs:     '',
+    titulo:     '',
+    corpo:      '',
+    tipo:       '',
+    finalidade: '',
+    bairro:     '',
+    preco:      '',
+    area:       '',
+    quartos:    '',
+    suites:     '',
+    vagas:      '',
+    obs:        '',
   },
 
   // ── PDF ────────────────────────────────────────────
@@ -101,16 +102,17 @@ export function resetGenerationState() {
   AppState.generation.legendasGeradas = [];
   AppState.generation.fotoCapaIdx     = 0;
   AppState.lastGeneration = {
-    titulo:  '',
-    corpo:   '',
-    tipo:    '',
-    bairro:  '',
-    preco:   '',
-    area:    '',
-    quartos: '',
-    suites:  '',
-    vagas:   '',
-    obs:     '',
+    titulo:     '',
+    corpo:      '',
+    tipo:       '',
+    finalidade: '',
+    bairro:     '',
+    preco:      '',
+    area:       '',
+    quartos:    '',
+    suites:     '',
+    vagas:      '',
+    obs:        '',
   };
 }
 

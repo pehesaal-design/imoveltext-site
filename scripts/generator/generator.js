@@ -110,16 +110,17 @@ export async function gerar() {
 
     // ── 7. SALVAR NO APPSTATE ──────────────────────
     AppState.lastGeneration = {
-      titulo:  resultado.titulo  || '',
-      corpo:   resultado.corpo   || '',
-      tipo:    dados.tipo        || '',
-      bairro:  dados.bairro      || '',
-      preco:   dados.preco       || '',
-      area:    dados.area        || '',
-      quartos: dados.quartos     || '',
-      suites:  dados.suites      || '',
-      vagas:   dados.vagas       || '',
-      obs:     dados.obs         || '',
+      titulo:     resultado.titulo    || '',
+      corpo:      resultado.corpo     || '',
+      tipo:       dados.tipo          || '',
+      finalidade: dados.finalidade    || '',
+      bairro:     dados.bairro        || '',
+      preco:      dados.preco         || '',
+      area:       dados.area          || '',
+      quartos:    dados.quartos       || '',
+      suites:     dados.suites        || '',
+      vagas:      dados.vagas         || '',
+      obs:        dados.obs           || '',
     };
 
     // ── 8. RENDERIZAR PROGRESSIVAMENTE ────────────

@@ -3,7 +3,7 @@ export function buildTemplate4HTML(dados, textos) {
     ? (String(dados.preco).includes('R$') ? dados.preco : 'R$ ' + dados.preco)
     : 'Consultar';
 
-  const finalidade = (textos.finalidade || 'VENDA').toUpperCase();
+  const finalidade = dados.transacao || 'VENDA';
   const localizacao = textos.localizacao
     || ((dados.bairro || '') + (dados.cidade ? ' • ' + dados.cidade : '')).toUpperCase();
 
