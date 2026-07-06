@@ -26,12 +26,13 @@
 import { AppState }            from '../state.js';
 import { EDGE_FUNCTION }       from '../config.js';
 import { getSupabase }         from '../auth/auth.js';
-import { buildTemplatePrompt, buildTemplate2Prompt, buildTemplate3Prompt, buildTemplate4Prompt, buildTemplate5Prompt } from '../../prompts/template-image.js';
+import { buildTemplatePrompt, buildTemplate2Prompt, buildTemplate3Prompt, buildTemplate4Prompt, buildTemplate5Prompt, buildTemplate6Prompt } from '../../prompts/template-image.js';
 import { buildTemplateHTML }   from './template-instagram.js';
 import { buildTemplate2HTML }  from './template2-instagram.js';
 import { buildTemplate3HTML }  from './template3-instagram.js';
 import { buildTemplate4HTML }  from './template4-instagram.js';
 import { buildTemplate5HTML }  from './template5-instagram.js';
+import { buildTemplate6HTML }  from './template6-instagram.js';
 
 let _currentDados       = null;
 let _currentTextos      = null;
@@ -94,6 +95,8 @@ export async function gerarImagemTemplate() {
       ? buildTemplate4Prompt(dadosPrompt)
       : _templateSelecionado === 5
       ? buildTemplate5Prompt(dadosPrompt)
+      : _templateSelecionado === 6
+      ? buildTemplate6Prompt(dadosPrompt)
       : buildTemplatePrompt(dadosPrompt);
     const textos = await _chamarIATemplate(prompt);
 
@@ -227,6 +230,8 @@ function _renderFrame() {
     ? buildTemplate4HTML(_currentDados, _currentTextos)
     : _templateSelecionado === 5
     ? buildTemplate5HTML(_currentDados, _currentTextos)
+    : _templateSelecionado === 6
+    ? buildTemplate6HTML(_currentDados, _currentTextos)
     : buildTemplateHTML(_currentDados, _currentTextos);
 
   frame.onload = () => {
@@ -300,6 +305,8 @@ function _abrirTemplate() {
     ? buildTemplate4HTML(_currentDados, _currentTextos)
     : _templateSelecionado === 5
     ? buildTemplate5HTML(_currentDados, _currentTextos)
+    : _templateSelecionado === 6
+    ? buildTemplate6HTML(_currentDados, _currentTextos)
     : buildTemplateHTML(_currentDados, _currentTextos);
   const blob = new Blob([html], { type: 'text/html' });
   const url  = URL.createObjectURL(blob);
