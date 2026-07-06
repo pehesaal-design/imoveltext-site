@@ -148,9 +148,16 @@ export async function loadUser(user) {
     AppState.auth.userCredits = data.credits ?? FREE_CREDITS;
     AppState.auth.isProUser   = data.is_pro  ?? false;
   } else {
-    // Fallback: usuário novo — creditar FREE_CREDITS
+    // Usuário sem linha na tabela — definir memória e criar o registro.
+    // Sem upsert aqui, decrementarCredito() faz UPDATE em linha inexistente
+    // (0 rows affected, sem erro) e os créditos resetam a cada reload.
     AppState.auth.userCredits = FREE_CREDITS;
     AppState.auth.isProUser   = false;
+    sb.from('users')
+      .upsert({ id: user.id, credits: FREE_CREDITS, is_pro: false }, { onConflict: 'id' })
+      .then(({ error: e }) => {
+        if (e) console.error('[auth] Erro ao criar registro do usuário:', e);
+      });
   }
 
   // Atualizar UI com estado do usuário
