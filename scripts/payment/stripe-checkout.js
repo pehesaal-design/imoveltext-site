@@ -3,9 +3,20 @@
  * RESPONSABILIDADE: Iniciar assinatura Pro via Stripe Payment Link
  *   e processar retorno após pagamento confirmado.
  * DEPENDÊNCIAS:
- *   - config.js  (STRIPE_PAYMENT_LINK)
+ *   - config.js  (STRIPE_PAYMENT_LINK, EDGE_VERIFY_ASSINATURA)
  *   - state.js   (AppState)
  *   - auth/auth.js (getSupabase)
+ *
+ * FLUXO DE VERIFICAÇÃO:
+ *   1. Usuário clica em "Assinar" → Payment Link abre em nova aba
+ *   2. Ao voltar para a aba original, listener `focus` dispara verificação
+ *   3. Edge Function consulta Stripe e confirma assinatura ativa
+ *   4. Se confirmado → libera Pro + persiste no banco
+ *
+ * NOTA: Stripe Payment Links NÃO suportam o parâmetro `success_url` via URL.
+ *   Para redirecionar após pagamento, configurar no Dashboard:
+ *   Stripe → Payment Links → After payment → Redirect to website
+ *   URL: https://pehesaal-design.github.io/imovelstudio-site?assinatura=sucesso
  */
 
 import { STRIPE_PAYMENT_LINK, EDGE_VERIFY_ASSINATURA } from '../config.js';
@@ -15,7 +26,7 @@ import { getSupabase } from '../auth/auth.js';
 // ── INICIAR ASSINATURA ────────────────────────────────
 
 /**
- * Abre o Stripe Payment Link em nova aba.
+ * Abre o Payment Link em nova aba e registra listener de retorno.
  * Se não estiver logado, abre o modal de login primeiro.
  */
 export function iniciarAssinatura() {
@@ -24,47 +35,90 @@ export function iniciarAssinatura() {
     return;
   }
 
-  const base        = window.location.origin + window.location.pathname;
-  const successUrl  = encodeURIComponent(`${base}?assinatura=sucesso`);
-  const email       = encodeURIComponent(AppState.auth.currentUser.email || '');
+  const email = encodeURIComponent(AppState.auth.currentUser.email || '');
+  const url   = `${STRIPE_PAYMENT_LINK}?prefilled_email=${email}`;
 
-  // Pré-preenche o email e define URL de retorno via query params do Payment Link
-  const url = `${STRIPE_PAYMENT_LINK}?prefilled_email=${email}&success_url=${successUrl}`;
-
+  console.log('[stripe] Abrindo Payment Link:', STRIPE_PAYMENT_LINK);
   window.open(url, '_blank');
+
+  // Quando o usuário voltar para esta aba após pagar, verificar automaticamente.
+  // Usar flag para não disparar múltiplas vezes se trocar de aba sem pagar.
+  let _verificado = false;
+  function _onFocus() {
+    if (_verificado) return;
+    _verificado = true;
+    window.removeEventListener('focus', _onFocus);
+    // Aguardar 1.5s para o Stripe processar o pagamento antes de consultar
+    console.log('[stripe] Aba em foco após Payment Link — verificando em 1.5s...');
+    setTimeout(() => _verificarAssinatura('foco'), 1500);
+  }
+  window.addEventListener('focus', _onFocus);
 }
 
-// ── VERIFICAR RETORNO ─────────────────────────────────
+// ── VERIFICAR RETORNO POR URL ─────────────────────────
 
 /**
  * Chamado no carregamento da página.
- * Detecta ?assinatura=sucesso, confirma com a Edge Function e libera Pro.
+ * Detecta ?assinatura=sucesso (redirect configurado no Dashboard do Stripe).
  */
 export async function verificarRetornoStripe() {
   const params = new URLSearchParams(window.location.search);
-  if (params.get('assinatura') !== 'sucesso') return;
+  const param  = params.get('assinatura');
+
+  console.log('[stripe] verificarRetornoStripe() — params:', window.location.search);
+
+  if (param !== 'sucesso') {
+    console.log('[stripe] Parâmetro assinatura ausente ou diferente de "sucesso" — nenhuma ação.');
+    return;
+  }
+
+  console.log('[stripe] Parâmetro ?assinatura=sucesso detectado — iniciando verificação.');
 
   // Limpar parâmetro da URL sem reload
   const cleanUrl = new URL(window.location.href);
   cleanUrl.searchParams.delete('assinatura');
   window.history.replaceState({}, '', cleanUrl);
 
-  // Só prosseguir se houver usuário logado com email
+  await _verificarAssinatura('url');
+}
+
+// ── VERIFICAÇÃO CENTRAL ───────────────────────────────
+
+/**
+ * Consulta a Edge Function para confirmar assinatura ativa no Stripe.
+ * Chamada tanto pela detecção de URL quanto pelo listener de foco.
+ *
+ * @param {string} origem — 'url' | 'foco' (para logging)
+ */
+async function _verificarAssinatura(origem) {
   const user  = AppState.auth.currentUser;
   const email = user?.email;
-  if (!email) return;
 
-  // Mostrar loading enquanto verifica no Stripe
+  console.log(`[stripe] _verificarAssinatura(${origem}) — usuário:`, email || 'NÃO LOGADO');
+
+  if (!email) {
+    console.warn('[stripe] Usuário não está logado — não é possível verificar assinatura.');
+    return;
+  }
+
   const loadingBanner = _mostrarLoading();
 
   try {
-    // Obter token JWT para autenticar a chamada à Edge Function
+    // Obter token JWT
     let token = AppState.auth.accessToken || '';
     if (!token) {
+      console.log('[stripe] Token não cacheado — buscando sessão...');
       const sb = getSupabase();
       const { data: { session } } = await sb.auth.getSession();
       token = session?.access_token || '';
     }
+
+    if (!token) {
+      throw new Error('Não foi possível obter token JWT — usuário não autenticado.');
+    }
+
+    console.log('[stripe] Chamando Edge Function:', EDGE_VERIFY_ASSINATURA);
+    console.log('[stripe] Email enviado:', email);
 
     const res = await fetch(EDGE_VERIFY_ASSINATURA, {
       method:  'POST',
@@ -75,18 +129,28 @@ export async function verificarRetornoStripe() {
       body: JSON.stringify({ email }),
     });
 
-    if (!res.ok) throw new Error(`Edge Function retornou ${res.status}`);
+    console.log('[stripe] Resposta da Edge Function — status:', res.status);
 
-    const { isPro } = await res.json();
+    if (!res.ok) {
+      const texto = await res.text();
+      throw new Error(`Edge Function retornou ${res.status}: ${texto}`);
+    }
+
+    const json = await res.json();
+    console.log('[stripe] Resposta JSON:', json);
+
+    const { isPro } = json;
 
     loadingBanner.remove();
 
     if (!isPro) {
-      _mostrarAvisoNaoConfirmado();
+      console.log('[stripe] Assinatura não confirmada pelo Stripe.');
+      if (origem === 'url') _mostrarAvisoNaoConfirmado();
       return;
     }
 
     // Assinatura confirmada — liberar acesso
+    console.log('[stripe] Assinatura ATIVA — liberando Pro.');
     AppState.auth.isProUser = true;
 
     const { sincronizarUI } = await import('../ui/ui-sync.js');
@@ -96,8 +160,8 @@ export async function verificarRetornoStripe() {
 
   } catch (err) {
     loadingBanner.remove();
-    console.error('[stripe-checkout] Erro ao verificar assinatura:', err);
-    _mostrarAvisoNaoConfirmado();
+    console.error('[stripe] Erro ao verificar assinatura:', err);
+    if (origem === 'url') _mostrarAvisoNaoConfirmado();
   }
 }
 
