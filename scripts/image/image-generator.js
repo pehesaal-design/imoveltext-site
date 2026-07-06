@@ -149,7 +149,7 @@ export async function gerarImagemTemplate() {
     if (!_downloadBound) {
       _downloadBound = true;
       document.getElementById('image-download-btn')
-        ?.addEventListener('click', _abrirTemplate);
+        ?.addEventListener('click', _baixarPNG);
     }
 
   } catch (err) {
@@ -287,28 +287,38 @@ function _renderFotoSelector() {
 
 // ── DOWNLOAD ──────────────────────────────────────────
 
-/**
- * Captura o iframe com html2canvas em scale:3 e faz download do PNG.
- * Aguarda fonts.ready do iframe antes de capturar para evitar fallback de fonte.
- */
-function _abrirTemplate() {
+async function _baixarPNG() {
   if (!_currentDados || !_currentTextos) {
-    alert('Gere a imagem antes de abrir o template.');
+    alert('Gere a imagem antes de baixar.');
     return;
   }
 
-  const html = _templateSelecionado === 2
-    ? buildTemplate2HTML(_currentDados, _currentTextos)
-    : _templateSelecionado === 3
-    ? buildTemplate3HTML(_currentDados, _currentTextos)
-    : _templateSelecionado === 4
-    ? buildTemplate4HTML(_currentDados, _currentTextos)
-    : _templateSelecionado === 5
-    ? buildTemplate5HTML(_currentDados, _currentTextos)
-    : _templateSelecionado === 6
-    ? buildTemplate6HTML(_currentDados, _currentTextos)
-    : buildTemplateHTML(_currentDados, _currentTextos);
-  const blob = new Blob([html], { type: 'text/html' });
-  const url  = URL.createObjectURL(blob);
-  window.open(url, '_blank');
+  const btn = document.getElementById('image-download-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Gerando PNG...'; }
+
+  try {
+    const frame = document.getElementById('image-frame');
+    if (!frame) throw new Error('iframe não encontrado');
+
+    await frame.contentDocument?.fonts?.ready;
+
+    const dataUrl = await domtoimage.toPng(frame.contentDocument.body, {
+      width:  1080,
+      height: 1350,
+    });
+
+    const bairro   = (_currentDados.bairro || 'imovel').toLowerCase().replace(/\s+/g, '-');
+    const filename = `imovelstudio-${bairro}.png`;
+
+    const link  = document.createElement('a');
+    link.href   = dataUrl;
+    link.download = filename;
+    link.click();
+
+  } catch (err) {
+    console.error('[image-generator] Erro ao gerar PNG:', err);
+    alert('Erro ao gerar o PNG. Tente novamente.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Baixar PNG'; }
+  }
 }
