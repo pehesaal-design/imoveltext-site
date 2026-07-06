@@ -23,13 +23,23 @@ async function buscarClientePorEmail(email: string): Promise<string | null> {
 }
 
 async function temAssinaturaAtiva(customerId: string): Promise<boolean> {
+  // Buscar sem filtro de status para ver todas as assinaturas (active + trialing)
   const res = await fetch(
-    `https://api.stripe.com/v1/subscriptions?customer=${customerId}&status=active&limit=1`,
+    `https://api.stripe.com/v1/subscriptions?customer=${customerId}&limit=10`,
     { headers: { Authorization: `Bearer ${STRIPE_SECRET_KEY}` } },
   );
-  if (!res.ok) return false;
+  if (!res.ok) {
+    console.error('[verificar-assinatura] Erro ao buscar assinaturas:', res.status);
+    return false;
+  }
   const data = await res.json();
-  return (data.data?.length ?? 0) > 0;
+  const subs = data.data ?? [];
+  console.log(`[verificar-assinatura] Assinaturas encontradas para ${customerId}:`,
+    subs.map((s: Record<string, unknown>) => ({ id: s.id, status: s.status })),
+  );
+  return subs.some((s: Record<string, unknown>) =>
+    s.status === 'active' || s.status === 'trialing',
+  );
 }
 
 // ── HANDLER ───────────────────────────────────────────
@@ -58,8 +68,11 @@ serve(async (req: Request) => {
     return new Response('Bad Request: email ausente', { status: 400, headers: CORS });
   }
 
+  console.log('[verificar-assinatura] Verificando email:', email);
+
   // 1. Buscar cliente no Stripe pelo email
   const customerId = await buscarClientePorEmail(email);
+  console.log('[verificar-assinatura] Customer ID encontrado:', customerId ?? 'nenhum');
 
   if (!customerId) {
     return new Response(

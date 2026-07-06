@@ -81,12 +81,6 @@ function _initPaywallModal() {
     btnFechar.addEventListener('click', closePaywall);
   }
 
-  // Botão de assinar dentro do paywall
-  const btnAssinar = document.getElementById('btn-assinar-paywall');
-  if (btnAssinar) {
-    btnAssinar.addEventListener('click', () => assinar());
-  }
-
   // Click no overlay externo fecha o modal
   const overlay = document.getElementById('paywall-modal');
   if (overlay) {
@@ -96,15 +90,11 @@ function _initPaywallModal() {
   }
 }
 
-// ── BOTÕES DE ASSINAR (landing page) ─────────────────
+// Alias mantido para compatibilidade — bindings centralizados em main.js
 export function assinar() {
   iniciarAssinatura();
 }
 
 function _initBotoesAssinar() {
-  // Botão de assinar na seção de planos
-  const btnPlanos = document.getElementById('btn-assinar-planos');
-  if (btnPlanos) {
-    btnPlanos.addEventListener('click', assinar);
-  }
+  // Bindings de #btn-assinar-planos e #btn-assinar-paywall gerenciados em main.js
 }

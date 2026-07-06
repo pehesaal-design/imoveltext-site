@@ -4,7 +4,6 @@
  * DEPENDÊNCIAS:
  *   - state.js (AppState)
  *   - config.js (FREE_CREDITS)
- *   - payment/stripe-checkout.js (iniciarAssinatura)
  * IMPACTO: Afeta banner de créditos, pill de créditos, acesso ao PDF,
  *          visibilidade da seção do corretor
  *
@@ -25,9 +24,8 @@
  *   — sempre usar sincronizarUI() para garantir consistência.
  */
 
-import { AppState }             from '../state.js';
-import { FREE_CREDITS }        from '../config.js';
-import { iniciarAssinatura }   from '../payment/stripe-checkout.js';
+import { AppState }      from '../state.js';
+import { FREE_CREDITS } from '../config.js';
 
 /**
  * Sincroniza toda a UI com o estado atual do AppState.
@@ -108,7 +106,6 @@ function _atualizarBanner() {
     bannerSub.textContent   = 'Assine o plano Pro para anúncios ilimitados + PDF profissional.';
     if (upgradeBtn) {
       upgradeBtn.style.display = 'inline-flex';
-      upgradeBtn.onclick = iniciarAssinatura;
     }
     return;
   }
@@ -119,7 +116,6 @@ function _atualizarBanner() {
     bannerSub.textContent   = 'Assine o Pro para não perder o ritmo.';
     if (upgradeBtn) {
       upgradeBtn.style.display = 'inline-flex';
-      upgradeBtn.onclick = iniciarAssinatura;
     }
     return;
   }
