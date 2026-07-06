@@ -31,7 +31,6 @@ export const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/test_28EdR23vJcQfb140
 // ── LIMITES DO PLANO FREE ─────────────────────────────
 export const FREE_CREDITS  = 3;
 
-// ── EDGE FUNCTION ─────────────────────────────────────
-// Endpoint da Edge Function do Supabase que chama a Gemini API.
-// Nunca chamar a Gemini diretamente do cliente — a chave fica no servidor.
-export const EDGE_FUNCTION = `${SUPABASE_URL}/functions/v1/gerar`;
+// ── EDGE FUNCTIONS ────────────────────────────────────
+export const EDGE_FUNCTION           = `${SUPABASE_URL}/functions/v1/gerar`;
+export const EDGE_VERIFY_ASSINATURA  = `${SUPABASE_URL}/functions/v1/verificar-assinatura`;
