@@ -1,74 +1,37 @@
 /**
  * MÓDULO: Stripe Checkout
- * RESPONSABILIDADE: Iniciar assinatura Pro via Stripe Checkout (redirect)
+ * RESPONSABILIDADE: Iniciar assinatura Pro via Stripe Payment Link
  *   e processar retorno após pagamento confirmado.
  * DEPENDÊNCIAS:
- *   - config.js   (STRIPE_PUBLIC_KEY, STRIPE_PRICE_ID)
- *   - state.js    (AppState)
+ *   - config.js  (STRIPE_PAYMENT_LINK)
+ *   - state.js   (AppState)
  *   - auth/auth.js (getSupabase)
- *
- * FLUXO:
- *   1. iniciarAssinatura() → redireciona para página do Stripe
- *   2. Stripe redireciona de volta para ?assinatura=sucesso
- *   3. verificarRetornoStripe() detecta o parâmetro, atualiza estado e salva no banco
  */
 
-import { STRIPE_PUBLIC_KEY, STRIPE_PRICE_ID } from '../config.js';
+import { STRIPE_PAYMENT_LINK } from '../config.js';
 import { AppState }   from '../state.js';
 import { getSupabase } from '../auth/auth.js';
-
-let _stripe = null;
-
-// ── CARREGAR STRIPE.JS ────────────────────────────────
-
-async function _carregarStripe() {
-  if (_stripe) return;
-
-  if (!window.Stripe) {
-    await new Promise((resolve, reject) => {
-      const s    = document.createElement('script');
-      s.src      = 'https://js.stripe.com/v3/';
-      s.onload   = resolve;
-      s.onerror  = () => reject(new Error('Falha ao carregar Stripe.js'));
-      document.head.appendChild(s);
-    });
-  }
-
-  _stripe = window.Stripe(STRIPE_PUBLIC_KEY);
-}
 
 // ── INICIAR ASSINATURA ────────────────────────────────
 
 /**
- * Redireciona o usuário para o Stripe Checkout.
+ * Abre o Stripe Payment Link em nova aba.
  * Se não estiver logado, abre o modal de login primeiro.
  */
-export async function iniciarAssinatura() {
+export function iniciarAssinatura() {
   if (!AppState.auth.currentUser) {
     document.getElementById('signup-modal').style.display = 'flex';
     return;
   }
 
-  try {
-    await _carregarStripe();
+  const base        = window.location.origin + window.location.pathname;
+  const successUrl  = encodeURIComponent(`${base}?assinatura=sucesso`);
+  const email       = encodeURIComponent(AppState.auth.currentUser.email || '');
 
-    const base  = window.location.origin + window.location.pathname;
-    const email = AppState.auth.currentUser.email || '';
+  // Pré-preenche o email e define URL de retorno via query params do Payment Link
+  const url = `${STRIPE_PAYMENT_LINK}?prefilled_email=${email}&success_url=${successUrl}`;
 
-    const { error } = await _stripe.redirectToCheckout({
-      lineItems:     [{ price: STRIPE_PRICE_ID, quantity: 1 }],
-      mode:          'subscription',
-      customerEmail: email,
-      successUrl:    `${base}?assinatura=sucesso`,
-      cancelUrl:     `${base}?assinatura=cancelado`,
-    });
-
-    if (error) throw error;
-
-  } catch (err) {
-    console.error('[stripe-checkout] Erro ao iniciar checkout:', err);
-    alert('Não foi possível iniciar o checkout. Tente novamente.');
-  }
+  window.open(url, '_blank');
 }
 
 // ── VERIFICAR RETORNO ─────────────────────────────────
@@ -109,7 +72,6 @@ export async function verificarRetornoStripe() {
 // ── BANNER DE BOAS-VINDAS ─────────────────────────────
 
 function _mostrarBoasVindas() {
-  // Injetar keyframe apenas uma vez
   if (!document.getElementById('stripe-success-style')) {
     const style = document.createElement('style');
     style.id = 'stripe-success-style';

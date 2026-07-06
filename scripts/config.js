@@ -26,8 +26,7 @@ export const REDIRECT_URL  = window.location.hostname === 'localhost' || window.
   : 'https://pehesaal-design.github.io/imovelstudio-site';
 
 // ── STRIPE ────────────────────────────────────────────
-export const STRIPE_PUBLIC_KEY = 'pk_test_51TqBqi3rS3MLZqQ1K8rcQuOGMG2pjZXglqaa37nDXG8sOEv06XPOWZ6MB3r1xG0YUQxlvRHMMTkdR6UJjJDvuZXH00nZC9ccBw';
-export const STRIPE_PRICE_ID   = 'price_1TqBzx3rS3MLZqQ1vG6yWnrj';
+export const STRIPE_PAYMENT_LINK = 'STRIPE_PAYMENT_LINK_AQUI';
 
 // ── LIMITES DO PLANO FREE ─────────────────────────────
 export const FREE_CREDITS  = 3;
