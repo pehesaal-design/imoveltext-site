@@ -101,17 +101,24 @@ serve(async (req: Request) => {
     return new Response('Erro ao buscar cliente', { status: 500 });
   }
 
-  // Atualizar tabela profiles usando service role (bypassa RLS)
+  // Atualizar tabela users usando service role (bypassa RLS)
   const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
-  const { error } = await sb
-    .from('profiles')
-    .update({ is_pro: isPro, updated_at: new Date().toISOString() })
-    .eq('email', email);
+  const { data: linhasAfetadas, error } = await sb
+    .from('users')
+    .update({ is_pro: isPro })
+    .eq('email', email)
+    .select('id');
 
   if (error) {
-    console.error('[stripe-webhook] Erro ao atualizar profiles:', error);
+    console.error('[stripe-webhook] Erro ao atualizar users:', error);
     return new Response('Erro interno', { status: 500 });
+  }
+
+  if (!linhasAfetadas || linhasAfetadas.length === 0) {
+    console.error(`[stripe-webhook] Nenhum usuário encontrado com email ${email} — update não teve efeito`);
+  } else {
+    console.log(`[stripe-webhook] users.is_pro=${isPro} aplicado para ${email} (id: ${linhasAfetadas[0].id})`);
   }
 
   console.log(`[stripe-webhook] ${email} → is_pro=${isPro} (status: ${status})`);

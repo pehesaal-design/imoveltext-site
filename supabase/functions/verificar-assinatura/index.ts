@@ -84,14 +84,20 @@ serve(async (req: Request) => {
   // 2. Verificar se tem assinatura ativa
   const isPro = await temAssinaturaAtiva(customerId);
 
-  // 3. Atualizar tabela profiles (service role bypassa RLS)
+  // 3. Persistir is_pro na tabela users (mesma tabela que auth.js lê)
   if (isPro) {
     const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
-    const { error } = await sb
-      .from('profiles')
-      .upsert({ email, is_pro: true }, { onConflict: 'email' });
+    const { data: linhasAfetadas, error } = await sb
+      .from('users')
+      .update({ is_pro: true })
+      .eq('email', email)
+      .select('id');
     if (error) {
-      console.error('[verificar-assinatura] Erro ao atualizar profiles:', error);
+      console.error('[verificar-assinatura] Erro ao atualizar users:', error);
+    } else if (!linhasAfetadas || linhasAfetadas.length === 0) {
+      console.error(`[verificar-assinatura] Nenhum usuário encontrado com email ${email} — update não teve efeito`);
+    } else {
+      console.log(`[verificar-assinatura] users.is_pro=true aplicado para ${email} (id: ${linhasAfetadas[0].id})`);
     }
   }
 
