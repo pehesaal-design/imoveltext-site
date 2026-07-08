@@ -154,7 +154,7 @@ export async function loadUser(user) {
     AppState.auth.userCredits = FREE_CREDITS;
     AppState.auth.isProUser   = false;
     sb.from('users')
-      .upsert({ id: user.id, credits: FREE_CREDITS, is_pro: false }, { onConflict: 'id' })
+      .upsert({ id: user.id, email: user.email, credits: FREE_CREDITS, is_pro: false }, { onConflict: 'id' })
       .then(({ error: e }) => {
         if (e) console.error('[auth] Erro ao criar registro do usuário:', e);
       });
