@@ -26,7 +26,7 @@ export const REDIRECT_URL  = window.location.hostname === 'localhost' || window.
   : 'https://pehesaal-design.github.io/imovelstudio-site';
 
 // ── STRIPE ────────────────────────────────────────────
-export const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/test_28EdR23vJcQfb140sPdnW00';
+export const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gMfZaftHcs20Mc7y11wY00';
 
 // ── LIMITES DO PLANO FREE ─────────────────────────────
 export const FREE_CREDITS  = 3;
