@@ -79,7 +79,7 @@ serve(async (req: Request) => {
 
   const tipo = evento.type as string;
 
-  if (tipo !== 'customer.subscription.created' && tipo !== 'customer.subscription.updated') {
+  if (tipo !== 'customer.subscription.created' && tipo !== 'customer.subscription.updated' && tipo !== 'customer.subscription.deleted') {
     // Evento irrelevante — retornar 200 para o Stripe não retentar
     return new Response(JSON.stringify({ recebido: true }), { status: 200 });
   }
